@@ -1,0 +1,681 @@
+<!-- ÖNEMLİ NOT: Bu dosyayı kaydederken Kodlama (Encoding) kısmını 'UTF-8' seçtiğinizden emin olun. -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="BİYODUVAR — Karbon Azaltıcı Akıllı Duvar Paneli. Bilim Kaşifleri Takımı - Teknofest 2026.">
+  <title>BİYODUVAR | Bilim Kaşifleri</title>
+
+  <!-- Google Fonts: Montserrat & Rajdhani -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#1a202c; 
+      --bg-card:rgba(255,255,255,0.03);
+      --text:#f0f0f0;
+      --muted:rgba(255,255,255,.7);
+      --muted2:rgba(255,255,255,.5);
+      --stroke:rgba(255,255,255,.1);
+      
+      /* Renk Paleti (Referans Görselden) */
+      --green:#48bb78; 
+      --green-lcd: #2ecc71;
+      --wood:#8d6e63;
+      --wood-dark: #5d4037;
+      --wood-frame: #8D6E63;
+      --blue:#4299e1; 
+      --red:#f56565;
+      --yellow: #ecc94b;
+      
+      --max:1120px;
+      --radius:20px;
+    }
+    
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    
+    body{
+      margin:0;
+      font-family:'Montserrat', sans-serif;
+      background: #0f1218;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(72,187,120,0.15) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(66,153,225,0.10) 0px, transparent 50%);
+      color:var(--text);
+      overflow-x:hidden;
+      scroll-behavior:smooth;
+    }
+
+    /* Ambient Effects */
+    #air{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.6; }
+    .progress{ position:fixed; top:0; left:0; width:100%; height:4px; background:transparent; z-index:1000; }
+    .progress > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--green), var(--blue)); box-shadow:0 0 15px var(--green); transition: width 0.1s linear; }
+
+    /* Navigation */
+    .nav{
+      position:fixed; top:20px; left:50%; transform:translateX(-50%); width:min(var(--max), calc(100% - 30px)); z-index:100;
+      display:flex; align-items:center; justify-content:space-between; padding:12px 20px;
+      border:1px solid var(--stroke); background:rgba(15, 18, 24, 0.85); backdrop-filter:blur(16px);
+      border-radius:99px; box-shadow:0 10px 30px rgba(0,0,0,.3);
+    }
+    .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); }
+    .brand span.highlight { color: var(--green); }
+    
+    .nav-right{display:flex; gap:6px; align-items:center}
+    .nav a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 16px; border-radius:99px; transition:.2s; font-weight: 500; }
+    .nav a:hover{ color:#fff; background:rgba(255,255,255,.05); }
+    
+    .lang-btn { background: transparent; border: 1px solid var(--wood); color: var(--wood); padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 10px; transition: 0.2s; text-transform: uppercase; }
+    .lang-btn:hover { background: var(--wood); color: #000; }
+
+    /* Layout */
+    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; position: relative; z-index: 1; }
+    section{ padding:100px 0; }
+    .alt-bg { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02) 15%, rgba(255,255,255,0.02) 85%, transparent); }
+
+    h1{ font-family: 'Rajdhani', sans-serif; margin:20px 0 20px; font-size:clamp(40px, 7vw, 76px); line-height:0.95; font-weight: 700; text-transform: uppercase; }
+    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(28px, 4vw, 42px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
+    .lead{ font-size:clamp(16px, 1.8vw, 19px); color:var(--muted); max-width:65ch; line-height: 1.6; font-weight: 300; }
+    .kicker { color: var(--wood); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; display: block; }
+
+    /* --- VISUAL PANEL (ECO-WALL SIMULATION) --- */
+    .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
+    .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); }
+    .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
+
+    .panel-wrapper { position: relative; margin: 20px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
+    
+    .solar-panel {
+        position: absolute; top: 0px; right: -30px; width: 110px; height: 70px;
+        background: linear-gradient(135deg, #1a237e, #283593);
+        border: 4px solid #90a4ae; border-radius: 6px;
+        transform: rotate(-12deg) skewX(-5deg); z-index: 0;
+        box-shadow: 10px 10px 20px rgba(0,0,0,0.6);
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 4px;
+    }
+    .solar-cell { background: rgba(255,255,255,0.15); width: 100%; height: 100%; border-radius: 1px; }
+
+    .panel-visual {
+        position: relative; z-index: 2;
+        width: 100%; aspect-ratio: 3/4.5;
+        border: 12px solid var(--wood-frame); /* Ahşap çerçeve */
+        border-radius: 12px 12px 6px 6px;
+        background: #212121;
+        box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+        display: flex; flex-direction: column;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMjYyNjI2Ii8+CjxwYXRoIGQ9Ik0wIDBoNHYxSDB6bTAgMmg0djFIMHoiIGZpbGw9IiMzMzMzMzMiIGZpbGwtb3BhY2l0eT0iMC4xIi8+Cjwvc3ZnPg==');
+    }
+    
+    /* Roof Structure */
+    .panel-visual::before {
+        content: ''; position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
+        border-left: 220px solid transparent; border-right: 220px solid transparent; border-bottom: 45px solid var(--wood-frame);
+        z-index: 2;
+    }
+
+    /* Interactive Hotspots */
+    .hotspot {
+        position: absolute; width: 28px; height: 28px;
+        background: #fff; border-radius: 50%;
+        color: var(--wood-dark); font-weight: 800; font-size: 16px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; z-index: 50;
+        box-shadow: 0 0 0 rgba(255,255,255, 0.5);
+        animation: pulse-white 2s infinite;
+        transition: transform 0.2s;
+        border: 2px solid var(--wood-dark);
+    }
+    .hotspot:hover { transform: scale(1.1); background: #f0f0f0; }
+    @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+
+    /* Internal Components */
+    .section-header { 
+        height: 12%; background: #2d3436; border-bottom: 4px solid var(--wood-dark); 
+        padding: 10px; display: flex; align-items: center; justify-content: center; position: relative; 
+    }
+    
+    .lcd-display {
+        background: #000; border: 2px solid #555; border-radius: 4px;
+        padding: 5px 15px; width: 80%;
+        color: var(--green-lcd); font-family: monospace; font-weight: bold; font-size: 13px;
+        text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+        display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .section-grow { 
+        height: 68%; position: relative; 
+        display: flex; flex-direction: column; justify-content: space-evenly; 
+        padding-top: 10px;
+    }
+    
+    .shelf { 
+        height: 8px; background: var(--wood-dark); width: 100%; position: relative; margin-top: auto; 
+        box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    }
+    
+    /* Hydroponic Felt */
+    .felt-layer { 
+        position: absolute; bottom: 8px; left: 5%; width: 90%; height: 50px; 
+        background: #3e2723; border-radius: 4px;
+        background-image: repeating-linear-gradient(45deg, #3e2723 0, #3e2723 2px, #4e342e 2px, #4e342e 4px);
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .plant-row { 
+        display: flex; justify-content: space-around; position: absolute; bottom: 8px; width: 90%; left: 5%; z-index: 10;
+        align-items: flex-end;
+    }
+    
+    /* CSS Plant Graphics */
+    .plant-visual { position: relative; width: 40px; height: 40px; }
+    .leaf { 
+        position: absolute; bottom: 0; width: 12px; height: 20px; 
+        background: var(--green); border-radius: 0 10px 0 10px; 
+        transform-origin: bottom center; 
+    }
+    .plant-visual:nth-child(odd) .leaf { background: #43A047; }
+    
+    .water-flow-indicator {
+        position: absolute; right: 10px; top: 0; bottom: 0; width: 4px;
+        background: linear-gradient(180deg, var(--blue), transparent);
+        opacity: 0.5; animation: flowDown 2s linear infinite;
+    }
+    @keyframes flowDown { 0%{background-position: 0 0;} 100%{background-position: 0 100px;} }
+
+    .section-tank { 
+        height: 20%; background: rgba(52, 152, 219, 0.2); 
+        border-top: 6px solid var(--wood-dark); 
+        position: relative; overflow: hidden; 
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+    
+    /* Roots in tank */
+    .root-system {
+        position: absolute; top: 0; width: 100%; height: 40px;
+        background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+        mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px);
+        opacity: 0.6;
+    }
+
+    .water-line { 
+        position: absolute; bottom: 0; width: 100%; height: 75%; 
+        background: rgba(66,153,225,0.4); 
+        border-top: 1px solid rgba(255,255,255,0.3);
+        animation: waterLevel 5s infinite ease-in-out; 
+    }
+    @keyframes waterLevel { 0%,100%{height:75%} 50%{height:78%} }
+    
+    .pump-unit {
+        position: absolute; bottom: 5px; left: 10px; width: 50px; height: 40px;
+        background: #111; border: 1px solid #444; border-radius: 4px;
+        display: flex; align-items: center; justify-content: center;
+        color: #777; font-size: 10px; font-weight: bold; z-index: 5;
+    }
+    
+    /* Airflow Arrows */
+    .arrow-flow {
+        position: absolute; left: -60px; width: 50px; height: 20px;
+        background: linear-gradient(90deg, rgba(255,255,255,0), #81d4fa);
+        clip-path: polygon(0% 40%, 60% 40%, 60% 0%, 100% 50%, 60% 100%, 60% 60%, 0% 60%);
+        opacity: 0.8; animation: flowIn 2s infinite; z-index: 10;
+    }
+    .arrow-flow.out {
+        top: -40px; left: 50%; transform: translateX(-50%) rotate(-90deg);
+        background: linear-gradient(90deg, rgba(255,255,255,0), var(--green-lcd));
+        width: 40px;
+    }
+    @keyframes flowIn { 0%{transform:translateX(-10px); opacity:0;} 50%{opacity:1;} 100%{transform:translateX(10px); opacity:0;} }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+        z-index: 2000; display: none; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-content {
+        background: #1a202c; border: 1px solid var(--stroke); border-radius: 16px;
+        padding: 30px; max-width: 500px; width: 90%; position: relative;
+        transform: translateY(20px); transition: transform 0.3s;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
+    .modal-icon { font-size: 48px; margin-bottom: 15px; display: inline-block; }
+    .modal-title { font-family: 'Rajdhani'; font-size: 24px; color: var(--green); margin-bottom: 10px; }
+    .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text); }
+
+    /* Standard Sections */
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
+    .card{ background: var(--bg-card); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 24px; transition: 0.3s; }
+    .icon-box { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--wood); }
+    
+    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+    .kpi-card { background: rgba(0,0,0,0.2); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; text-align: center; }
+    .kpi-val { font-family: 'Rajdhani'; font-size: 28px; font-weight: 700; color: #fff; }
+    .kpi-lbl { font-size: 11px; color: var(--muted2); text-transform: uppercase; margin-top: 4px; }
+    .console-log { font-family: monospace; font-size: 10px; color: var(--green); background: #000; padding: 10px; border-radius: 8px; height: 100px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
+    .log-line { opacity: 0.7; margin-bottom: 2px; }
+
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
+    .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
+    .role { font-size: 10px; text-transform: uppercase; color: var(--wood); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+    .name { font-size: 14px; font-weight: 600; }
+
+    .logo-container { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; }
+    .footer-logo { height: 70px; width: auto; object-fit: contain; background: #fff; padding: 8px; border-radius: 8px; box-shadow: 0 0 20px rgba(255,255,255,0.1); transition: transform 0.3s; }
+    
+    .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px; transition: 0.2s; border: none; cursor: pointer; }
+    .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
+
+    @media(max-width:900px){
+        .heroGrid{ grid-template-columns: 1fr; text-align: center; }
+        .hero-tags { justify-content: center; }
+        .grid, .dash-grid { grid-template-columns: 1fr; }
+        .nav-right { display: none; }
+        .panel-wrapper { max-width: 320px; }
+        .solar-panel { right: 0; top: -50px; transform: rotate(0); width: 100%; height: 40px; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="air"></canvas>
+  <div class="progress"><span id="prog"></span></div>
+
+  <nav class="nav">
+    <div class="brand" data-key="brand_html">
+      BİYO<span class="highlight">DUVAR</span>
+    </div>
+    <div class="nav-right">
+      <a href="#why" data-key="nav_why">Neden?</a>
+      <a href="#tech" data-key="nav_tech">Teknoloji</a>
+      <a href="#demo" data-key="nav_demo">Demo</a>
+      <a href="#team" data-key="nav_team">Takım</a>
+      <button id="langToggle" class="lang-btn">TR | EN</button>
+    </div>
+  </nav>
+
+  <!-- INFO MODAL -->
+  <div class="modal-overlay" id="infoModal">
+      <div class="modal-content">
+          <button class="modal-close" onclick="closeModal()">×</button>
+          <div class="modal-icon" id="mIcon"></div>
+          <h3 class="modal-title" id="mTitle"></h3>
+          <p class="modal-desc" id="mDesc"></p>
+      </div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="container heroGrid">
+      <div>
+        <div class="hero-tags">
+          <span class="tag" data-key="tag_school">Özel İngiliz Kültür Koleji</span>
+          <span class="tag blue" data-key="tag_project">Teknofest 2026</span>
+        </div>
+        <div class="kicker" data-key="kicker_hero">İnsanlık Yararına Teknoloji</div>
+        <h1 data-key="hero_title">Duvarlar Artık<br><span style="color:var(--green)">Nefes Alıyor</span></h1>
+        <p class="lead" data-key="hero_desc">
+            BİYODUVAR; topraksız, kokusuz ve yenilebilir bir yaşam duvarıdır. 
+            Sensör kontrollü bu akıllı ekosistem, havayı temizlerken maydanoz ve roka üretir.
+        </p>
+        <div style="display:flex; gap:16px; margin-top:20px; flex-wrap:wrap; justify-content: center; md:justify-content: flex-start;">
+            <a href="#tech" class="btn" data-key="btn_explore">Sistemi Keşfet</a>
+            <a href="#demo" class="btn secondary" data-key="btn_demo">Simülasyon</a>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE VISUAL -->
+      <div class="panel-wrapper">
+          <div class="solar-panel">
+               <div class="hotspot" style="top:-15px; right:-15px;" onclick="openInfo('solar')">+</div>
+               <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
+               <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
+          </div>
+          
+          <div class="arrow-flow" style="bottom:25%; left:-70px;"></div>
+          <div class="arrow-flow" style="bottom:50%; left:-70px;"></div>
+          <div class="arrow-flow out"></div>
+
+          <div class="panel-visual">
+              <!-- Header -->
+              <div class="section-header">
+                  <div class="hotspot" style="top:-10px; right:10px;" onclick="openInfo('sensors')">+</div>
+                  <div class="lcd-display">
+                      <span>Karbon: İYİ</span>
+                      <span>410ppm</span>
+                  </div>
+              </div>
+
+              <!-- Grow Area -->
+              <div class="section-grow">
+                   <div class="hotspot" style="top:50%; left:50%; transform:translate(-50%,-50%)" onclick="openInfo('plants')">+</div>
+                   <div class="water-flow-indicator"></div>
+                   
+                   <!-- Shelf 1 -->
+                   <div class="shelf">
+                       <div class="felt-layer"></div>
+                       <div class="plant-row" id="row1">
+                           <!-- Plants generated by JS -->
+                       </div>
+                   </div>
+                   <!-- Shelf 2 -->
+                   <div class="shelf">
+                       <div class="felt-layer"></div>
+                       <div class="plant-row" id="row2"></div>
+                   </div>
+                   <!-- Shelf 3 -->
+                   <div class="shelf">
+                       <div class="felt-layer"></div>
+                       <div class="plant-row" id="row3"></div>
+                   </div>
+              </div>
+
+              <!-- Tank Area -->
+              <div class="section-tank">
+                  <div class="hotspot" style="top:10px; right:10px;" onclick="openInfo('water')">+</div>
+                  <div class="root-system"></div>
+                  <div class="water-line"></div>
+                  <div class="pump-unit">
+                      <span>5V PUMP</span>
+                  </div>
+                  <div style="position:absolute; bottom:5px; left:40%; width:4px; height:4px; background:rgba(255,255,255,0.5); border-radius:50%; animation:rise 2s infinite;"></div>
+              </div>
+          </div>
+          <div style="text-align:center; margin-top:15px; font-size:11px; color:var(--muted); letter-spacing:1px;">
+              <span data-key="lbl_click">İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span>
+          </div>
+      </div>
+    </section>
+
+    <!-- TECH SPECS -->
+    <section id="tech" class="container">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: center;">
+            <div>
+                <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
+                <h2 data-key="tech_title">Teknik Bileşenler</h2>
+                <ul style="line-height: 2.2; color: var(--muted); list-style: square; padding-left: 20px;">
+                    <li data-key="tech_list_1"><strong>Gövde:</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.</li>
+                    <li data-key="tech_list_2"><strong>Sensörler:</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).</li>
+                    <li data-key="tech_list_3"><strong>Otomasyon:</strong> Arduino Nano Mikrodenetleyici.</li>
+                    <li data-key="tech_list_4"><strong>Su Döngüsü:</strong> 5V Dalgıç Pompa + Hidroponik Keçe.</li>
+                    <li data-key="tech_list_5"><strong>Enerji:</strong> Güneş Paneli desteği ile sürdürülebilir güç.</li>
+                </ul>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding:30px; border-radius: 20px; border:1px solid var(--stroke);">
+                <h3 style="margin-top:0; color:var(--wood);" data-key="calc_title">Hesaplamalar & Verim</h3>
+                <p style="font-size:14px; line-height: 1.6;" data-key="calc_desc">
+                    NASA verilerine göre 1 m² yaprak alanı günde ortalama 5-20g CO2 emer. BİYODUVAR, aktif hava akışıyla bu süreci 3 katına kadar hızlandırır.
+                </p>
+                <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--stroke);">
+                    <div style="display:flex; justify-content: space-between; font-size:14px; margin-bottom: 8px;">
+                        <span data-key="calc_co2">Yıllık CO2 Azaltımı:</span>
+                        <span style="color:var(--green); font-weight:700;">~3.65 kg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD SIMULATION -->
+    <section id="demo" class="alt-bg">
+        <div class="container">
+            <h2 data-key="dash_title">Canlı Kontrol Paneli</h2>
+            <div class="card dash-grid">
+                <div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
+                        <h3 style="margin:0;">BİYODUVAR v1.0</h3>
+                        <div class="status-badge" id="sysStatus" data-key="status_active" style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px; background:rgba(72,187,120,0.15); border:1px solid rgba(72,187,120,0.3); border-radius:20px; color:var(--green); font-size:12px; font-weight:600;">SİSTEM AKTİF</div>
+                    </div>
+                    
+                    <div class="kpi-row">
+                        <div class="kpi-card"><div class="kpi-val" id="valAir">420</div><div class="kpi-lbl">CO2 (PPM)</div></div>
+                        <div class="kpi-card"><div class="kpi-val" id="valTemp">24°C</div><div class="kpi-lbl">TEMP</div></div>
+                        <div class="kpi-card"><div class="kpi-val" id="valHum">55%</div><div class="kpi-lbl">HUM</div></div>
+                    </div>
+                    <div style="background:#000; height:180px; border-radius:8px; position:relative; overflow:hidden;">
+                        <canvas id="chartCanvas"></canvas>
+                    </div>
+                </div>
+                <div style="border-left:1px solid var(--stroke); padding-left:20px; display:flex; flex-direction:column; justify-content:center;">
+                    <div style="margin-bottom:20px;">
+                        <div class="kpi-lbl" style="text-align:left;">FAN</div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
+                            <div id="fanIcon" style="font-size:24px; animation:spin 1s linear infinite;">☢</div>
+                            <span id="fanText" style="font-weight:700; color:var(--wood);">AUTO</span>
+                        </div>
+                    </div>
+                    <div class="console-log" id="consoleLog">
+                        <div class="log-line">> System initialized...</div>
+                    </div>
+                    <button class="btn secondary" style="width:100%; font-size:12px; margin-top:20px" onclick="simulateCrowd()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team" class="container">
+        <h2 style="text-align:center;" data-key="team_title">BİLİM KAŞİFLERİ</h2>
+        <div class="team-grid">
+            <div class="member"><div class="role" data-key="role_captain">KAPTAN</div><div class="name">Rüzgar Özmen</div></div>
+            <div class="member"><div class="role" data-key="role_design">TASARIM</div><div class="name">Poyraz Bulut</div></div>
+            <div class="member"><div class="role" data-key="role_idea">PROJE FİKRİ</div><div class="name">Archer Ege Webb</div></div>
+            <div class="member"><div class="role" data-key="role_pres">SUNUM</div><div class="name">Toprak Tekin</div></div>
+            <div class="member"><div class="role" data-key="role_prod">TASARIM & ÜRETİM</div><div class="name">Volkan Önsay</div></div>
+            <div class="member" style="border-color:var(--wood);"><div class="role" style="color:var(--green);" data-key="role_advisor">DANIŞMAN</div><div class="name">Gamze Yaylaönü</div></div>
+        </div>
+        <div style="margin-top: 60px; text-align: center;">
+             <p class="kicker" data-key="lbl_supporters">GELİŞTİRİCİ & DESTEKÇİLER</p>
+             <div class="logo-container">
+                 <img src="https://i.ibb.co/ks3kbRxr/ikk-LOGO-PNG.png" alt="İngiliz Kültür Koleji" class="footer-logo">
+                 <img src="https://i.ibb.co/3mqTvCvC/t3-logo-TR.jpg" alt="Teknofest" class="footer-logo">
+             </div>
+         </div>
+    </section>
+
+    <footer style="text-align:center; padding:40px; border-top:1px solid var(--stroke); font-size:12px; color:var(--muted2);">
+        &copy; 2026 BİLİM KAŞİFLERİ - TEKNOFEST
+    </footer>
+
+  </main>
+
+  <style> @keyframes spin { 100% { transform: rotate(360deg); } } @keyframes rise { 0% { transform: translateY(0); opacity:0;} 50% { opacity:1; } 100% { transform: translateY(-40px); opacity:0;} } </style>
+
+  <script>
+    /* --- DATA & TRANSLATION --- */
+    const translations = {
+        tr: {
+            brand_html: "BİYO<span class='highlight'>DUVAR</span>",
+            nav_why: "Neden?", nav_tech: "Teknoloji", nav_demo: "Demo", nav_team: "Takım",
+            tag_school: "Özel İngiliz Kültür Koleji", tag_project: "Teknofest 2026",
+            kicker_hero: "İnsanlık Yararına Teknoloji",
+            hero_title: "Duvarlar Artık<br><span style='color:var(--green)'>Nefes Alıyor</span>",
+            hero_desc: "BİYODUVAR; topraksız, kokusuz ve yenilebilir bir yaşam duvarıdır. Sensör kontrollü bu akıllı ekosistem, havayı temizlerken maydanoz ve roka üretir.",
+            btn_explore: "Sistemi Keşfet", btn_demo: "Simülasyon",
+            tech_kicker: "SİSTEM MİMARİSİ", tech_title: "Teknik Bileşenler",
+            tech_list_1: "<strong>Gövde:</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.",
+            tech_list_2: "<strong>Sensörler:</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).",
+            tech_list_3: "<strong>Otomasyon:</strong> Arduino Nano Mikrodenetleyici.",
+            tech_list_4: "<strong>Su Döngüsü:</strong> 5V Dalgıç Pompa + Hidroponik Keçe.",
+            tech_list_5: "<strong>Enerji:</strong> Güneş Paneli desteği ile sürdürülebilir güç.",
+            calc_title: "Hesaplamalar & Verim", calc_desc: "NASA verilerine göre 1 m² yaprak alanı günde ortalama 5-20g CO2 emer. BİYODUVAR, aktif hava akışıyla bu süreci 3 katına kadar hızlandırır.",
+            calc_co2: "Yıllık CO2 Azaltımı:", 
+            dash_title: "Canlı Kontrol Paneli", status_active: "SİSTEM AKTİF",
+            btn_crowd: "⚡ Sınıf Kalabalıklaşınca",
+            team_title: "BİLİM KAŞİFLERİ", lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
+            role_captain: "KAPTAN", role_design: "TASARIM", role_idea: "PROJE FİKRİ", role_pres: "SUNUM", role_prod: "TASARIM & ÜRETİM", role_advisor: "DANIŞMAN",
+            lbl_click: "İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN",
+            modal_solar_title: "Güneş Enerjisi", modal_solar_desc: "Sistem, sürdürülebilir enerji için güneş paneli desteğiyle çalışır. Düşük voltajlı (5V) bileşenler sayesinde karbon ayak izi minimize edilir.",
+            modal_sensors_title: "Sensörler & Kontrol", modal_sensors_desc: "MQ-135 sensörü havadaki CO2 ve zararlı gazları (VOC) tespit eder. Mikrodenetleyici, hava kirlendiğinde fanları otomatik çalıştırır.",
+            modal_plants_title: "Hidroponik Tarım", modal_plants_desc: "Özel keçe sistemi sayesinde toprak kullanılmaz. Roka, Maydanoz ve Fesleğen gibi bitkiler su ve besin çözeltisiyle yetişir. Koku ve böcek yapmaz.",
+            modal_water_title: "Su Döngüsü", modal_water_desc: "Alt tanktaki su, 5V pompa ile en üst rafa basılır ve keçelerden süzülerek tekrar tanka döner. Kapalı devre sistem su tasarrufu sağlar."
+        },
+        en: {
+            brand_html: "BIO<span class='highlight'>WALL</span>",
+            nav_why: "Why?", nav_tech: "Technology", nav_demo: "Demo", nav_team: "Team",
+            tag_school: "British Culture College", tag_project: "Teknofest 2026",
+            kicker_hero: "Technology for Humanity",
+            hero_title: "Walls Are Now<br><span style='color:var(--green)'>Breathing</span>",
+            hero_desc: "BIOWALL is a soilless, odorless, and edible living wall. This sensor-controlled smart ecosystem purifies air while growing parsley and arugula.",
+            btn_explore: "Explore System", btn_demo: "Simulation",
+            tech_kicker: "SYSTEM ARCHITECTURE", tech_title: "Technical Components",
+            tech_list_1: "<strong>Body:</strong> Recycled wood panel & Roof design.",
+            tech_list_2: "<strong>Sensors:</strong> MQ-135 (Air Quality) + DHT11 (Temp/Hum).",
+            tech_list_3: "<strong>Automation:</strong> Arduino Nano Microcontroller.",
+            tech_list_4: "<strong>Water Loop:</strong> 5V Submersible Pump + Hydroponic Felt.",
+            tech_list_5: "<strong>Energy:</strong> Sustainable power with Solar Panel support.",
+            calc_title: "Calculations & Efficiency", calc_desc: "According to NASA, 1 m² leaf area absorbs 5-20g CO2 daily. BIOWALL accelerates this process up to 3x with active airflow.",
+            calc_co2: "Annual CO2 Reduction:", 
+            dash_title: "Live Control Panel", status_active: "SYSTEM ACTIVE",
+            btn_crowd: "⚡ Class Crowded",
+            team_title: "SCIENCE EXPLORERS", lbl_supporters: "DEVELOPER & SUPPORTERS",
+            role_captain: "CAPTAIN", role_design: "DESIGN", role_idea: "PROJECT IDEA", role_pres: "PRESENTATION", role_prod: "DESIGN & PRODUCTION", role_advisor: "ADVISOR",
+            lbl_click: "CLICK ON (+) ICONS TO EXPLORE",
+            modal_solar_title: "Solar Energy", modal_solar_desc: "The system operates with solar panel support for sustainable energy. Low voltage (5V) components minimize carbon footprint.",
+            modal_sensors_title: "Sensors & Control", modal_sensors_desc: "MQ-135 sensor detects CO2 and harmful gases (VOCs). The microcontroller automatically activates fans when air quality drops.",
+            modal_plants_title: "Hydroponic Farming", modal_plants_desc: "No soil is used thanks to the special felt system. Plants like Arugula, Parsley, and Basil grow with water and nutrient solution. No odor, no bugs.",
+            modal_water_title: "Water Loop", modal_water_desc: "Water in the bottom tank is pumped to the top shelf via a 5V pump, trickles down through felts, and returns to the tank. Closed-loop system saves water."
+        }
+    };
+
+    let currentLang = 'tr';
+    const langBtn = document.getElementById('langToggle');
+
+    langBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'tr' ? 'en' : 'tr';
+        updateLanguage();
+    });
+
+    function updateLanguage() {
+        const elements = document.querySelectorAll('[data-key]');
+        elements.forEach(el => {
+            const key = el.getAttribute('data-key');
+            if(translations[currentLang][key]) {
+                el.innerHTML = translations[currentLang][key];
+            }
+        });
+        langBtn.textContent = currentLang === 'tr' ? 'TR | EN' : 'EN | TR';
+    }
+
+    /* --- INITIALIZE VISUALS --- */
+    function initPlants() {
+        const rows = [document.getElementById('row1'), document.getElementById('row2'), document.getElementById('row3')];
+        rows.forEach(row => {
+            for(let i=0; i<4; i++) {
+                const div = document.createElement('div');
+                div.className = 'plant-visual';
+                // 3 leaves per plant
+                div.innerHTML = `<div class="leaf" style="transform:rotate(-20deg); left:5px; height:18px"></div>
+                                 <div class="leaf" style="transform:rotate(0deg); left:14px; height:24px; bottom:2px"></div>
+                                 <div class="leaf" style="transform:rotate(20deg); right:5px; height:18px"></div>`;
+                row.appendChild(div);
+            }
+        });
+    }
+    initPlants();
+
+    /* --- MODAL LOGIC --- */
+    const modal = document.getElementById('infoModal');
+    const mTitle = document.getElementById('mTitle');
+    const mDesc = document.getElementById('mDesc');
+    const mIcon = document.getElementById('mIcon');
+    
+    const icons = { solar: '☀️', sensors: '📡', plants: '🥗', water: '💧' };
+
+    window.openInfo = function(type) {
+        mTitle.setAttribute('data-key', `modal_${type}_title`);
+        mDesc.setAttribute('data-key', `modal_${type}_desc`);
+        mIcon.innerText = icons[type];
+        mTitle.innerText = translations[currentLang][`modal_${type}_title`];
+        mDesc.innerText = translations[currentLang][`modal_${type}_desc`];
+        modal.classList.add('active');
+    }
+
+    window.closeModal = function() { modal.classList.remove('active'); }
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+
+    /* --- DASHBOARD LOGIC --- */
+    const valAir = document.getElementById('valAir');
+    const fanIcon = document.getElementById('fanIcon');
+    const fanText = document.getElementById('fanText');
+    const chartCanvas = document.getElementById('chartCanvas');
+    const consoleLog = document.getElementById('consoleLog');
+    const cctx = chartCanvas.getContext('2d');
+    
+    function resizeCanvas(){
+        chartCanvas.width = chartCanvas.parentElement.offsetWidth;
+        chartCanvas.height = 180;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let co2 = 410;
+    const history = Array(60).fill(410);
+
+    function log(msg) {
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        div.innerText = `> ${msg}`;
+        consoleLog.appendChild(div);
+        consoleLog.scrollTop = consoleLog.scrollHeight;
+        if(consoleLog.children.length > 5) consoleLog.removeChild(consoleLog.firstChild);
+    }
+
+    function drawChart() {
+        const w = chartCanvas.width;
+        const h = chartCanvas.height;
+        cctx.clearRect(0,0,w,h);
+        cctx.strokeStyle = "rgba(255,255,255,0.05)";
+        cctx.beginPath(); cctx.moveTo(0, h/2); cctx.lineTo(w, h/2); cctx.stroke();
+
+        cctx.strokeStyle = co2 > 600 ? '#f56565' : '#48bb78';
+        cctx.lineWidth = 2; cctx.beginPath();
+        const step = w / (history.length - 1);
+        history.forEach((val, i) => {
+            const y = h - ((val - 300) / 700) * h; 
+            if(i===0) cctx.moveTo(0, y); else cctx.lineTo(i*step, y);
+        });
+        cctx.stroke();
+    }
+
+    function simulateLoop() {
+        co2 += (Math.random() * 10 - 6); 
+        if(co2 < 400) co2 += 2;
+
+        if(co2 > 550) {
+            co2 -= 5; 
+            fanIcon.style.animationPlayState = 'running'; fanIcon.style.color = 'var(--red)';
+            if(fanText.innerText !== "HIGH") { fanText.innerText = "HIGH"; log("Pollution detected. Fans HIGH."); }
+        } else {
+            fanIcon.style.animationPlayState = 'paused'; fanIcon.style.color = 'var(--muted)';
+            if(fanText.innerText !== "AUTO") { fanText.innerText = "AUTO"; log("Air quality normalized."); }
+        }
+        valAir.innerText = Math.floor(co2);
+        history.push(co2); history.shift(); drawChart();
+    }
+    setInterval(simulateLoop, 600);
+    window.simulateCrowd = function() { co2 += 300; log("Crowd detected!"); }
+    
+    /* --- AIR PARTICLES --- */
+    const air = document.getElementById('air'); const ctx = air.getContext('2d');
+    let W, H;
+    function resizeAir(){ W=air.width=window.innerWidth; H=air.height=window.innerHeight; }
+    window.addEventListener('resize', resizeAir); resizeAir();
+    const parts = Array.from({length:50}, ()=>({x:Math.random()*W, y:Math.random()*H, r:Math.random()*2, s:Math.random()*0.5+0.2}));
+    function drawAirLoop(){
+        ctx.clearRect(0,0,W,H); ctx.fillStyle = "rgba(255,255,255,0.3)";
+        parts.forEach(p=>{ p.y -= p.s; if(p.y<0) p.y=H; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); });
+        requestAnimationFrame(drawAirLoop);
+    }
+    drawAirLoop();
+  </script>
+</body>
+</html>
