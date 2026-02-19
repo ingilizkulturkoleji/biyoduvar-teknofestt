@@ -268,8 +268,8 @@
     .kpi-card { background: rgba(0,0,0,0.2); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; text-align: center; }
     .kpi-val { font-family: 'Rajdhani'; font-size: 28px; font-weight: 700; color: #fff; }
     .kpi-lbl { font-size: 11px; color: var(--muted2); text-transform: uppercase; margin-top: 4px; }
-    .console-log { font-family: monospace; font-size: 10px; color: var(--green); background: #000; padding: 10px; border-radius: 8px; height: 100px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
-    .log-line { opacity: 0.7; margin-bottom: 2px; }
+    .console-log { font-family: monospace; font-size: 10px; color: var(--green); background: #000; padding: 10px; border-radius: 8px; height: 120px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
+    .log-line { opacity: 0.9; margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px;}
 
     .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
     .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
@@ -280,6 +280,7 @@
     .footer-logo { height: 70px; width: auto; object-fit: contain; background: #fff; padding: 8px; border-radius: 8px; box-shadow: 0 0 20px rgba(255,255,255,0.1); transition: transform 0.3s; }
     
     .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px; transition: 0.2s; border: none; cursor: pointer; }
+    .btn:disabled { background: var(--muted2); cursor: not-allowed; opacity: 0.7; }
     .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
 
     /* Technical List Styling */
@@ -453,7 +454,6 @@
             <div>
                 <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
                 <h2 data-key="tech_title">Teknik Bileşenler</h2>
-                <!-- Mobilde kutucuk görünümü için liste yapısı güncellendi -->
                 <ul class="tech-list">
                     <li data-key="tech_list_1"><strong>Gövde</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.</li>
                     <li data-key="tech_list_2"><strong>Sensörler</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).</li>
@@ -572,9 +572,9 @@
             modal_water_title: "Su Döngüsü", modal_water_desc: "Alt tanktaki su, 5V pompa ile en üst rafa basılır ve keçelerden süzülerek tekrar tanka döner. Kapalı devre sistem su tasarrufu sağlar.",
             
             // Scenario Logs
-            scen_step1: "⚠️ Hareket algılandı: Sınıf doluyor.",
-            scen_step2: "📈 CO2 seviyesi kritik eşiği aşıyor (>800ppm)!",
-            scen_step3: "🚨 Sensörler 'Kötü Hava Kalitesi' raporladı.",
+            scen_step1: "⚠️ Hareket algılandı: Sınıf doluyor...",
+            scen_step2: "📈 CO2 seviyesi hızla yükseliyor!",
+            scen_step3: "🚨 Sensör: Kritik Eşik (>800ppm) aşıldı.",
             scen_step4: "⚙️ İşlemci: Tahliye modu başlatılıyor.",
             scen_step5: "☢️ FANLAR: %100 Güçte çalıştırıldı.",
             scen_step6: "💧 POMPA: Nem dengesi için su basılıyor.",
@@ -608,9 +608,9 @@
             modal_water_title: "Water Loop", modal_water_desc: "Water in the bottom tank is pumped to the top shelf via a 5V pump, trickles down through felts, and returns to the tank. Closed-loop system saves water.",
             
             // Scenario Logs
-            scen_step1: "⚠️ Motion Detected: Class is filling up.",
-            scen_step2: "📈 CO2 exceeded critical threshold (>800ppm)!",
-            scen_step3: "🚨 Sensors reported 'Poor Air Quality'.",
+            scen_step1: "⚠️ Motion Detected: Class is filling up...",
+            scen_step2: "📈 CO2 levels rising rapidly!",
+            scen_step3: "🚨 Sensor: Critical Threshold (>800ppm).",
             scen_step4: "⚙️ Processor: Initiating Evacuation Mode.",
             scen_step5: "☢️ FANS: Activated at 100% Power.",
             scen_step6: "💧 PUMP: Water injection for humidity balance.",
@@ -749,58 +749,70 @@
     window.runScenario = async function() {
         if(isScenarioRunning) return;
         isScenarioRunning = true;
+        const btn = document.querySelector('button[onclick="runScenario()"]');
+        const originalBtnText = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = currentLang === 'tr' ? "Simülasyon Sürüyor..." : "Simulation Running...";
         
         // Helper for localized log
         const t = (key) => translations[currentLang][key];
 
-        // Step 1: Detect
-        log(t('scen_step1'));
-        await delay(1500);
+        // Adım 1: Tespit
+        log(t('scen_step1')); // Hareket algılandı
+        await delay(3000);
 
-        // Step 2: Spike CO2
-        co2 = 820;
-        valAir.innerText = 820;
-        history.push(820); history.shift(); drawChart();
-        log(t('scen_step2'));
-        await delay(1500);
-
-        // Step 3: Sensors
-        log(t('scen_step3'));
-        await delay(1500);
-
-        // Step 4: Decision
-        log(t('scen_step4'));
-        await delay(1000);
-
-        // Step 5: Fans
-        fanIcon.style.animationPlayState = 'running'; 
-        fanIcon.style.color = 'var(--red)';
-        fanIcon.style.animationDuration = '0.2s'; // Fast spin
-        fanText.innerText = "MAX POWER";
-        log(t('scen_step5'));
-        await delay(1500);
-
-        // Step 6: Pump
-        log(t('scen_step6'));
-        await delay(2000);
-
-        // Step 7: Cleaning (Animation of dropping CO2)
-        log(t('scen_step7'));
-        for(let i=0; i<10; i++) {
-            co2 -= 35;
+        // Adım 2: Yükseliş Efekti (Döngü ile)
+        log(t('scen_step2')); // CO2 yükseliyor
+        for(let i=0; i<15; i++) {
+            co2 += 30 + Math.random()*10; 
             valAir.innerText = Math.floor(co2);
             history.push(co2); history.shift(); drawChart();
-            await delay(300);
+            await delay(200);
         }
         
-        // Step 8: Normalize
+        // Adım 3: Alarm
+        log(t('scen_step3')); // Kritik eşik
+        await delay(3000);
+
+        // Adım 4: Karar
+        log(t('scen_step4')); // İşlemci karar veriyor
+        await delay(2000);
+
+        // Adım 5: Fanlar
+        fanIcon.style.animationPlayState = 'running'; 
+        fanIcon.style.color = 'var(--red)';
+        fanIcon.style.animationDuration = '0.2s'; 
+        fanText.innerText = "TURBO";
+        log(t('scen_step5')); // Fanlar max
+        await delay(4000);
+
+        // Adım 6: Pompa
+        log(t('scen_step6')); // Su basılıyor
+        await delay(4000);
+
+        // Adım 7: Temizleme (Düşüş Efekti)
+        log(t('scen_step7')); // Fitoremediasyon
+        const steps = 30;
+        const startCo2 = co2;
+        for(let i=0; i<steps; i++) {
+            co2 -= (startCo2 - 420) / steps; 
+            co2 += (Math.random() * 5 - 2.5);
+            valAir.innerText = Math.floor(co2);
+            history.push(co2); history.shift(); drawChart();
+            await delay(250);
+        }
+        
+        // Adım 8: Normalleşme
         fanIcon.style.animationPlayState = 'paused'; 
         fanIcon.style.color = 'var(--muted)';
         fanIcon.style.animationDuration = '1s';
         fanText.innerText = "AUTO";
-        log(t('scen_step8'));
+        log(t('scen_step8')); // Normal
         
+        await delay(2000);
         isScenarioRunning = false;
+        btn.disabled = false;
+        btn.innerText = originalBtnText;
     }
     
     /* --- AIR PARTICLES --- */
