@@ -3,14 +3,14 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
   <meta name="description" content="BİYODUVAR — Karbon Azaltıcı Akıllı Duvar Paneli. Bilim Kaşifleri Takımı - Teknofest 2026.">
   <title>BİYODUVAR | Bilim Kaşifleri</title>
 
   <!-- Google Fonts: Montserrat & Rajdhani -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -35,7 +35,7 @@
       --radius:20px;
     }
     
-    *{box-sizing:border-box}
+    *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
     html,body{height:100%}
     
     body{
@@ -48,6 +48,7 @@
       color:var(--text);
       overflow-x:hidden;
       scroll-behavior:smooth;
+      font-size: 16px;
     }
 
     /* Ambient Effects */
@@ -58,18 +59,18 @@
     /* Navigation */
     .nav{
       position:fixed; top:20px; left:50%; transform:translateX(-50%); width:min(var(--max), calc(100% - 30px)); z-index:100;
-      display:flex; align-items:center; justify-content:space-between; padding:12px 20px;
-      border:1px solid var(--stroke); background:rgba(15, 18, 24, 0.85); backdrop-filter:blur(16px);
+      display:flex; align-items:center; justify-content:space-between; padding:10px 20px;
+      border:1px solid var(--stroke); background:rgba(15, 18, 24, 0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
       border-radius:99px; box-shadow:0 10px 30px rgba(0,0,0,.3);
     }
-    .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); }
+    .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); white-space: nowrap; }
     .brand span.highlight { color: var(--green); }
     
-    .nav-right{display:flex; gap:6px; align-items:center}
-    .nav a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 16px; border-radius:99px; transition:.2s; font-weight: 500; }
-    .nav a:hover{ color:#fff; background:rgba(255,255,255,.05); }
+    .nav-links{ display:flex; gap:6px; align-items:center; }
+    .nav-links a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 16px; border-radius:99px; transition:.2s; font-weight: 500; }
+    .nav-links a:hover{ color:#fff; background:rgba(255,255,255,.05); }
     
-    .lang-btn { background: transparent; border: 1px solid var(--wood); color: var(--wood); padding: 6px 16px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 10px; transition: 0.2s; text-transform: uppercase; }
+    .lang-btn { background: transparent; border: 1px solid var(--wood); color: var(--wood); padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 5px; transition: 0.2s; text-transform: uppercase; white-space: nowrap; }
     .lang-btn:hover { background: var(--wood); color: #000; }
 
     /* Layout */
@@ -77,18 +78,18 @@
     section{ padding:100px 0; }
     .alt-bg { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02) 15%, rgba(255,255,255,0.02) 85%, transparent); }
 
-    h1{ font-family: 'Rajdhani', sans-serif; margin:20px 0 20px; font-size:clamp(40px, 7vw, 76px); line-height:0.95; font-weight: 700; text-transform: uppercase; }
-    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(28px, 4vw, 42px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
-    .lead{ font-size:clamp(16px, 1.8vw, 19px); color:var(--muted); max-width:65ch; line-height: 1.6; font-weight: 300; }
+    h1{ font-family: 'Rajdhani', sans-serif; margin:20px 0 20px; font-size:clamp(36px, 7vw, 76px); line-height:1.05; font-weight: 700; text-transform: uppercase; }
+    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(26px, 5vw, 42px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
+    .lead{ font-size:clamp(15px, 4vw, 19px); color:var(--muted); max-width:65ch; line-height: 1.6; font-weight: 300; }
     .kicker { color: var(--wood); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; display: block; }
 
     /* --- VISUAL PANEL (ECO-WALL SIMULATION) --- */
     .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
-    .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); }
+    .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); white-space: nowrap; }
     .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
 
-    .panel-wrapper { position: relative; margin: 20px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
+    .panel-wrapper { position: relative; margin: 40px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
     
     .solar-panel {
         position: absolute; top: 0px; right: -30px; width: 110px; height: 70px;
@@ -103,12 +104,14 @@
     .panel-visual {
         position: relative; z-index: 2;
         width: 100%; aspect-ratio: 3/4.5;
-        border: 12px solid var(--wood-frame); /* Ahşap çerçeve */
+        border: 12px solid var(--wood-frame);
         border-radius: 12px 12px 6px 6px;
         background: #212121;
         box-shadow: 0 40px 80px rgba(0,0,0,0.7);
         display: flex; flex-direction: column;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMjYyNjI2Ii8+CjxwYXRoIGQ9Ik0wIDBoNHYxSDB6bTAgMmg0djFIMHoiIGZpbGw9IiMzMzMzMzMiIGZpbGwtb3BhY2l0eT0iMC4xIi8+Cjwvc3ZnPg==');
+        /* Dot pattern background */
+        background-image: radial-gradient(#333 1px, transparent 1px);
+        background-size: 10px 10px;
     }
     
     /* Roof Structure */
@@ -129,8 +132,9 @@
         animation: pulse-white 2s infinite;
         transition: transform 0.2s;
         border: 2px solid var(--wood-dark);
+        -webkit-tap-highlight-color: transparent;
     }
-    .hotspot:hover { transform: scale(1.1); background: #f0f0f0; }
+    .hotspot:hover, .hotspot:active { transform: scale(1.1); background: #f0f0f0; }
     @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
     /* Internal Components */
@@ -141,7 +145,7 @@
     
     .lcd-display {
         background: #000; border: 2px solid #555; border-radius: 4px;
-        padding: 5px 15px; width: 80%;
+        padding: 5px 15px; width: 85%;
         color: var(--green-lcd); font-family: monospace; font-weight: bold; font-size: 13px;
         text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
         display: flex; justify-content: space-between; align-items: center;
@@ -199,6 +203,7 @@
         position: absolute; top: 0; width: 100%; height: 40px;
         background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
         mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px);
+        -webkit-mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px);
         opacity: 0.6;
     }
 
@@ -233,19 +238,19 @@
 
     /* Modal Styles */
     .modal-overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+        position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
         z-index: 2000; display: none; align-items: center; justify-content: center;
         opacity: 0; transition: opacity 0.3s;
     }
     .modal-overlay.active { display: flex; opacity: 1; }
     .modal-content {
         background: #1a202c; border: 1px solid var(--stroke); border-radius: 16px;
-        padding: 30px; max-width: 500px; width: 90%; position: relative;
+        padding: 30px; max-width: 500px; width: 85%; position: relative;
         transform: translateY(20px); transition: transform 0.3s;
         box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
     }
     .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; padding: 10px;}
     .modal-icon { font-size: 48px; margin-bottom: 15px; display: inline-block; }
     .modal-title { font-family: 'Rajdhani'; font-size: 24px; color: var(--green); margin-bottom: 10px; }
     .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text); }
@@ -274,13 +279,52 @@
     .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px; transition: 0.2s; border: none; cursor: pointer; }
     .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
 
+    /* Technical List Styling */
+    .tech-list { padding: 0; list-style: none; }
+    .tech-list li { 
+        background: rgba(255,255,255,0.03); 
+        margin-bottom: 12px; 
+        padding: 15px; 
+        border-radius: 12px; 
+        border: 1px solid var(--stroke);
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+    }
+    .tech-list li strong { color: var(--text); margin-bottom: 4px; font-size: 15px; }
+
+    /* --- RESPONSIVE OPTIMIZATION --- */
     @media(max-width:900px){
         .heroGrid{ grid-template-columns: 1fr; text-align: center; }
         .hero-tags { justify-content: center; }
         .grid, .dash-grid { grid-template-columns: 1fr; }
-        .nav-right { display: none; }
-        .panel-wrapper { max-width: 320px; }
-        .solar-panel { right: 0; top: -50px; transform: rotate(0); width: 100%; height: 40px; }
+        
+        /* Mobile Nav: Hide links, Keep Lang button */
+        .nav-links { display: none; } 
+        .nav { padding: 15px 20px; }
+        
+        .panel-wrapper { max-width: 100%; margin-top: 60px; }
+        /* Solar Panel Adjustment for Mobile */
+        .solar-panel { 
+            right: 50%; left: auto; top: -55px; 
+            transform: translateX(50%) rotate(0); 
+            width: 120px; height: 50px; 
+        }
+        
+        section { padding: 60px 0; }
+        .kpi-row { grid-template-columns: 1fr 1fr 1fr; }
+        
+        .modal-content { width: 90%; padding: 20px; }
+        .logo-container { gap: 20px; }
+        .footer-logo { height: 50px; }
+    }
+    
+    @media(max-width:480px){
+        h1 { font-size: 36px; }
+        .kpi-row { grid-template-columns: 1fr; }
+        .tech-list li { font-size: 13px; }
     }
   </style>
 </head>
@@ -293,13 +337,17 @@
     <div class="brand" data-key="brand_html">
       BİYO<span class="highlight">DUVAR</span>
     </div>
-    <div class="nav-right">
+    
+    <!-- Linkler Masaüstünde var, Mobilde gizli -->
+    <div class="nav-links">
       <a href="#why" data-key="nav_why">Neden?</a>
       <a href="#tech" data-key="nav_tech">Teknoloji</a>
       <a href="#demo" data-key="nav_demo">Demo</a>
       <a href="#team" data-key="nav_team">Takım</a>
-      <button id="langToggle" class="lang-btn">TR | EN</button>
     </div>
+
+    <!-- Dil Butonu Her Zaman Görünür -->
+    <button id="langToggle" class="lang-btn">TR | EN</button>
   </nav>
 
   <!-- INFO MODAL -->
@@ -335,13 +383,13 @@
       <!-- INTERACTIVE VISUAL -->
       <div class="panel-wrapper">
           <div class="solar-panel">
-               <div class="hotspot" style="top:-15px; right:-15px;" onclick="openInfo('solar')">+</div>
+               <div class="hotspot" style="top:-10px; right:-10px;" onclick="openInfo('solar')">+</div>
                <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
                <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
           </div>
           
-          <div class="arrow-flow" style="bottom:25%; left:-70px;"></div>
-          <div class="arrow-flow" style="bottom:50%; left:-70px;"></div>
+          <div class="arrow-flow" style="bottom:25%; left:-50px;"></div>
+          <div class="arrow-flow" style="bottom:50%; left:-50px;"></div>
           <div class="arrow-flow out"></div>
 
           <div class="panel-visual">
@@ -362,9 +410,7 @@
                    <!-- Shelf 1 -->
                    <div class="shelf">
                        <div class="felt-layer"></div>
-                       <div class="plant-row" id="row1">
-                           <!-- Plants generated by JS -->
-                       </div>
+                       <div class="plant-row" id="row1"></div>
                    </div>
                    <!-- Shelf 2 -->
                    <div class="shelf">
@@ -397,16 +443,17 @@
 
     <!-- TECH SPECS -->
     <section id="tech" class="container">
-        <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: center;">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: start;">
             <div>
                 <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
                 <h2 data-key="tech_title">Teknik Bileşenler</h2>
-                <ul style="line-height: 2.2; color: var(--muted); list-style: square; padding-left: 20px;">
-                    <li data-key="tech_list_1"><strong>Gövde:</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.</li>
-                    <li data-key="tech_list_2"><strong>Sensörler:</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).</li>
-                    <li data-key="tech_list_3"><strong>Otomasyon:</strong> Arduino Nano Mikrodenetleyici.</li>
-                    <li data-key="tech_list_4"><strong>Su Döngüsü:</strong> 5V Dalgıç Pompa + Hidroponik Keçe.</li>
-                    <li data-key="tech_list_5"><strong>Enerji:</strong> Güneş Paneli desteği ile sürdürülebilir güç.</li>
+                <!-- Mobilde kutucuk görünümü için liste yapısı güncellendi -->
+                <ul class="tech-list">
+                    <li data-key="tech_list_1"><strong>Gövde</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.</li>
+                    <li data-key="tech_list_2"><strong>Sensörler</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).</li>
+                    <li data-key="tech_list_3"><strong>Otomasyon</strong> Arduino Nano Mikrodenetleyici.</li>
+                    <li data-key="tech_list_4"><strong>Su Döngüsü</strong> 5V Dalgıç Pompa + Hidroponik Keçe.</li>
+                    <li data-key="tech_list_5"><strong>Enerji</strong> Güneş Paneli desteği ile sürdürülebilir güç.</li>
                 </ul>
             </div>
             <div style="background: rgba(255,255,255,0.05); padding:30px; border-radius: 20px; border:1px solid var(--stroke);">
@@ -501,11 +548,11 @@
             hero_desc: "BİYODUVAR; topraksız, kokusuz ve yenilebilir bir yaşam duvarıdır. Sensör kontrollü bu akıllı ekosistem, havayı temizlerken maydanoz ve roka üretir.",
             btn_explore: "Sistemi Keşfet", btn_demo: "Simülasyon",
             tech_kicker: "SİSTEM MİMARİSİ", tech_title: "Teknik Bileşenler",
-            tech_list_1: "<strong>Gövde:</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.",
-            tech_list_2: "<strong>Sensörler:</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).",
-            tech_list_3: "<strong>Otomasyon:</strong> Arduino Nano Mikrodenetleyici.",
-            tech_list_4: "<strong>Su Döngüsü:</strong> 5V Dalgıç Pompa + Hidroponik Keçe.",
-            tech_list_5: "<strong>Enerji:</strong> Güneş Paneli desteği ile sürdürülebilir güç.",
+            tech_list_1: "<strong>Gövde</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.",
+            tech_list_2: "<strong>Sensörler</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).",
+            tech_list_3: "<strong>Otomasyon</strong> Arduino Nano Mikrodenetleyici.",
+            tech_list_4: "<strong>Su Döngüsü</strong> 5V Dalgıç Pompa + Hidroponik Keçe.",
+            tech_list_5: "<strong>Enerji</strong> Güneş Paneli desteği ile sürdürülebilir güç.",
             calc_title: "Hesaplamalar & Verim", calc_desc: "NASA verilerine göre 1 m² yaprak alanı günde ortalama 5-20g CO2 emer. BİYODUVAR, aktif hava akışıyla bu süreci 3 katına kadar hızlandırır.",
             calc_co2: "Yıllık CO2 Azaltımı:", 
             dash_title: "Canlı Kontrol Paneli", status_active: "SİSTEM AKTİF",
@@ -527,11 +574,11 @@
             hero_desc: "BIOWALL is a soilless, odorless, and edible living wall. This sensor-controlled smart ecosystem purifies air while growing parsley and arugula.",
             btn_explore: "Explore System", btn_demo: "Simulation",
             tech_kicker: "SYSTEM ARCHITECTURE", tech_title: "Technical Components",
-            tech_list_1: "<strong>Body:</strong> Recycled wood panel & Roof design.",
-            tech_list_2: "<strong>Sensors:</strong> MQ-135 (Air Quality) + DHT11 (Temp/Hum).",
-            tech_list_3: "<strong>Automation:</strong> Arduino Nano Microcontroller.",
-            tech_list_4: "<strong>Water Loop:</strong> 5V Submersible Pump + Hydroponic Felt.",
-            tech_list_5: "<strong>Energy:</strong> Sustainable power with Solar Panel support.",
+            tech_list_1: "<strong>Body</strong> Recycled wood panel & Roof design.",
+            tech_list_2: "<strong>Sensors</strong> MQ-135 (Air Quality) + DHT11 (Temp/Hum).",
+            tech_list_3: "<strong>Automation</strong> Arduino Nano Microcontroller.",
+            tech_list_4: "<strong>Water Loop</strong> 5V Submersible Pump + Hydroponic Felt.",
+            tech_list_5: "<strong>Energy</strong> Sustainable power with Solar Panel support.",
             calc_title: "Calculations & Efficiency", calc_desc: "According to NASA, 1 m² leaf area absorbs 5-20g CO2 daily. BIOWALL accelerates this process up to 3x with active airflow.",
             calc_co2: "Annual CO2 Reduction:", 
             dash_title: "Live Control Panel", status_active: "SYSTEM ACTIVE",
