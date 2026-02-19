@@ -85,6 +85,9 @@
 
     /* --- VISUAL PANEL (ECO-WALL SIMULATION) --- */
     .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
+    /* Hero Padding Fix for Mobile Overlap */
+    .heroGrid { padding-top: 150px; }
+    
     .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); white-space: nowrap; }
     .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
@@ -505,7 +508,7 @@
                     <div class="console-log" id="consoleLog">
                         <div class="log-line">> System initialized...</div>
                     </div>
-                    <button class="btn secondary" style="width:100%; font-size:12px; margin-top:20px" onclick="simulateCrowd()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
+                    <button class="btn secondary" style="width:100%; font-size:12px; margin-top:20px" onclick="runScenario()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
                 </div>
             </div>
         </div>
@@ -566,7 +569,17 @@
             modal_solar_title: "Güneş Enerjisi", modal_solar_desc: "Sistem, sürdürülebilir enerji için güneş paneli desteğiyle çalışır. Düşük voltajlı (5V) bileşenler sayesinde karbon ayak izi minimize edilir.",
             modal_sensors_title: "Sensörler & Kontrol", modal_sensors_desc: "MQ-135 sensörü havadaki CO2 ve zararlı gazları (VOC) tespit eder. Mikrodenetleyici, hava kirlendiğinde fanları otomatik çalıştırır.",
             modal_plants_title: "Hidroponik Tarım", modal_plants_desc: "Özel keçe sistemi sayesinde toprak kullanılmaz. Roka, Maydanoz ve Fesleğen gibi bitkiler su ve besin çözeltisiyle yetişir. Koku ve böcek yapmaz.",
-            modal_water_title: "Su Döngüsü", modal_water_desc: "Alt tanktaki su, 5V pompa ile en üst rafa basılır ve keçelerden süzülerek tekrar tanka döner. Kapalı devre sistem su tasarrufu sağlar."
+            modal_water_title: "Su Döngüsü", modal_water_desc: "Alt tanktaki su, 5V pompa ile en üst rafa basılır ve keçelerden süzülerek tekrar tanka döner. Kapalı devre sistem su tasarrufu sağlar.",
+            
+            // Scenario Logs
+            scen_step1: "⚠️ Hareket algılandı: Sınıf doluyor.",
+            scen_step2: "📈 CO2 seviyesi kritik eşiği aşıyor (>800ppm)!",
+            scen_step3: "🚨 Sensörler 'Kötü Hava Kalitesi' raporladı.",
+            scen_step4: "⚙️ İşlemci: Tahliye modu başlatılıyor.",
+            scen_step5: "☢️ FANLAR: %100 Güçte çalıştırıldı.",
+            scen_step6: "💧 POMPA: Nem dengesi için su basılıyor.",
+            scen_step7: "📉 Fitoremediasyon (Bitkisel Arıtım) devrede.",
+            scen_step8: "✅ Hava kalitesi normal seviyeye döndü."
         },
         en: {
             brand_html: "BIO<span class='highlight'>WALL</span>",
@@ -592,7 +605,17 @@
             modal_solar_title: "Solar Energy", modal_solar_desc: "The system operates with solar panel support for sustainable energy. Low voltage (5V) components minimize carbon footprint.",
             modal_sensors_title: "Sensors & Control", modal_sensors_desc: "MQ-135 sensor detects CO2 and harmful gases (VOCs). The microcontroller automatically activates fans when air quality drops.",
             modal_plants_title: "Hydroponic Farming", modal_plants_desc: "No soil is used thanks to the special felt system. Plants like Arugula, Parsley, and Basil grow with water and nutrient solution. No odor, no bugs.",
-            modal_water_title: "Water Loop", modal_water_desc: "Water in the bottom tank is pumped to the top shelf via a 5V pump, trickles down through felts, and returns to the tank. Closed-loop system saves water."
+            modal_water_title: "Water Loop", modal_water_desc: "Water in the bottom tank is pumped to the top shelf via a 5V pump, trickles down through felts, and returns to the tank. Closed-loop system saves water.",
+            
+            // Scenario Logs
+            scen_step1: "⚠️ Motion Detected: Class is filling up.",
+            scen_step2: "📈 CO2 exceeded critical threshold (>800ppm)!",
+            scen_step3: "🚨 Sensors reported 'Poor Air Quality'.",
+            scen_step4: "⚙️ Processor: Initiating Evacuation Mode.",
+            scen_step5: "☢️ FANS: Activated at 100% Power.",
+            scen_step6: "💧 PUMP: Water injection for humidity balance.",
+            scen_step7: "📉 Phytoremediation (Plant Filtering) active.",
+            scen_step8: "✅ Air quality returned to normal levels."
         }
     };
 
@@ -669,6 +692,9 @@
 
     let co2 = 410;
     const history = Array(60).fill(410);
+    
+    // Scenario Logic
+    let isScenarioRunning = false;
 
     function log(msg) {
         const div = document.createElement('div');
@@ -697,22 +723,85 @@
     }
 
     function simulateLoop() {
+        if(isScenarioRunning) return; // Stop random loop if scenario is active
+
         co2 += (Math.random() * 10 - 6); 
         if(co2 < 400) co2 += 2;
 
         if(co2 > 550) {
             co2 -= 5; 
             fanIcon.style.animationPlayState = 'running'; fanIcon.style.color = 'var(--red)';
-            if(fanText.innerText !== "HIGH") { fanText.innerText = "HIGH"; log("Pollution detected. Fans HIGH."); }
+            if(fanText.innerText !== "HIGH") { fanText.innerText = "HIGH"; log(currentLang === 'tr' ? "Yüksek CO2 tespit edildi." : "High CO2 detected."); }
         } else {
             fanIcon.style.animationPlayState = 'paused'; fanIcon.style.color = 'var(--muted)';
-            if(fanText.innerText !== "AUTO") { fanText.innerText = "AUTO"; log("Air quality normalized."); }
+            if(fanText.innerText !== "AUTO") { fanText.innerText = "AUTO"; }
         }
         valAir.innerText = Math.floor(co2);
         history.push(co2); history.shift(); drawChart();
     }
+    
+    // Main loop
     setInterval(simulateLoop, 600);
-    window.simulateCrowd = function() { co2 += 300; log("Crowd detected!"); }
+
+    /* --- SCENARIO EXECUTION --- */
+    function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+    window.runScenario = async function() {
+        if(isScenarioRunning) return;
+        isScenarioRunning = true;
+        
+        // Helper for localized log
+        const t = (key) => translations[currentLang][key];
+
+        // Step 1: Detect
+        log(t('scen_step1'));
+        await delay(1500);
+
+        // Step 2: Spike CO2
+        co2 = 820;
+        valAir.innerText = 820;
+        history.push(820); history.shift(); drawChart();
+        log(t('scen_step2'));
+        await delay(1500);
+
+        // Step 3: Sensors
+        log(t('scen_step3'));
+        await delay(1500);
+
+        // Step 4: Decision
+        log(t('scen_step4'));
+        await delay(1000);
+
+        // Step 5: Fans
+        fanIcon.style.animationPlayState = 'running'; 
+        fanIcon.style.color = 'var(--red)';
+        fanIcon.style.animationDuration = '0.2s'; // Fast spin
+        fanText.innerText = "MAX POWER";
+        log(t('scen_step5'));
+        await delay(1500);
+
+        // Step 6: Pump
+        log(t('scen_step6'));
+        await delay(2000);
+
+        // Step 7: Cleaning (Animation of dropping CO2)
+        log(t('scen_step7'));
+        for(let i=0; i<10; i++) {
+            co2 -= 35;
+            valAir.innerText = Math.floor(co2);
+            history.push(co2); history.shift(); drawChart();
+            await delay(300);
+        }
+        
+        // Step 8: Normalize
+        fanIcon.style.animationPlayState = 'paused'; 
+        fanIcon.style.color = 'var(--muted)';
+        fanIcon.style.animationDuration = '1s';
+        fanText.innerText = "AUTO";
+        log(t('scen_step8'));
+        
+        isScenarioRunning = false;
+    }
     
     /* --- AIR PARTICLES --- */
     const air = document.getElementById('air'); const ctx = air.getContext('2d');
