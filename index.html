@@ -1,1633 +1,2438 @@
-<!-- ÖNEMLİ NOT: Bu dosyayı kaydederken Kodlama (Encoding) kısmını 'UTF-8' seçtiğinizden emin olun. -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
-  <meta name="description" content="BİYODUVAR — Karbon Azaltıcı Akıllı Duvar Paneli. Bilim Kaşifleri Takımı - Teknofest 2026.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="description" content="BİYODUVAR — Sensör kontrollü, bitki tabanlı aktif hava kalitesi iyileştirme sistemi.">
+  <meta name="theme-color" content="#0b0f16" />
   <title>BİYODUVAR | Bilim Kaşifleri</title>
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#11151c;
-      --bg-card:rgba(25, 30, 40, 0.7);
-      --text:#f0f0f0;
-      --muted:rgba(255,255,255,.65);
-      --muted2:rgba(255,255,255,.45);
-      --stroke:rgba(255,255,255,.08);
+      --bg:#0b0f16;
+      --bg2:#0f1624;
+      --card: rgba(255,255,255,0.045);
+      --card2: rgba(255,255,255,0.06);
+      --stroke: rgba(255,255,255,0.10);
+      --stroke2: rgba(255,255,255,0.14);
+      --text:#f4f6ff;
+      --muted: rgba(244,246,255,0.68);
+      --muted2: rgba(244,246,255,0.46);
 
-      --green:#48bb78;
-      --green-lcd: #2ecc71;
-      --wood:#8d6e63;
-      --wood-dark: #5d4037;
-      --wood-frame: #8D6E63;
-      --blue:#4299e1;
-      --red:#f56565;
-      --yellow: #ecc94b;
+      --g:#48bb78;
+      --b:#4aa3ff;
+      --r:#ff5b7a;
+      --y:#ffd166;
 
-      --max:1120px;
-      --radius:20px;
+      --wood:#9a7b6c;
+      --wood2:#6b4f45;
+
+      --max: 1140px;
+      --radius: 22px;
+
+      --shadow: 0 18px 55px rgba(0,0,0,0.55);
+      --shadow2: 0 10px 25px rgba(0,0,0,0.35);
+
+      --blur: blur(18px);
     }
 
-    *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
-    html,body{height:100%}
-
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family:'Montserrat', sans-serif;
-      background: var(--bg);
-      background-image:
-        radial-gradient(at 0% 0%, rgba(72,187,120,0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(66,153,225,0.06) 0px, transparent 50%);
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
       color:var(--text);
+      background: radial-gradient(1200px 900px at 10% -10%, rgba(72,187,120,0.12), transparent 60%),
+                  radial-gradient(1000px 800px at 95% 15%, rgba(74,163,255,0.11), transparent 55%),
+                  radial-gradient(900px 700px at 70% 120%, rgba(255,91,122,0.08), transparent 55%),
+                  linear-gradient(180deg, var(--bg), var(--bg2) 70%, var(--bg));
       overflow-x:hidden;
       scroll-behavior:smooth;
-      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Ambient */
-    #air{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.6; }
-    .progress{ position:fixed; top:0; left:0; width:100%; height:4px; background:transparent; z-index:1000; }
-    .progress > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--green), var(--blue)); box-shadow:0 0 15px var(--green); transition: width 0.1s linear; }
+    /* Ambient canvas */
+    #air{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.75; }
+    .grain{
+      position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.16;
+    }
+
+    /* Progress */
+    .progress{ position:fixed; top:0; left:0; width:100%; height:4px; z-index:1000; }
+    .progress span{
+      display:block; height:100%; width:0%;
+      background: linear-gradient(90deg, var(--g), var(--b), var(--r));
+      box-shadow: 0 0 24px rgba(72,187,120,0.35);
+      transition: width .08s linear;
+    }
+
+    /* Layout */
+    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; position:relative; z-index:2; }
+    section{ padding: 92px 0; }
+    @media (max-width: 900px){ section{ padding: 70px 0; } }
+    @media (max-width: 520px){ section{ padding: 60px 0; } }
+
+    /* Headings */
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 14px;
+    }
+    .kicker::before{
+      content:"";
+      width: 14px; height: 14px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(72,187,120,0.9), rgba(74,163,255,0.9));
+      box-shadow: 0 0 20px rgba(74,163,255,0.25);
+      opacity:.9;
+    }
+
+    h1,h2,h3{ margin:0; }
+    h1{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      font-size: clamp(38px, 6.4vw, 78px);
+      line-height: 1.02;
+      margin: 10px 0 14px;
+    }
+    h2{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 700;
+      font-size: clamp(26px, 4.6vw, 40px);
+      line-height:1.15;
+      margin-bottom: 14px;
+    }
+    h3{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      line-height:1.2;
+      margin-bottom: 10px;
+    }
+    .lead{
+      color: var(--muted);
+      font-weight: 300;
+      font-size: clamp(15px, 2.1vw, 19px);
+      line-height:1.7;
+      max-width: 70ch;
+      margin: 0;
+    }
 
     /* Nav */
     .nav{
-      position:fixed; top:20px; left:50%; transform:translateX(-50%); width:min(var(--max), calc(100% - 30px)); z-index:100;
-      display:flex; align-items:center; justify-content:space-between; padding:10px 20px;
-      border:1px solid var(--stroke); background:rgba(17, 21, 28, 0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-      border-radius:99px; box-shadow:0 10px 30px rgba(0,0,0,.5);
+      position:fixed;
+      top:18px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(var(--max), calc(100% - 26px));
+      z-index: 900;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,14,22,0.62);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.55);
+      padding: 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); white-space: nowrap; }
-    .brand span.highlight { color: var(--green); }
-
-    .nav-links{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
-    .nav-links a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 14px; border-radius:99px; transition:.2s; font-weight: 500; white-space:nowrap;}
-    .nav-links a:hover{ color:#fff; background:rgba(255,255,255,.05); }
-
-    .lang-btn { background: transparent; border: 1px solid var(--wood); color: var(--wood); padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 5px; transition: 0.2s; text-transform: uppercase; white-space: nowrap; }
-    .lang-btn:hover { background: var(--wood); color: #000; }
-
-    /* Layout */
-    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; position: relative; z-index: 1; }
-    section{ padding:100px 0; }
-    .alt-bg { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01) 15%, rgba(255,255,255,0.01) 85%, transparent); }
-
-    h1{ font-family: 'Rajdhani', sans-serif; margin:20px 0 20px; font-size:clamp(36px, 7vw, 76px); line-height:1.05; font-weight: 700; text-transform: uppercase; }
-    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(26px, 5vw, 38px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
-    h3{ font-family: 'Rajdhani', sans-serif; font-size: 22px; color: #fff; margin-top:0; }
-    .lead{ font-size:clamp(15px, 4vw, 19px); color:var(--muted); max-width:65ch; line-height: 1.6; font-weight: 300; }
-    .kicker { color: var(--wood); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; display: block; }
-
-    /* --- HERO & INTERACTIVE VISUAL --- */
-    .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
-    .heroGrid { padding-top: 150px; }
-
-    .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); white-space: nowrap; }
-    .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
-
-    .panel-wrapper { position: relative; margin: 60px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
-    .solar-panel {
-        position: absolute; top: -15px; right: -30px; width: 110px; height: 70px;
-        background: linear-gradient(135deg, #1a237e, #283593);
-        border: 4px solid #90a4ae; border-radius: 6px;
-        transform: rotate(-12deg) skewX(-5deg); z-index: 51;
-        box-shadow: 10px 10px 20px rgba(0,0,0,0.6);
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 4px;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      white-space: nowrap;
     }
-    .solar-cell { background: rgba(255,255,255,0.15); width: 100%; height: 100%; border-radius: 1px; }
-
-    .panel-visual {
-        position: relative; z-index: 2; width: 100%; aspect-ratio: 3/4.5;
-        border: 12px solid var(--wood-frame); border-radius: 12px 12px 6px 6px;
-        background: #212121; box-shadow: 0 40px 80px rgba(0,0,0,0.7);
-        display: flex; flex-direction: column;
-        background-image: radial-gradient(#333 1px, transparent 1px); background-size: 10px 10px;
+    .brand-badge{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background: radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,0.18), transparent 60%),
+                  linear-gradient(135deg, rgba(72,187,120,0.75), rgba(74,163,255,0.75));
+      box-shadow: 0 0 26px rgba(74,163,255,0.20);
+      border: 1px solid rgba(255,255,255,0.16);
     }
-    .panel-visual::before {
-        content: ''; position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-        border-left: 220px solid transparent; border-right: 220px solid transparent; border-bottom: 45px solid var(--wood-frame); z-index: 2;
+    .brand-name{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 19px;
+      color: var(--text);
     }
+    .brand-name span{ color: var(--g); }
 
-    .hotspot {
-        position: absolute; width: 26px; height: 26px; background: #fff; border-radius: 50%;
-        color: var(--wood-dark); font-weight: 800; font-size: 16px;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 60; box-shadow: 0 0 0 rgba(255,255,255, 0.4);
-        animation: pulse-white 2s infinite; transition: transform 0.2s;
-        border: 2px solid var(--wood-dark); -webkit-tap-highlight-color: transparent;
+    .nav-actions{ display:flex; align-items:center; gap:10px; }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      flex-wrap:wrap;
     }
-    .hotspot:hover, .hotspot:active { transform: scale(1.15); background: #f0f0f0; }
-    @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
-
-    .section-header { height: 12%; background: #2d3436; border-bottom: 4px solid var(--wood-dark); padding: 10px; display: flex; align-items: center; justify-content: center; position: relative; }
-    .lcd-display {
-        background: #000; border: 2px solid #555; border-radius: 4px; padding: 5px 15px; width: 85%;
-        color: var(--green-lcd); font-family: monospace; font-weight: bold; font-size: 13px;
-        text-shadow: 0 0 5px rgba(46, 204, 113, 0.5); display: flex; justify-content: space-between; align-items: center;
+    .nav-links a{
+      text-decoration:none;
+      color: rgba(244,246,255,0.70);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: .2s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .nav-links a:hover{
+      color: #fff;
+      border-color: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
     }
 
-    .section-grow { height: 68%; position: relative; display: flex; flex-direction: column; justify-content: space-evenly; padding-top: 10px; }
-    .shelf { height: 8px; background: var(--wood-dark); width: 100%; position: relative; margin-top: auto; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
-    .felt-layer {
-        position: absolute; bottom: 8px; left: 5%; width: 90%; height: 50px; background: #3e2723; border-radius: 4px;
-        background-image: repeating-linear-gradient(45deg, #3e2723 0, #3e2723 2px, #4e342e 2px, #4e342e 4px); box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    .chip-btn{
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: .9px;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space: nowrap;
     }
-    .plant-row { display: flex; justify-content: space-around; position: absolute; bottom: 8px; width: 90%; left: 5%; z-index: 10; align-items: flex-end; }
-    .plant-visual { position: relative; width: 40px; height: 40px; }
-    .leaf { position: absolute; bottom: 0; width: 12px; height: 20px; background: var(--green); border-radius: 0 10px 0 10px; transform-origin: bottom center; }
-    .plant-visual:nth-child(odd) .leaf { background: #43A047; }
-
-    .water-flow-indicator { position: absolute; right: 10px; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue), transparent); opacity: 0.5; animation: flowDown 2s linear infinite; }
-    @keyframes flowDown { 0%{background-position: 0 0;} 100%{background-position: 0 100px;} }
-
-    .section-tank { height: 20%; background: rgba(52, 152, 219, 0.2); border-top: 6px solid var(--wood-dark); position: relative; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-    .root-system { position: absolute; top: 0; width: 100%; height: 40px; background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%); mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px); -webkit-mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px); opacity: 0.6; }
-    .water-line { position: absolute; bottom: 0; width: 100%; height: 75%; background: rgba(66,153,225,0.4); border-top: 1px solid rgba(255,255,255,0.3); animation: waterLevel 5s infinite ease-in-out; }
-    @keyframes waterLevel { 0%,100%{height:75%} 50%{height:78%} }
-    .pump-unit { position: absolute; bottom: 5px; left: 10px; width: 50px; height: 40px; background: #111; border: 1px solid #444; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 10px; font-weight: bold; z-index: 5; }
-
-    .arrow-flow { position: absolute; left: -60px; width: 50px; height: 20px; background: linear-gradient(90deg, rgba(255,255,255,0), #81d4fa); clip-path: polygon(0% 40%, 60% 40%, 60% 0%, 100% 50%, 60% 100%, 60% 60%, 0% 60%); opacity: 0.8; animation: flowIn 2s infinite; z-index: 10; }
-    .arrow-flow.out { top: -55px; left: 50%; transform: translateX(-50%) rotate(-90deg); background: linear-gradient(90deg, rgba(255,255,255,0), var(--green-lcd)); width: 50px; }
-    @keyframes flowIn { 0%{transform:translateX(-10px); opacity:0;} 50%{opacity:1;} 100%{transform:translateX(10px); opacity:0;} }
-
-    /* --- COMMON CARDS --- */
-    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
-    .card{ background: var(--bg-card); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 30px; transition: 0.3s; }
-    .card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-    .icon-box { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--wood); }
-
-    /* --- TECH LIST & CALC --- */
-    .tech-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start; }
-    .tech-list { padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; margin: 0; }
-    .tech-list li {
-        background: var(--bg-card); padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
-        font-size: 14px; line-height: 1.6; color: var(--muted); display: flex; flex-direction: column;
+    .chip-btn:hover{
+      border-color: rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-1px);
     }
-    .tech-list li strong { font-family: 'Rajdhani', sans-serif; color: #fff; margin-bottom: 6px; font-size: 18px; letter-spacing: 0.5px; }
-    .calc-card { background: var(--bg-card); padding: 35px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: sticky; top: 100px; }
+    .chip-btn:active{ transform: translateY(0); }
 
-    /* --- DASHBOARD --- */
-    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 20px;}
-    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-    .kpi-card { background: rgba(0,0,0,0.3); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; text-align: center; }
-    .kpi-val { font-family: 'Rajdhani'; font-size: 28px; font-weight: 700; color: #fff; }
-    .kpi-lbl { font-size: 11px; color: var(--muted2); text-transform: uppercase; margin-top: 4px; }
-    .console-log { font-family: monospace; font-size: 11px; color: var(--green); background: #050505; padding: 15px; border-radius: 8px; height: 140px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
-    .log-line { opacity: 0.9; margin-bottom: 6px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 4px;}
+    .hamburger{
+      width: 40px; height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+    }
+    .hamburger:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.20); }
+    .hamburger .bars{ width: 16px; height: 12px; position:relative; }
+    .hamburger .bars span{
+      position:absolute; left:0; right:0; height:2px; border-radius:2px;
+      background: rgba(244,246,255,0.85);
+      transition: .2s ease;
+    }
+    .hamburger .bars span:nth-child(1){ top:0; }
+    .hamburger .bars span:nth-child(2){ top:5px; opacity:.9; }
+    .hamburger .bars span:nth-child(3){ top:10px; opacity:.8; }
 
-    /* --- EXPERIMENT TIMELINE --- */
-    .timeline { display: flex; justify-content: space-between; position: relative; margin-top: 30px; }
-    .timeline::before { content:''; position: absolute; top: 20px; left: 0; right: 0; height: 2px; background: var(--stroke); z-index: 1;}
-    .tl-step { flex: 1; text-align: center; position: relative; z-index: 2; padding: 0 10px;}
-    .tl-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 2px solid var(--wood); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--wood); font-family:'Rajdhani';}
-    .tl-step h4 { margin: 0 0 5px; font-size: 16px; color: #fff; }
-    .tl-step p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.4;}
+    .drawer-overlay{
+      position:fixed; inset:0; z-index:950;
+      background: rgba(0,0,0,0.55);
+      display:none;
+    }
+    .drawer{
+      position:fixed; top:0; right:0; height:100%; width:min(360px, 86vw);
+      z-index: 960;
+      transform: translateX(110%);
+      transition: transform .25s ease;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,14,22,0.72);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .drawer .row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 6px;
+    }
+    .drawer a{
+      text-decoration:none;
+      color: rgba(244,246,255,0.82);
+      font-weight: 700;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      transition:.2s ease;
+    }
+    .drawer a:hover{
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+    }
+    .drawer small{ color: var(--muted2); }
 
-    /* --- BUTTONS --- */
-    .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: 0.2s; border: none; cursor: pointer; }
-    .btn:disabled { background: var(--muted2); cursor: not-allowed; opacity: 0.7; }
-    .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
+    .drawer-open .drawer-overlay{ display:block; }
+    .drawer-open .drawer{ transform: translateX(0); }
 
-    /* --- TEAM --- */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
-    .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
-    .role { font-size: 10px; text-transform: uppercase; color: var(--wood); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
-    .name { font-size: 14px; font-weight: 600; }
-    .logo-container { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; }
-    .footer-logo { height: 70px; width: auto; object-fit: contain; background: #fff; padding: 8px; border-radius: 8px; transition: transform 0.3s; }
+    @media (max-width: 1020px){
+      .nav-links{ display:none; }
+      .hamburger{ display:flex; }
+      .nav{ padding: 10px 12px; }
+    }
+
+    /* Hero */
+    .hero{ padding-top: 150px; padding-bottom: 40px; }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 42px;
+      align-items:center;
+    }
+    @media (max-width: 980px){
+      .hero{ padding-top: 140px; }
+      .heroGrid{ grid-template-columns: 1fr; text-align:center; }
+    }
+
+    .hero-tags{ display:flex; gap:10px; flex-wrap:wrap; margin: 8px 0 18px; }
+    .tag{
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: rgba(244,246,255,0.86);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .6px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space: nowrap;
+    }
+    .tag.green{ border-color: rgba(72,187,120,0.25); background: rgba(72,187,120,0.08); }
+    .tag.blue{ border-color: rgba(74,163,255,0.25); background: rgba(74,163,255,0.08); }
+    .tag .dot{
+      width:8px; height:8px; border-radius:99px;
+      background: linear-gradient(135deg, var(--g), var(--b));
+      box-shadow: 0 0 14px rgba(74,163,255,0.25);
+    }
+
+    .cta-row{ display:flex; gap:12px; margin-top: 26px; flex-wrap:wrap; }
+    @media (max-width: 980px){ .cta-row{ justify-content:center; } }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 900;
+      letter-spacing: .6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: .2s ease;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn.primary{
+      color: #06110b;
+      background: linear-gradient(135deg, rgba(72,187,120,0.92), rgba(74,163,255,0.85));
+      box-shadow: 0 12px 30px rgba(74,163,255,0.18);
+    }
+    .btn.primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .btn.secondary{
+      color: rgba(244,246,255,0.92);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .btn.secondary:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); }
+    .btn:active{ transform: translateY(0); }
+
+    /* Cards / grids */
+    .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+    @media (max-width: 1000px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      border-radius: var(--radius);
+      background: radial-gradient(900px 260px at 30% 0%, rgba(255,255,255,0.05), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow2);
+      padding: 26px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.16);
+      background: radial-gradient(900px 260px at 30% 0%, rgba(255,255,255,0.065), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+    }
+    .card .icon{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 14px;
+      box-shadow: 0 0 30px rgba(74,163,255,0.12);
+      font-size: 22px;
+    }
+    .muted{ color: var(--muted); font-size: 14px; line-height:1.75; margin:0; }
+    .subtle{ color: var(--muted2); font-size: 12px; line-height:1.65; margin:0; }
+
+    /* Tech split */
+    .split{
+      display:grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 20px;
+      align-items: start;
+      margin-top: 26px;
+    }
+    @media (max-width: 1000px){ .split{ grid-template-columns: 1fr; } }
+
+    .list{
+      display:flex; flex-direction:column; gap: 12px;
+      padding:0; margin:0;
+      list-style:none;
+    }
+    .list li{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.035);
+      padding: 18px 18px;
+    }
+    .list li strong{
+      display:block;
+      font-family: Rajdhani, sans-serif;
+      font-size: 19px;
+      letter-spacing:.3px;
+      color:#fff;
+      margin-bottom: 6px;
+    }
+    .sidecard{
+      position:sticky;
+      top: 96px;
+    }
+    @media (max-width:1000px){ .sidecard{ position:relative; top:auto; } }
+
+    /* Visual panel */
+    .panel-wrap{
+      width: min(460px, 92%);
+      margin: 0 auto;
+      position:relative;
+      filter: drop-shadow(0 25px 65px rgba(0,0,0,0.65));
+    }
+    .panel-sheen{
+      position:absolute; inset:-20px -20px -20px -20px;
+      background: radial-gradient(420px 220px at 25% 10%, rgba(74,163,255,0.10), transparent 60%),
+                  radial-gradient(380px 200px at 80% 30%, rgba(72,187,120,0.10), transparent 65%),
+                  radial-gradient(520px 260px at 50% 110%, rgba(255,91,122,0.10), transparent 60%);
+      z-index:0;
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    .panel{
+      position:relative;
+      z-index:1;
+      aspect-ratio: 3/4.5;
+      border-radius: 16px 16px 10px 10px;
+      border: 10px solid rgba(154,123,108,0.95);
+      background:
+        radial-gradient(900px 300px at 30% 0%, rgba(255,255,255,0.05), transparent 60%),
+        radial-gradient(circle at 60% 25%, rgba(74,163,255,0.09), transparent 45%),
+        linear-gradient(180deg, rgba(25,28,38,0.95), rgba(13,16,24,0.98));
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+    .panel::before{
+      content:"";
+      position:absolute; left:50%; top:-44px;
+      transform: translateX(-50%);
+      border-left: 230px solid transparent;
+      border-right: 230px solid transparent;
+      border-bottom: 44px solid rgba(154,123,108,0.95);
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.35));
+    }
+
+    .panel-top{
+      height: 12%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px 16px;
+      border-bottom: 3px solid rgba(107,79,69,0.85);
+      background: linear-gradient(180deg, rgba(30,34,46,0.90), rgba(22,25,35,0.92));
+      position:relative;
+    }
+    .lcd{
+      width: 88%;
+      border-radius: 12px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.55);
+      display:flex; align-items:center; justify-content:space-between;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: rgba(78,255,147,0.95);
+      text-shadow: 0 0 12px rgba(78,255,147,0.18);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing:.3px;
+    }
+    .lcd b{ color: rgba(78,255,147,0.95); }
+
+    .panel-mid{
+      height: 68%;
+      position:relative;
+      padding: 10px 10px 0;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-evenly;
+    }
+    .shelf{
+      position:relative;
+      height: 8px;
+      border-radius: 8px;
+      background: rgba(107,79,69,0.92);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.35);
+      margin: 0 8px;
+    }
+    .felt{
+      position:absolute;
+      left: 7%;
+      width: 86%;
+      bottom: 8px;
+      height: 50px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background:
+        repeating-linear-gradient(45deg, rgba(62,39,35,0.95) 0, rgba(62,39,35,0.95) 3px, rgba(78,52,46,0.95) 3px, rgba(78,52,46,0.95) 6px);
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.55);
+    }
+    .plant-row{
+      position:absolute;
+      left: 7%;
+      width: 86%;
+      bottom: 10px;
+      display:flex;
+      justify-content: space-around;
+      align-items:flex-end;
+      z-index: 3;
+    }
+    .plant{
+      width: 40px; height: 42px;
+      position:relative;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+    }
+    .leaf{
+      position:absolute; bottom:0;
+      width: 12px; height: 22px;
+      border-radius: 0 12px 0 12px;
+      background: rgba(72,187,120,0.95);
+      transform-origin: bottom center;
+    }
+    .plant:nth-child(odd) .leaf{ background: rgba(88,210,126,0.95); }
+    .leaf.l1{ left:4px; transform: rotate(-18deg); height: 18px; opacity:.95; }
+    .leaf.l2{ left:14px; transform: rotate(0deg); height: 26px; bottom:2px; }
+    .leaf.l3{ right:4px; transform: rotate(18deg); height: 18px; opacity:.92; }
+
+    .water-strip{
+      position:absolute;
+      right: 10px;
+      top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(74,163,255,0.75), transparent);
+      opacity: 0.45;
+      animation: flowDown 2s linear infinite;
+    }
+    @keyframes flowDown{ 0%{ background-position: 0 0; } 100%{ background-position: 0 120px; } }
+
+    .panel-bot{
+      height: 20%;
+      position:relative;
+      border-top: 4px solid rgba(107,79,69,0.85);
+      background: linear-gradient(180deg, rgba(74,163,255,0.10), rgba(74,163,255,0.18));
+      overflow:hidden;
+    }
+    .water{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 76%;
+      background: rgba(74,163,255,0.32);
+      border-top: 1px solid rgba(255,255,255,0.18);
+      animation: waterLevel 5s ease-in-out infinite;
+    }
+    @keyframes waterLevel{ 0%,100%{ height: 76%; } 50%{ height: 80%; } }
+
+    .pump{
+      position:absolute;
+      left: 12px; bottom: 10px;
+      width: 64px; height: 42px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+      display:flex; align-items:center; justify-content:center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px; font-weight: 900;
+      color: rgba(244,246,255,0.68);
+    }
+
+    .solar{
+      position:absolute;
+      top: -18px;
+      right: -22px;
+      width: 118px;
+      height: 74px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background:
+        radial-gradient(20px 20px at 30% 20%, rgba(255,255,255,0.18), transparent 60%),
+        linear-gradient(135deg, rgba(20,33,106,0.95), rgba(34,52,160,0.90));
+      box-shadow: 18px 18px 40px rgba(0,0,0,0.55);
+      transform: rotate(-10deg) skewX(-4deg);
+      z-index: 10;
+      padding: 6px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+    }
+    .cell{ border-radius: 4px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.10); }
+
+    .hotspot{
+      position:absolute;
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      z-index: 20;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 rgba(255,255,255,0.35);
+      animation: pulse 2.2s infinite;
+      user-select:none;
+      font-weight: 900;
+      color:#fff;
+    }
+    .hotspot:hover{ transform: scale(1.07); }
+    @keyframes pulse{
+      0%{ box-shadow: 0 0 0 0 rgba(255,255,255,0.28); }
+      70%{ box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+
+    .hint{
+      text-align:center;
+      margin-top: 16px;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      color: var(--muted2);
+      text-transform: uppercase;
+    }
 
     /* Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
-    .modal-overlay.active { display: flex; opacity: 1; }
-    .modal-content { background: #1a202c; border: 1px solid var(--stroke); border-radius: 16px; padding: 30px; max-width: 500px; width: 85%; position: relative; transform: translateY(20px); transition: transform 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
-    .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; padding: 10px;}
-    .modal-icon { font-size: 48px; margin-bottom: 15px; display: inline-block; }
-    .modal-title { font-family: 'Rajdhani'; font-size: 24px; color: var(--green); margin-bottom: 10px; }
-    .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text); }
+    .modal-overlay{
+      position:fixed; inset:0; z-index: 1200;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .modal-overlay.active{ display:flex; }
+    .modal{
+      width: min(560px, 92vw);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: radial-gradient(700px 260px at 30% 0%, rgba(255,255,255,0.06), transparent 60%),
+                  linear-gradient(180deg, rgba(18,22,34,0.92), rgba(10,14,22,0.92));
+      box-shadow: 0 28px 80px rgba(0,0,0,0.65);
+      padding: 22px 20px;
+      position:relative;
+      transform: translateY(10px);
+      animation: pop .18s ease forwards;
+    }
+    @keyframes pop{ to{ transform: translateY(0); } }
+    .modal .x{
+      position:absolute; top: 10px; right: 10px;
+      width: 42px; height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: rgba(244,246,255,0.86);
+      font-size: 22px;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .modal .x:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.20); }
+    .modal .micon{
+      width: 54px; height: 54px;
+      border-radius: 18px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 26px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 30px rgba(74,163,255,0.12);
+    }
+    .modal .mtitle{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing:.3px;
+    }
+    .modal .mdesc{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14.5px;
+    }
 
-    /* --- NEW: TABLES (Pilot & Comparison & BOM) --- */
+    /* Tables */
     .table-wrap{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
       overflow:auto;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(0,0,0,0.25);
     }
     table{
-      width:100%;
       border-collapse: collapse;
+      width: 100%;
       min-width: 720px;
     }
     th, td{
       padding: 14px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
       font-size: 13px;
       color: var(--muted);
       vertical-align: top;
     }
     th{
+      position:sticky; top:0;
+      background: rgba(255,255,255,0.05);
       color:#fff;
-      font-family:'Rajdhani',sans-serif;
+      font-family: Rajdhani, sans-serif;
+      letter-spacing:.3px;
       font-size: 15px;
-      letter-spacing: 0.3px;
-      background: rgba(255,255,255,0.03);
-      position: sticky;
-      top: 0;
+      z-index: 2;
     }
+
+    /* Badges */
+    .badge-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 6px 12px;
+      display:inline-flex; align-items:center; gap:8px;
       border-radius: 999px;
+      padding: 7px 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.04);
       font-size: 12px;
-      color: #fff;
-      font-weight: 600;
+      font-weight: 800;
+      color: rgba(244,246,255,0.92);
+      letter-spacing:.2px;
+      white-space: nowrap;
     }
-    .badge.good{ border-color: rgba(72,187,120,0.35); color: var(--green); background: rgba(72,187,120,0.12);}
-    .badge.warn{ border-color: rgba(236,201,75,0.35); color: var(--yellow); background: rgba(236,201,75,0.10);}
-    .badge.bad{ border-color: rgba(245,101,101,0.35); color: var(--red); background: rgba(245,101,101,0.10); }
+    .badge.good{ border-color: rgba(72,187,120,0.30); background: rgba(72,187,120,0.10); color: rgba(72,187,120,0.95); }
+    .badge.warn{ border-color: rgba(255,209,102,0.28); background: rgba(255,209,102,0.10); color: rgba(255,209,102,0.95); }
+    .badge.bad{ border-color: rgba(255,91,122,0.30); background: rgba(255,91,122,0.10); color: rgba(255,91,122,0.95); }
+    .badge .mini-dot{
+      width:8px; height:8px; border-radius:999px;
+      background: linear-gradient(135deg, var(--g), var(--b));
+      box-shadow: 0 0 14px rgba(74,163,255,0.18);
+    }
 
+    /* Pilot */
     .pilot-grid{
       display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 24px;
-      margin-top: 24px;
-      align-items: start;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      margin-top: 26px;
+      align-items:start;
+    }
+    @media (max-width: 1000px){ .pilot-grid{ grid-template-columns: 1fr; } }
+
+    .chart-box{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      height: 240px;
+      position:relative;
+      overflow:hidden;
+    }
+    .chart-box canvas{ position:absolute; inset:0; width:100%; height:100%; }
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 540px){ .form-grid{ grid-template-columns: 1fr; } }
+
+    .field{
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .field label{
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      font-weight: 800;
+    }
+    .field input{
+      width:100%;
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+      font-weight: 700;
+      outline:none;
+      transition:.2s ease;
+    }
+    .field input:focus{
+      border-color: rgba(74,163,255,0.35);
+      box-shadow: 0 0 0 4px rgba(74,163,255,0.12);
+    }
+    .pilot-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .mini-btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: rgba(244,246,255,0.92);
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .mini-btn:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.20); transform: translateY(-1px); }
+    .mini-btn:active{ transform: translateY(0); }
+    .mini-btn.primary{
+      border-color: rgba(72,187,120,0.22);
+      background: rgba(72,187,120,0.12);
+      color: rgba(72,187,120,0.95);
     }
 
-    /* --- NEW: CHECKLIST --- */
-    .checklist{
+    /* Comparison */
+    .compare-card{
+      padding: 0;
+      overflow:hidden;
+    }
+    .compare-head{
+      padding: 22px 22px 16px;
       display:flex;
-      flex-direction:column;
-      gap: 12px;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: radial-gradient(900px 280px at 20% 0%, rgba(74,163,255,0.10), transparent 60%),
+                  radial-gradient(700px 220px at 80% 0%, rgba(72,187,120,0.08), transparent 60%),
+                  rgba(255,255,255,0.02);
+    }
+    .compare-head .title{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing:.3px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.20);
+      color: rgba(244,246,255,0.85);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing:.3px;
+      white-space: nowrap;
+    }
+    .pill .spark{
+      width: 9px; height: 9px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--g), var(--b));
+      box-shadow: 0 0 16px rgba(74,163,255,0.18);
+    }
+    .compare-body{ padding: 18px 22px 22px; }
+
+    /* Dashboard */
+    .dash{
+      display:grid;
+      grid-template-columns: 1.6fr 0.9fr;
+      gap: 16px;
       margin-top: 18px;
     }
-    .check-item{
-      display:flex;
-      gap: 12px;
-      align-items:flex-start;
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.20);
-    }
-    .check-item input{
-      margin-top: 3px;
-      width: 18px; height: 18px;
-      accent-color: var(--green);
-    }
-    .check-item .txt{
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--muted);
-    }
-    .check-item .txt b{ color:#fff; font-weight:700; }
-    .check-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-    .mini-btn{
-      background: transparent;
-      border: 1px solid var(--stroke);
-      color: var(--text);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor:pointer;
-      font-size: 12px;
-      transition: .2s;
-    }
-    .mini-btn:hover{ background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+    @media (max-width: 980px){ .dash{ grid-template-columns:1fr; } }
 
-    @media(max-width:900px){
-        .heroGrid{ grid-template-columns: 1fr; text-align: center; padding-top: 130px; }
-        .hero-tags { justify-content: center; }
-        .tech-grid, .dash-grid, .grid { grid-template-columns: 1fr; }
-        .nav-links { display: none; } .nav { padding: 15px 20px; }
-        .panel-wrapper { max-width: 100%; margin-top: 60px; padding: 0 10px; }
-        .solar-panel { right: 20px; top: -45px; width: 100px; height: 50px; }
-        section { padding: 60px 0; }
-        .kpi-row { grid-template-columns: 1fr 1fr 1fr; }
-        .timeline { flex-direction: column; gap: 30px; }
-        .timeline::before { left: 20px; top: 0; bottom: 0; width: 2px; height: 100%; }
-        .tl-step { display: flex; text-align: left; align-items: flex-start; gap: 15px; }
-        .tl-dot { margin: 0; flex-shrink: 0; }
-        .pilot-grid{ grid-template-columns: 1fr; }
-        table{ min-width: 640px; }
+    .kpi-row{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-bottom: 14px;
     }
-    @media(max-width:480px){
-        h1 { font-size: 32px; }
-        .kpi-row { grid-template-columns: 1fr; }
+    @media (max-width: 520px){ .kpi-row{ grid-template-columns:1fr; } }
+    .kpi{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      padding: 14px 14px;
+      text-align:center;
+    }
+    .kpi .val{
+      font-family: Rajdhani, sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing:.3px;
+    }
+    .kpi .lbl{
+      margin-top: 4px;
+      font-size: 11px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      font-weight: 900;
+    }
+    .chart-mini{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      height: 190px;
+      position:relative;
+      overflow:hidden;
+    }
+    .chart-mini canvas{ position:absolute; inset:0; width:100%; height:100%; }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid rgba(72,187,120,0.22);
+      background: rgba(72,187,120,0.10);
+      color: rgba(72,187,120,0.95);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing:.3px;
+      white-space: nowrap;
+    }
+    .status .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: rgba(72,187,120,0.95);
+      box-shadow: 0 0 16px rgba(72,187,120,0.25);
+    }
+
+    .console{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.46);
+      padding: 14px;
+      height: 170px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      color: rgba(78,255,147,0.90);
+    }
+    .logline{
+      padding: 7px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      opacity: .92;
+    }
+
+    /* Footer */
+    footer{
+      padding: 46px 0 70px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted2);
+      font-size: 12px;
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 
 <body>
   <canvas id="air"></canvas>
+  <div class="grain"></div>
   <div class="progress"><span id="prog"></span></div>
 
-  <nav class="nav">
-    <div class="brand" data-key="brand_html">
-      BİYO<span class="highlight">DUVAR</span>
+  <!-- Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer" id="drawer">
+    <div class="row">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="brand-badge"></div>
+        <div>
+          <div class="brand-name">BİYO<span>DUVAR</span></div>
+          <small id="drawerSub">Menü</small>
+        </div>
+      </div>
+      <button class="chip-btn" id="drawerClose" type="button">Kapat</button>
     </div>
-    <div class="nav-links">
-      <a href="#market" data-key="nav_market">Pazar & Analiz</a>
-      <a href="#tech" data-key="nav_tech">Sistem Mimarisi</a>
-      <a href="#experiment" data-key="nav_exp">Deney Planı</a>
-      <a href="#pilot" data-key="nav_pilot">Pilot Test</a>
-      <a href="#compare" data-key="nav_compare">Kıyas</a>
-      <a href="#build" data-key="nav_build">Üretim</a>
-      <a href="#demo" data-key="nav_demo">Deney & Demo</a>
+
+    <a href="#safety" class="drawerLink">Güvenlik</a>
+    <a href="#tech" class="drawerLink">Sistem</a>
+    <a href="#pilot" class="drawerLink">Pilot Test</a>
+    <a href="#compare" class="drawerLink">Karşılaştırma</a>
+    <a href="#demo" class="drawerLink">Canlı Panel</a>
+    <a href="#team" class="drawerLink">Ekip</a>
+
+    <div style="margin-top:auto; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="chip-btn" id="langToggle2" type="button">TR | EN</button>
+      <button class="chip-btn" id="jumpTop" type="button">Yukarı</button>
     </div>
-    <button id="langToggle" class="lang-btn">TR | EN</button>
+  </div>
+
+  <!-- Top Nav -->
+  <nav class="nav" aria-label="Üst Menü">
+    <div class="brand" id="brandHome" title="Ana sayfa">
+      <div class="brand-badge"></div>
+      <div class="brand-name" id="brandText">BİYO<span>DUVAR</span></div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="nav-links" aria-label="Sayfa linkleri">
+        <a href="#safety" data-key="nav_safety">Güvenlik</a>
+        <a href="#tech" data-key="nav_tech">Sistem</a>
+        <a href="#pilot" data-key="nav_pilot">Pilot Test</a>
+        <a href="#compare" data-key="nav_compare">Karşılaştırma</a>
+        <a href="#demo" data-key="nav_demo">Canlı Panel</a>
+        <a href="#team" data-key="nav_team">Ekip</a>
+      </div>
+      <button class="chip-btn" id="langToggle" type="button">TR | EN</button>
+      <button class="hamburger" id="hamburger" type="button" aria-label="Menüyü aç">
+        <div class="bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+    </div>
   </nav>
 
-  <!-- INFO MODAL -->
-  <div class="modal-overlay" id="infoModal">
-      <div class="modal-content">
-          <button class="modal-close" onclick="closeModal()">×</button>
-          <div class="modal-icon" id="mIcon"></div>
-          <h3 class="modal-title" id="mTitle"></h3>
-          <p class="modal-desc" id="mDesc"></p>
-      </div>
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <button class="x" type="button" id="modalClose" aria-label="Kapat">×</button>
+      <div class="micon" id="mIcon">📡</div>
+      <div class="mtitle" id="mTitle">Başlık</div>
+      <p class="mdesc" id="mDesc">Açıklama</p>
+    </div>
   </div>
 
   <main>
     <!-- HERO -->
-    <section class="container heroGrid">
-      <div>
-        <div class="hero-tags">
-          <span class="tag" data-key="tag_school">Özel İngiliz Kültür Koleji</span>
-          <span class="tag blue" data-key="tag_project">Teknofest 2026 İnsanlık Yararına Teknoloji</span>
-        </div>
-        <h1 data-key="hero_title">Duvarlar Artık<br><span style="color:var(--green)">Nefes Alıyor</span></h1>
-        <p class="lead" data-key="hero_desc">
-            BİYODUVAR; kapalı okul ve ofis ortamlarındaki "Hasta Bina Sendromunu" bitki tabanlı aktif filtreleme ile çözen,
-            sensör kontrollü yeni nesil bir ekosistemdir.
-        </p>
-        <div style="display:flex; gap:16px; margin-top:30px; flex-wrap:wrap; justify-content: center;">
-            <a href="#market" class="btn" data-key="btn_explore">Projeyi İncele</a>
-            <a href="#demo" class="btn secondary" data-key="btn_demo">Canlı Simülasyon</a>
-        </div>
-      </div>
+    <section class="container hero" id="home">
+      <div class="heroGrid">
+        <div>
+          <div class="hero-tags">
+            <span class="tag green"><span class="dot"></span><span data-key="tag_school">Özel İngiliz Kültür Koleji</span></span>
+            <span class="tag blue"><span class="dot"></span><span data-key="tag_topic">İnsanlık Yararına Teknoloji • 2026</span></span>
+          </div>
 
-      <!-- INTERACTIVE VISUAL -->
-      <div class="panel-wrapper">
-          <div class="hotspot" style="top:-60px; left:50%; transform:translateX(-50%); z-index:60;" onclick="openInfo('cleanair')">+</div>
-          <div class="solar-panel">
-               <div class="hotspot" style="top:-10px; right:-10px; background:var(--yellow); color:#000;" onclick="openInfo('solar')">+</div>
-               <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
-               <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
+          <div class="kicker" data-key="hero_kicker">SENSOR • BITKI • AKTIF FILTRELEME</div>
+
+          <h1 id="heroTitle" data-key="hero_title">
+            Duvarlar Artık<br><span style="color:var(--g)">Nefes Alıyor</span>
+          </h1>
+
+          <p class="lead" data-key="hero_desc">
+            BİYODUVAR; sınıf ve ofis gibi kapalı alanlarda CO₂ ve hava kalitesi takibini yapan, eşik aşıldığında hava akışını bitki kök bölgesine yönlendirerek
+            “aktif” iyileştirme sağlayan akıllı bir duvar modülüdür.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#pilot"><span>⚡</span><span data-key="cta_pilot">Pilot Testi Aç</span></a>
+            <a class="btn secondary" href="#demo"><span>📈</span><span data-key="cta_demo">Canlı Panel</span></a>
           </div>
-          <div class="arrow-flow" style="bottom:25%; left:-50px;"></div>
-          <div class="arrow-flow" style="bottom:50%; left:-50px;"></div>
-          <div class="arrow-flow out"></div>
-          <div class="panel-visual">
-              <div class="section-header">
-                  <div class="hotspot" style="top:-10px; left:10px;" onclick="openInfo('sensors')">+</div>
-                  <div class="lcd-display"><span>Karbon: İYİ</span><span>410ppm</span></div>
-              </div>
-              <div class="section-grow">
-                   <div class="hotspot" style="top:30%; left:50%; transform:translate(-50%,-50%)" onclick="openInfo('plants')">+</div>
-                   <div class="hotspot" style="top:75%; right:5%; transform:translateY(-50%); width:22px; height:22px; font-size:14px;" onclick="openInfo('felt')">+</div>
-                   <div class="hotspot" style="top:75%; left:-10px; transform:translateY(-50%); width:24px; height:24px; font-size:14px; background:var(--blue); color:#fff;" onclick="openInfo('fan')">+</div>
-                   <div class="water-flow-indicator"></div>
-                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row1"></div></div>
-                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row2"></div></div>
-                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row3"></div></div>
-              </div>
-              <div class="section-tank">
-                  <div class="hotspot" style="top:10px; right:10px;" onclick="openInfo('water')">+</div>
-                  <div class="root-system"></div>
-                  <div class="water-line"></div>
-                  <div class="pump-unit"><span>5V PUMP</span></div>
-                  <div style="position:absolute; bottom:5px; left:40%; width:4px; height:4px; background:rgba(255,255,255,0.5); border-radius:50%; animation:rise 2s infinite;"></div>
-              </div>
+
+          <div class="badge-row" style="margin-top:16px;">
+            <span class="badge"><span class="mini-dot"></span><span data-key="badge_1">Düşük voltaj • okul uyumlu</span></span>
+            <span class="badge"><span class="mini-dot"></span><span data-key="badge_2">Topraksız • düşük koku riski</span></span>
+            <span class="badge"><span class="mini-dot"></span><span data-key="badge_3">Veri odaklı KPI</span></span>
           </div>
-          <div style="text-align:center; margin-top:20px; font-size:11px; color:var(--muted); letter-spacing:1px; opacity:0.8;">
-            <span data-key="lbl_click">SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span>
+        </div>
+
+        <div>
+          <div class="panel-wrap">
+            <div class="panel-sheen"></div>
+
+            <div class="solar" aria-hidden="true">
+              <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+              <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+              <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+              <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+              <div class="hotspot" style="top:-10px; right:-10px;" data-open="solar">+</div>
+            </div>
+
+            <div class="panel">
+              <div class="hotspot" style="top:-58px; left:50%; transform:translateX(-50%);" data-open="cleanair">+</div>
+
+              <div class="panel-top">
+                <div class="hotspot" style="top:-10px; left:10px;" data-open="sensors">+</div>
+                <div class="lcd">
+                  <span><b>CO₂</b> <span id="lcdStatus">İYİ</span></span>
+                  <span><span id="lcdPpm">410</span> ppm</span>
+                </div>
+              </div>
+
+              <div class="panel-mid">
+                <div class="hotspot" style="top:32%; left:50%; transform:translate(-50%,-50%);" data-open="plants">+</div>
+                <div class="hotspot" style="top:78%; right:6%; transform:translateY(-50%); width:26px; height:26px;" data-open="felt">+</div>
+                <div class="hotspot" style="top:78%; left:-8px; transform:translateY(-50%); width:26px; height:26px;" data-open="fan">+</div>
+                <div class="water-strip" aria-hidden="true"></div>
+
+                <div class="shelf">
+                  <div class="felt"></div>
+                  <div class="plant-row" id="row1"></div>
+                </div>
+                <div class="shelf">
+                  <div class="felt"></div>
+                  <div class="plant-row" id="row2"></div>
+                </div>
+                <div class="shelf">
+                  <div class="felt"></div>
+                  <div class="plant-row" id="row3"></div>
+                </div>
+              </div>
+
+              <div class="panel-bot">
+                <div class="hotspot" style="top:10px; right:10px;" data-open="water">+</div>
+                <div class="water"></div>
+                <div class="pump">5V<br>pump</div>
+              </div>
+            </div>
+
+            <div class="hint" data-key="hint_click">Detaylar için (+) noktalarına tıklayın</div>
           </div>
+        </div>
       </div>
     </section>
 
     <!-- SAFETY -->
-    <section id="safety" class="container">
-        <div class="kicker" data-key="safe_kicker">NEDEN BİYODUVAR?</div>
-        <h2 data-key="safe_title">Sınıflar İçin Güvenli Tasarım</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="icon-box">🛡️</div>
-                <h3 data-key="safe_1_title">Düşük Voltaj (5V)</h3>
-                <p data-key="safe_1_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Tüm elektronik bileşenler ve pompalar USB/Powerbank voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.</p>
-            </div>
-            <div class="card">
-                <div class="icon-box">🚫</div>
-                <h3 data-key="safe_2_title">Topraksız Sistem</h3>
-                <p data-key="safe_2_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, sinek, mantar ve kötü koku oluşumu tamamen engellenir.</p>
-            </div>
-            <div class="card">
-                <div class="icon-box">💧</div>
-                <h3 data-key="safe_3_title">Sızdırmaz Kapalı Döngü</h3>
-                <p data-key="safe_3_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.</p>
-            </div>
+    <section class="container" id="safety">
+      <div class="kicker" data-key="safe_kicker">GÜVENLİ TASARIM</div>
+      <h2 data-key="safe_title">Sınıf İçin Uygun Mimari</h2>
+      <p class="lead" data-key="safe_desc">Topraksız sistem, kapalı su döngüsü ve düşük voltaj yaklaşımı ile kullanım güvenliği hedeflenir.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🛡️</div>
+          <h3 data-key="safe_1_t">5V Düşük Voltaj</h3>
+          <p class="muted" data-key="safe_1_d">Tüm bileşenler USB seviyesinde çalışır. Elektriksel riskleri azaltmak için yalıtım ve kablo yönetimi uygulanır.</p>
         </div>
+        <div class="card">
+          <div class="icon">🚫</div>
+          <h3 data-key="safe_2_t">Topraksız (Keçe) Katman</h3>
+          <p class="muted" data-key="safe_2_d">Hidroponik keçe, toprak kaynaklı kir ve taşıma risklerini azaltır. Düzenli bakım ile koku ve birikim kontrol edilir.</p>
+        </div>
+        <div class="card">
+          <div class="icon">💧</div>
+          <h3 data-key="safe_3_t">Kapalı Su Döngüsü</h3>
+          <p class="muted" data-key="safe_3_d">Su haznesi kapalı sistemdir. Sızdırmaz bağlantılar ve taşma payı ile kontrollü kullanım hedeflenir.</p>
+        </div>
+      </div>
     </section>
 
     <!-- TECH -->
-    <section id="tech" class="container alt-bg">
-        <div class="kicker" data-key="tech_kicker" style="margin-bottom: 20px;">TEKNİK ALTYAPI</div>
-        <div class="tech-grid">
+    <section class="container" id="tech">
+      <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
+      <h2 data-key="tech_title">Sensör + Fan + Rizosfer</h2>
+      <p class="lead" data-key="tech_desc">CO₂ ve hava kalitesi verisi, eşik durumlarında hava akışını yönetmek için kullanılır. Hava, bitki kök bölgesine yönlendirilerek “aktif” etki hedeflenir.</p>
+
+      <div class="split">
+        <div>
+          <ul class="list">
+            <li>
+              <strong data-key="tech_1_t">NDIR CO₂ + IAQ Sensörü</strong>
+              <div class="muted" data-key="tech_1_d">CO₂ ppm ölçümü için NDIR sensör; genel hava kalitesi için IAQ/VOC sensörüyle desteklenir.</div>
+            </li>
+            <li>
+              <strong data-key="tech_2_t">Otomasyon Mantığı</strong>
+              <div class="muted" data-key="tech_2_d">Eşik aşıldığında fanlar devreye girer; hava akışı kök bölgesine zorlanır. Log ve grafik ile süreç izlenir.</div>
+            </li>
+            <li>
+              <strong data-key="tech_3_t">Enerji Seçenekleri</strong>
+              <div class="muted" data-key="tech_3_d">USB/Adaptör + batarya senaryolarına uygun yapı. Güneş paneli destekli kullanım kurgulanabilir.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card sidecard">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
-                <ul class="tech-list">
-                    <li>
-                        <strong data-key="tech_1_title">Hibrit Sensör Ağı</strong>
-                        <span data-key="tech_1_desc">Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.</span>
-                    </li>
-                    <li>
-                        <strong data-key="tech_3_title">Otomasyon & MCU</strong>
-                        <span data-key="tech_3_desc">Arduino Nano, verileri anlık işleyerek eşik aşıldığında (örn: 800ppm) tahliye fanlarını otomatik devreye sokar.</span>
-                    </li>
-                    <li>
-                        <strong data-key="tech_5_title">Çoklu Güç Kaynağı</strong>
-                        <span data-key="tech_5_desc">Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve şebeke adaptörü hibrid olarak çalışır.</span>
-                    </li>
-                </ul>
+              <h3 style="margin-bottom:6px;" data-key="calc_t">Etki Mantığı</h3>
+              <p class="muted" data-key="calc_d">Aktif hava akışı ile kök bölgesindeki biyolojik filtreleme (rizosfer) alanının etkinliği artırılır.</p>
             </div>
-            <div>
-                <div class="calc-card">
-                    <h3 style="margin-top:0; color:var(--wood); font-family:'Rajdhani', sans-serif; font-size:22px;" data-key="calc_title">Hesaplamalar & Verim</h3>
-                    <p style="font-size:14px; line-height: 1.7; color: var(--muted); margin-bottom:20px;" data-key="calc_desc">
-                        1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve aktif fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik bir etki yaratır.
-                    </p>
-                    <div style="padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
-                        <div style="display:flex; justify-content: space-between; font-size:14px; margin-bottom: 10px;">
-                            <span data-key="calc_co2">Yıllık CO2 Azaltımı Hedefi:</span>
-                            <span style="color:var(--green); font-weight:700;">~3.65 kg - 5.0 kg</span>
-                        </div>
-                        <div style="display:flex; justify-content: space-between; font-size:14px;">
-                            <span data-key="calc_oxy">Tahmini O2 Üretimi:</span>
-                            <span style="color:var(--blue); font-weight:700;">~11 gr/gün</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <span class="status" id="sysBadge"><span class="dot"></span><span data-key="badge_active">AKTİF</span></span>
+          </div>
+
+          <div class="badge-row" style="margin-top:14px;">
+            <span class="badge good" id="kpiTarget">KPI: %20+</span>
+            <span class="badge warn" id="co2ThresholdLbl">Eşik: 800 ppm</span>
+            <span class="badge" id="modeLbl"><span class="mini-dot"></span>Auto</span>
+          </div>
+
+          <div class="subtle" style="margin-top:14px;" data-key="calc_note">
+            Not: Değerler ortama göre değişir. Pilot test ekranındaki girişlerle anlık sonuç görebilirsiniz.
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- MARKET -->
-    <section id="market" class="container">
-        <div class="kicker" data-key="market_kicker">TİCARİLEŞME POTANSİYELİ</div>
-        <h2 data-key="market_title">Pazar Analizi & Gelir Modeli</h2>
-        <div class="grid">
-            <div class="card" style="border-color: rgba(66,153,225,0.3);">
-                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_1_title">Hedef Kitle</div>
-                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_1_desc">İlk etapta okullar, kreşler ve etüt merkezleri. Ardından "Hasta Bina Sendromu" yaşayan plaza ve ofisler.</p>
-            </div>
-            <div class="card" style="border-color: rgba(72,187,120,0.3);">
-                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_2_title">Rekabet Avantajı</div>
-                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_2_desc">Klasik hava temizleyiciler gibi filtre atığı çıkarmaz (Doğal). Sadece ölçüm yapan cihazlardan farklı olarak aktif temizlik yapar.</p>
-            </div>
-            <div class="card" style="border-color: rgba(236,201,75,0.3);">
-                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_3_title">Maliyet & Gelir</div>
-                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_3_desc">Prototip ~3550 TL'dir. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile sürdürülebilir gelir hedeflenir.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- EXPERIMENT PLAN -->
-    <section id="experiment" class="container alt-bg">
-        <div class="kicker" data-key="exp_kicker">BİLİMSEL YÖNTEM</div>
-        <h2 data-key="exp_title">Uygulama ve Deney Planı</h2>
-        <p class="lead" data-key="exp_desc">Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.</p>
-
-        <div class="timeline">
-            <div class="tl-step">
-                <div class="tl-dot">1</div>
-                <h4 data-key="exp_s1_title">Ortam Belirleme</h4>
-                <p data-key="exp_s1_desc">Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.</p>
-            </div>
-            <div class="tl-step">
-                <div class="tl-dot">2</div>
-                <h4 data-key="exp_s2_title">Kontrol Ölçümü</h4>
-                <p data-key="exp_s2_desc">Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.</p>
-            </div>
-            <div class="tl-step">
-                <div class="tl-dot">3</div>
-                <h4 data-key="exp_s3_title">Aktif Ölçüm</h4>
-                <p data-key="exp_s3_desc">Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.</p>
-            </div>
-            <div class="tl-step">
-                <div class="tl-dot" style="background:rgba(72,187,120,0.1); border-color:var(--green); color:var(--green)">4</div>
-                <h4 data-key="exp_s4_title">Başarı Kriteri (KPI)</h4>
-                <p data-key="exp_s4_desc">40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- PILOT TEST -->
-    <section id="pilot" class="container">
-      <div class="kicker" data-key="pilot_kicker">KANIT & VERİ</div>
-      <h2 data-key="pilot_title">Pilot Test Sonuçları (Örnek Şablon)</h2>
+    <!-- PILOT -->
+    <section class="container" id="pilot">
+      <div class="kicker" data-key="pilot_kicker">PİLOT TEST</div>
+      <h2 data-key="pilot_title">Değerleri Girin • Anlık KPI Görün</h2>
       <p class="lead" data-key="pilot_desc">
-        Jürinin en çok puan verdiği bölüm: Aynı sınıfta “Kontrol Günü” ve “Aktif Gün” ölçümünü tablo ve grafikle kanıtlamak.
-        Aşağıdaki veriler şablondur; kendi ölçümünüzle değiştirip ekran görüntüsü ekleyin.
+        Aşağıdaki alanlara kontrol günü ve BİYODUVAR aktifken ölçtüğünüz değerleri yazın.
+        Grafik, tablo ve iyileşme yüzdesi otomatik hesaplanır.
       </p>
 
       <div class="pilot-grid">
         <div class="card">
-          <h3 style="margin-top:0;" data-key="pilot_chart_title">CO₂ Değişimi (Kontrol vs Aktif)</h3>
-          <div style="background:#050505; height:220px; border-radius:12px; position:relative; overflow:hidden; border: 1px solid var(--stroke);">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <h3 data-key="pilot_chart">CO₂ Zaman Grafiği</h3>
+            <div class="badge-row" style="margin-top:0;">
+              <span class="badge bad" id="bControl">Kontrol: +0 ppm</span>
+              <span class="badge good" id="bActive">Aktif: +0 ppm</span>
+              <span class="badge" id="bImprove"><span class="mini-dot"></span>KPI: %0</span>
+            </div>
+          </div>
+
+          <div class="chart-box" style="margin-top:12px;">
             <canvas id="pilotChart"></canvas>
           </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-            <span class="badge warn" id="pilotBadge1">Kontrol: +?? ppm</span>
-            <span class="badge good" id="pilotBadge2">Aktif: -?? ppm</span>
-            <span class="badge" id="pilotBadge3">KPI: %?? iyileşme</span>
+
+          <div class="form-grid">
+            <div class="field">
+              <label data-key="f_time0">Zaman 0 (dk)</label>
+              <input id="t0" type="number" inputmode="numeric" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label data-key="f_time1">Zaman 1 (dk)</label>
+              <input id="t1" type="number" inputmode="numeric" min="1" value="20" />
+            </div>
+            <div class="field">
+              <label data-key="f_time2">Zaman 2 (dk)</label>
+              <input id="t2" type="number" inputmode="numeric" min="1" value="40" />
+            </div>
+            <div class="field">
+              <label data-key="f_threshold">CO₂ Eşik (ppm)</label>
+              <input id="thr" type="number" inputmode="numeric" min="400" value="800" />
+            </div>
           </div>
-          <p style="font-size:12px; color:var(--muted2); margin-top:10px;" data-key="pilot_tip">
-            *İpucu: “Sınıf m² / öğrenci sayısı / havalandırma durumu” bilgisini altına eklemek jüri puanını artırır.
-          </p>
+
+          <div class="form-grid" style="margin-top:12px;">
+            <div class="field">
+              <label data-key="f_c0">Kontrol • t0 (ppm)</label>
+              <input id="c0" type="number" inputmode="numeric" min="350" value="520" />
+            </div>
+            <div class="field">
+              <label data-key="f_c1">Kontrol • t1 (ppm)</label>
+              <input id="c1" type="number" inputmode="numeric" min="350" value="980" />
+            </div>
+            <div class="field">
+              <label data-key="f_c2">Kontrol • t2 (ppm)</label>
+              <input id="c2" type="number" inputmode="numeric" min="350" value="1400" />
+            </div>
+            <div class="field">
+              <label data-key="f_a0">Aktif • t0 (ppm)</label>
+              <input id="a0" type="number" inputmode="numeric" min="350" value="520" />
+            </div>
+            <div class="field">
+              <label data-key="f_a1">Aktif • t1 (ppm)</label>
+              <input id="a1" type="number" inputmode="numeric" min="350" value="780" />
+            </div>
+            <div class="field">
+              <label data-key="f_a2">Aktif • t2 (ppm)</label>
+              <input id="a2" type="number" inputmode="numeric" min="350" value="980" />
+            </div>
+          </div>
+
+          <div class="pilot-actions">
+            <button class="mini-btn primary" id="savePilot" type="button" data-key="pilot_save">Kaydet</button>
+            <button class="mini-btn" id="resetPilot" type="button" data-key="pilot_reset">Varsayılan</button>
+            <button class="mini-btn" id="copyPilot" type="button" data-key="pilot_copy">Özet Metni</button>
+          </div>
+
+          <div class="subtle" id="pilotSummary" style="margin-top:12px;"></div>
         </div>
 
         <div class="card">
-          <h3 style="margin-top:0;" data-key="pilot_meta_title">Test Koşulları</h3>
-          <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.8; font-size:14px;">
-            <li><b data-key="meta_area_lbl">Sınıf Alanı:</b> <span id="metaArea">?? m²</span></li>
-            <li><b data-key="meta_volume_lbl">Hacim:</b> <span id="metaVolume">?? m³</span></li>
-            <li><b data-key="meta_students_lbl">Öğrenci Sayısı:</b> <span id="metaStudents">??</span></li>
-            <li><b data-key="meta_duration_lbl">Ders Süresi:</b> <span id="metaDuration">40 dk</span></li>
-            <li><b data-key="meta_start_lbl">Başlangıç CO₂:</b> <span id="metaStart">520 ppm</span></li>
-            <li><b data-key="meta_threshold_lbl">Eşik:</b> <span id="metaThreshold">800 ppm</span></li>
-          </ul>
-
-          <div style="margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08);">
-            <h3 style="margin:0 0 10px;" data-key="pilot_table_title">Ölçüm Tablosu</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th data-key="tbl_time">Zaman</th>
-                    <th data-key="tbl_control">Kontrol Günü (ppm)</th>
-                    <th data-key="tbl_active">Aktif Gün (ppm)</th>
-                    <th data-key="tbl_note">Not</th>
-                  </tr>
-                </thead>
-                <tbody id="pilotTableBody"></tbody>
-              </table>
-            </div>
+          <h3 data-key="pilot_table">Ölçüm Tablosu</h3>
+          <div class="table-wrap" style="margin-top:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th data-key="th_time">Zaman</th>
+                  <th data-key="th_control">Kontrol (ppm)</th>
+                  <th data-key="th_active">Aktif (ppm)</th>
+                  <th data-key="th_delta">Fark (Kontrol - Aktif)</th>
+                </tr>
+              </thead>
+              <tbody id="pilotTbody"></tbody>
+            </table>
           </div>
+
+          <div class="badge-row">
+            <span class="badge" id="endDiff"><span class="mini-dot"></span>t2 farkı: 0 ppm</span>
+            <span class="badge warn" id="overThreshold">Eşik üstü süre: 0</span>
+          </div>
+
+          <p class="subtle" style="margin-top:10px;" data-key="pilot_note">
+            İpucu: Zaman aralığını (0/20/40 dk yerine 0/15/30 dk gibi) kendi ders akışınıza göre ayarlayabilirsiniz.
+          </p>
         </div>
       </div>
     </section>
 
     <!-- COMPARISON -->
-    <section id="compare" class="container alt-bg">
-      <div class="kicker" data-key="compare_kicker">ÖZGÜNLÜK & KARŞILAŞTIRMA</div>
-      <h2 data-key="compare_title">Alternatiflere Göre BİYODUVAR</h2>
-      <p class="lead" data-key="compare_desc">
-        Jüri “neden siz?” sorusunun cevabını net görmek ister. Bu tablo puanı yükseltir.
+    <section class="container" id="compare">
+      <div class="kicker" data-key="cmp_kicker">KARŞILAŞTIRMA</div>
+      <h2 data-key="cmp_title">Alternatiflere Göre BİYODUVAR</h2>
+      <p class="lead" data-key="cmp_desc">
+        Piyasadaki farklı yaklaşımlarla aynı kriterlerde kıyas: ölçüm, aktif iyileştirme, sarf/atık ve eğitim etkisi.
       </p>
 
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th data-key="cmp_sol">Çözüm</th>
-                <th data-key="cmp_meas">Ölçüm</th>
-                <th data-key="cmp_act">Aktif İyileştirme</th>
-                <th data-key="cmp_waste">Atık / Sarf</th>
-                <th data-key="cmp_maint">Bakım</th>
-                <th data-key="cmp_edu">Eğitim/Farkındalık</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><b data-key="cmp_co2mon">CO₂ Monitörü</b></td>
-                <td>✅ CO₂</td>
-                <td>❌</td>
-                <td>❌</td>
-                <td data-key="cmp_low">Düşük</td>
-                <td data-key="cmp_mid">Orta</td>
-              </tr>
-              <tr>
-                <td><b data-key="cmp_pur">Hava Temizleyici (Filtreli)</b></td>
-                <td>⚠️ <span data-key="cmp_partial">Kısmi</span></td>
-                <td>✅</td>
-                <td>⚠️ <span data-key="cmp_filterwaste">Filtre atığı</span></td>
-                <td data-key="cmp_medhigh">Orta/Yüksek</td>
-                <td data-key="cmp_low">Düşük</td>
-              </tr>
-              <tr>
-                <td><b data-key="cmp_greenwall">Dekoratif Yeşil Duvar</b></td>
-                <td>❌</td>
-                <td>⚠️ <span data-key="cmp_passive">Pasif</span></td>
-                <td>❌</td>
-                <td data-key="cmp_mid">Orta</td>
-                <td data-key="cmp_mid">Orta</td>
-              </tr>
-              <tr>
-                <td><b style="color:var(--green)" data-key="cmp_biyoduvar">BİYODUVAR</b></td>
-                <td>✅ CO₂ + IAQ</td>
-                <td>✅ <span data-key="cmp_sensorfan">Sensör + Fan</span></td>
-                <td>✅ <span data-key="cmp_nowaste">Filtre atığı yok</span></td>
-                <td data-key="cmp_plannedlow">Planlı/Çok düşük (kit)</td>
-                <td>✅ <span data-key="cmp_veryhigh">Çok yüksek</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-          <span class="badge good" data-key="cmp_badge1">Ölç + İyileştir + Öğret</span>
-          <span class="badge" data-key="cmp_badge2">Okul odaklı güvenlik</span>
-          <span class="badge warn" data-key="cmp_badge3">Veriyle kanıtlanabilir KPI</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- BUILD (ADIM 2) -->
-    <section id="build" class="container">
-      <div class="kicker" data-key="build_kicker">ÜRETİLEBİLİRLİK</div>
-      <h2 data-key="build_title">Üretim & Montaj Planı</h2>
-      <p class="lead" data-key="build_desc">
-        Jüri için “prototiplenebilirlik” çok kritiktir. Aşağıda üretim adımları, BOM (malzeme listesi) ve okul için bakım planı yer alır.
-      </p>
-
-      <div class="grid">
-        <div class="card">
-          <div class="icon-box">🧩</div>
-          <h3 data-key="asm_title">Montaj (7 Adım)</h3>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="asm_desc">
-            Modüler tasarım: Panel gövdesi → hidroponik katman → su haznesi → sensörler → fanlar → test → devreye alma.
-          </p>
-          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px; font-size:13px; color:var(--muted); line-height:1.6;">
-            <div><b style="color:#fff;">1.</b> <span data-key="asm_s1">Panel gövdesi ve çerçeve hazırlanır.</span></div>
-            <div><b style="color:#fff;">2.</b> <span data-key="asm_s2">Keçe katmanlar ve raflar sabitlenir.</span></div>
-            <div><b style="color:#fff;">3.</b> <span data-key="asm_s3">Hazne, pompa ve hortum hattı kurulup sızdırmazlık kontrol edilir.</span></div>
-            <div><b style="color:#fff;">4.</b> <span data-key="asm_s4">MH-Z19B, MQ-135, DHT sensörleri konumlandırılır.</span></div>
-            <div><b style="color:#fff;">5.</b> <span data-key="asm_s5">Fanlar ve hava kanalı montajı yapılır.</span></div>
-            <div><b style="color:#fff;">6.</b> <span data-key="asm_s6">Arduino eşik değerleri yüklenir; kısa devre/izolasyon kontrol edilir.</span></div>
-            <div><b style="color:#fff;">7.</b> <span data-key="asm_s7">Su döngüsü + sensör okuma testi sonrası sınıfa alınır.</span></div>
+      <div class="card compare-card" style="margin-top:20px;">
+        <div class="compare-head">
+          <div>
+            <div class="title" data-key="cmp_head">Karşılaştırma Matrisi</div>
+            <div class="subtle" data-key="cmp_sub">Örnek marka referansları: Dyson, Philips, Xiaomi, IQAir vb.</div>
           </div>
+          <span class="pill"><span class="spark"></span><span data-key="cmp_pill">Okul Odaklı • Veri Odaklı</span></span>
         </div>
 
-        <div class="card">
-          <div class="icon-box">📦</div>
-          <h3 data-key="bom_title">BOM (Malzeme Listesi)</h3>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="bom_desc">
-            Aşağıdaki liste prototip içindir. Seri üretimde birim maliyet düşer; jüriye “hesaplanmış üretim” gösterir.
-          </p>
-          <div class="table-wrap" style="margin-top:14px;">
+        <div class="compare-body">
+          <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th data-key="bom_item">Parça</th>
-                  <th data-key="bom_qty">Adet</th>
-                  <th data-key="bom_notes">Not</th>
+                  <th data-key="cmp_sol">Çözüm</th>
+                  <th data-key="cmp_meas">Ölçüm</th>
+                  <th data-key="cmp_act">Aktif İyileştirme</th>
+                  <th data-key="cmp_waste">Sarf/Atık</th>
+                  <th data-key="cmp_maint">Bakım</th>
+                  <th data-key="cmp_edu">Eğitim Etkisi</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td><b style="color:#fff;">Arduino Nano</b></td><td>1</td><td data-key="bom_n1">Kontrol birimi</td></tr>
-                <tr><td><b style="color:#fff;">MH-Z19B (NDIR CO₂)</b></td><td>1</td><td data-key="bom_n2">ppm bazlı CO₂ ölçümü</td></tr>
-                <tr><td><b style="color:#fff;">MQ-135</b></td><td>1</td><td data-key="bom_n3">IAQ/VOC göstergesi</td></tr>
-                <tr><td><b style="color:#fff;">DHT11/DHT22</b></td><td>1</td><td data-key="bom_n4">Sıcaklık + nem</td></tr>
-                <tr><td><b style="color:#fff;">5V Dalgıç Pompa</b></td><td>1</td><td data-key="bom_n5">Kapalı döngü su basma</td></tr>
-                <tr><td><b style="color:#fff;">5V Fan</b></td><td>1-2</td><td data-key="bom_n6">Emiş / tahliye</td></tr>
-                <tr><td><b style="color:#fff;">Hidroponik Keçe</b></td><td>3 kat</td><td data-key="bom_n7">Topraksız ortam</td></tr>
-                <tr><td><b style="color:#fff;">Hortum + Bağlantılar</b></td><td>1 set</td><td data-key="bom_n8">Sızdırmaz akış</td></tr>
-                <tr><td><b style="color:#fff;">Su Haznesi</b></td><td>1</td><td data-key="bom_n9">Alt tank</td></tr>
-                <tr><td><b style="color:#fff;">Güç (USB/Batarya)</b></td><td>1</td><td data-key="bom_n10">Okul içi güvenli besleme</td></tr>
+                <tr>
+                  <td><b style="color:#fff;" data-key="cmp_co2">CO₂ Monitörü</b> <span class="subtle">(Aranet, Qingping vb.)</span></td>
+                  <td>✅ CO₂</td>
+                  <td>❌</td>
+                  <td>✅ (yok)</td>
+                  <td data-key="cmp_low">Düşük</td>
+                  <td data-key="cmp_mid">Orta</td>
+                </tr>
+                <tr>
+                  <td><b style="color:#fff;" data-key="cmp_pur">Hava Temizleyici</b> <span class="subtle">(Dyson, Philips, Xiaomi, IQAir…)</span></td>
+                  <td>⚠️ <span data-key="cmp_partial">kısmi</span></td>
+                  <td>✅</td>
+                  <td>⚠️ <span data-key="cmp_filter">filtre sarfı</span></td>
+                  <td data-key="cmp_med">Orta</td>
+                  <td data-key="cmp_low">Düşük</td>
+                </tr>
+                <tr>
+                  <td><b style="color:#fff;" data-key="cmp_vent">Havalandırma / Pencere</b></td>
+                  <td>❌</td>
+                  <td>✅</td>
+                  <td>✅ (yok)</td>
+                  <td data-key="cmp_low">Düşük</td>
+                  <td data-key="cmp_mid">Orta</td>
+                </tr>
+                <tr>
+                  <td><b style="color:var(--g)" data-key="cmp_bio">BİYODUVAR</b> <span class="subtle">(sensör + fan + rizosfer)</span></td>
+                  <td>✅ CO₂ + IAQ</td>
+                  <td>✅ <span data-key="cmp_control">kontrollü akış</span></td>
+                  <td>✅ <span data-key="cmp_nowaste">düşük atık</span></td>
+                  <td data-key="cmp_planned">Planlı / düşük</td>
+                  <td>✅ <span data-key="cmp_high">Yüksek</span></td>
+                </tr>
               </tbody>
             </table>
           </div>
 
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-            <span class="badge" data-key="bom_badge1">Düşük voltaj / okul uyumlu</span>
-            <span class="badge warn" data-key="bom_badge2">Kalibrasyon planı</span>
-            <span class="badge good" data-key="bom_badge3">Modüler üretim</span>
+          <div class="badge-row">
+            <span class="badge good"><span class="mini-dot"></span><span data-key="cmp_b1">Ölç + İyileştir</span></span>
+            <span class="badge"><span class="mini-dot"></span><span data-key="cmp_b2">Sınıf içi görünür süreç</span></span>
+            <span class="badge warn"><span class="mini-dot"></span><span data-key="cmp_b3">KPI ile raporlanabilir</span></span>
           </div>
-        </div>
-
-        <div class="card">
-          <div class="icon-box">🧼</div>
-          <h3 data-key="maint_title">Bakım Checklist (Okul)</h3>
-          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="maint_desc">
-            Haftalık bakım 10-15 dakika hedeflenir. İşaretlediğiniz kutular kaydedilir.
-          </p>
-
-          <div class="checklist" id="checklist">
-            <label class="check-item">
-              <input type="checkbox" data-check="c1">
-              <div class="txt"><b data-key="c1_t">Su seviyesi</b> — <span data-key="c1_d">Hazne %30 altına düşmesin; eksiltme varsa tamamla.</span></div>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" data-check="c2">
-              <div class="txt"><b data-key="c2_t">Keçe kontrolü</b> — <span data-key="c2_d">Aşırı yosun/koku var mı? Gerekirse durulama.</span></div>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" data-check="c3">
-              <div class="txt"><b data-key="c3_t">Pompa & hortum</b> — <span data-key="c3_d">Sızdırma, tıkanma, ses artışı var mı?</span></div>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" data-check="c4">
-              <div class="txt"><b data-key="c4_t">Sensör okuma</b> — <span data-key="c4_d">CO₂ / nem değerleri mantıklı mı? Aykırılık varsa not al.</span></div>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" data-check="c5">
-              <div class="txt"><b data-key="c5_t">Bitki sağlığı</b> — <span data-key="c5_d">Sararma/solma varsa besin oranını düzenle.</span></div>
-            </label>
-          </div>
-
-          <div class="check-actions">
-            <button class="mini-btn" onclick="resetChecklist()" data-key="btn_reset">Tümünü Sıfırla</button>
-            <button class="mini-btn" onclick="markAllChecklist()" data-key="btn_markall">Tümünü İşaretle</button>
-            <button class="mini-btn" onclick="exportChecklist()" data-key="btn_export">Kayıt Metni</button>
-          </div>
-
-          <div style="margin-top:12px; font-size:12px; color:var(--muted2);" id="checkExport"></div>
         </div>
       </div>
     </section>
 
-    <!-- DASHBOARD SIMULATION -->
-    <section id="demo" class="container">
-        <div class="kicker" data-key="dash_kicker">VERİ İZLEME</div>
-        <h2 data-key="dash_title" style="margin-bottom:30px;">Canlı Kontrol Paneli</h2>
-        <div class="card dash-grid">
-            <div>
-                <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-                    <h3 style="margin:0; font-family:'Rajdhani', sans-serif; font-size:20px;">BİYODUVAR v1.0</h3>
-                    <div class="status-badge" id="sysStatus" data-key="status_active" style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(72,187,120,0.15); border:1px solid rgba(72,187,120,0.3); border-radius:20px; color:var(--green); font-size:12px; font-weight:700;">SİSTEM AKTİF</div>
-                </div>
+    <!-- LIVE DASH -->
+    <section class="container" id="demo">
+      <div class="kicker" data-key="dash_kicker">CANLI PANEL</div>
+      <h2 data-key="dash_title">Anlık Simülasyon</h2>
+      <p class="lead" data-key="dash_desc">Bu bölüm demo amaçlıdır: CO₂ yükseldiğinde fan devreye girer ve değerleri aşağı çekmeye çalışır.</p>
 
-                <div class="kpi-row">
-                    <div class="kpi-card"><div class="kpi-val" id="valAir">410</div><div class="kpi-lbl">CO2 (PPM)</div></div>
-                    <div class="kpi-card"><div class="kpi-val" id="valTemp">24°C</div><div class="kpi-lbl" data-key="lbl_temp">SICAKLIK</div></div>
-                    <div class="kpi-card"><div class="kpi-val" id="valHum">55%</div><div class="kpi-lbl" data-key="lbl_hum">NEM</div></div>
-                </div>
-                <div style="background:#050505; height:180px; border-radius:12px; position:relative; overflow:hidden; border: 1px solid var(--stroke);">
-                    <canvas id="chartCanvas"></canvas>
-                </div>
-            </div>
-            <div style="border-left:1px solid var(--stroke); padding-left:24px; display:flex; flex-direction:column; justify-content:space-between;">
-                <div>
-                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;" data-key="lbl_fan">FAN DURUMU</div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <div id="fanIcon" style="font-size:28px; animation:spin 1s linear infinite; color:var(--muted);">☢</div>
-                        <span id="fanText" style="font-weight:700; color:var(--muted); font-size:18px; font-family:'Rajdhani';">BEKLEMEDE</span>
-                    </div>
-                </div>
-                <div style="margin-top:20px;">
-                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;" data-key="lbl_terminal">SİSTEM TERMİNALİ</div>
-                    <div class="console-log" id="consoleLog">
-                        <div class="log-line">> System initialized...</div>
-                    </div>
-                </div>
-                <button class="btn secondary" style="width:100%; font-size:13px; margin-top:20px; border-color:var(--wood); color:var(--wood);" onclick="runScenario()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
-            </div>
+      <div class="card" style="margin-top:18px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <h3 style="margin-bottom:0;">BİYODUVAR • v2026</h3>
+          <span class="status" id="statusPill"><span class="dot"></span><span data-key="dash_active">SİSTEM AKTİF</span></span>
         </div>
+
+        <div class="dash">
+          <div>
+            <div class="kpi-row">
+              <div class="kpi">
+                <div class="val" id="valCo2">410</div>
+                <div class="lbl">CO₂ (ppm)</div>
+              </div>
+              <div class="kpi">
+                <div class="val" id="valTemp">24°C</div>
+                <div class="lbl" data-key="dash_temp">Sıcaklık</div>
+              </div>
+              <div class="kpi">
+                <div class="val" id="valHum">55%</div>
+                <div class="lbl" data-key="dash_hum">Nem</div>
+              </div>
+            </div>
+
+            <div class="chart-mini">
+              <canvas id="dashChart"></canvas>
+            </div>
+
+            <div class="badge-row">
+              <span class="badge" id="fanBadge"><span class="mini-dot"></span><span data-key="fan_wait">Fan: beklemede</span></span>
+              <span class="badge warn" id="dashThr">Eşik: 800 ppm</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="console" id="console">
+              <div class="logline">> System initialized…</div>
+            </div>
+
+            <button class="btn secondary" id="scenarioBtn" type="button" style="justify-content:center;">
+              ⚡ <span data-key="scenario_btn">Sınıf Kalabalıklaşınca</span>
+            </button>
+
+            <div class="subtle" data-key="dash_note">
+              Not: Bu simülasyon, pilot test verilerinizle farklıdır. Pilot bölümünde gerçek ölçümlerinizi girerek KPI’yı hesaplayın.
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- TEAM -->
-    <section id="team" class="container alt-bg">
-        <div class="kicker" style="text-align:center;" data-key="team_kicker">PROJE EKİBİ</div>
-        <h2 style="text-align:center;" data-key="team_title">BİLİM KAŞİFLERİ</h2>
-        <div class="team-grid">
-            <div class="member"><div class="role" data-key="role_captain">KAPTAN</div><div class="name">Rüzgar Özmen</div></div>
-            <div class="member"><div class="role" data-key="role_design">TASARIM</div><div class="name">Poyraz Bulut</div></div>
-            <div class="member"><div class="role" data-key="role_idea">PROJE FİKRİ</div><div class="name">Archer Ege Webb</div></div>
-            <div class="member"><div class="role" data-key="role_pres">SUNUM</div><div class="name">Toprak Tekin</div></div>
-            <div class="member"><div class="role" data-key="role_prod">TASARIM & ÜRETİM</div><div class="name">Volkan Önsay</div></div>
-            <div class="member" style="border-color:var(--wood); background:rgba(141, 110, 99, 0.05);"><div class="role" style="color:var(--green);" data-key="role_advisor">DANIŞMAN</div><div class="name">Gamze Yaylaönü</div></div>
+    <section class="container" id="team">
+      <div class="kicker" data-key="team_kicker">EKİP</div>
+      <h2 data-key="team_title">Bilim Kaşifleri</h2>
+      <p class="lead" data-key="team_desc">Proje geliştirme, tasarım, üretim ve sunum süreçleri ekip içinde paylaşılmıştır.</p>
+
+      <div class="grid" style="margin-top:20px;">
+        <div class="card">
+          <div class="icon">🧭</div>
+          <h3 data-key="t1">Kaptan</h3>
+          <p class="muted">Rüzgar Özmen</p>
         </div>
-        <div style="margin-top: 60px; text-align: center;">
-             <p class="kicker" data-key="lbl_supporters">GELİŞTİRİCİ & DESTEKÇİLER</p>
-             <div class="logo-container">
-                 <img src="https://i.ibb.co/ks3kbRxr/ikk-LOGO-PNG.png" alt="İngiliz Kültür Koleji" class="footer-logo">
-                 <img src="https://i.ibb.co/3mqTvCvC/t3-logo-TR.jpg" alt="Teknofest" class="footer-logo">
-             </div>
-         </div>
+        <div class="card">
+          <div class="icon">🎛️</div>
+          <h3 data-key="t2">Tasarım</h3>
+          <p class="muted">Poyraz Bulut</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3 data-key="t3">Proje Fikri</h3>
+          <p class="muted">Archer Ege Webb</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🧪</div>
+          <h3 data-key="t4">Sunum</h3>
+          <p class="muted">Toprak Tekin</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧩</div>
+          <h3 data-key="t5">Üretim</h3>
+          <p class="muted">Volkan Önsay</p>
+        </div>
+        <div class="card">
+          <div class="icon">🎓</div>
+          <h3 data-key="t6">Danışman</h3>
+          <p class="muted">Gamze Yaylaönü</p>
+        </div>
+      </div>
     </section>
 
-    <footer style="text-align:center; padding:40px; border-top:1px solid var(--stroke); font-size:12px; color:var(--muted2);">
-        &copy; 2026 BİLİM KAŞİFLERİ - TEKNOFEST İNSANLIK YARARINA TEKNOLOJİLER
+    <footer>
+      <div>© 2026 BİYODUVAR • Bilim Kaşifleri</div>
+      <div style="margin-top:8px;">Opera • Chrome • Safari uyumlu • Mobil/Tablet/PC responsive</div>
     </footer>
-
   </main>
 
-  <style>
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    @keyframes rise { 0% { transform: translateY(0); opacity:0;} 50% { opacity:1; } 100% { transform: translateY(-40px); opacity:0;} }
-  </style>
-
   <script>
-    /* --- DATA & TRANSLATION --- */
-    const translations = {
-        tr: {
-            brand_html: "BİYO<span class='highlight'>DUVAR</span>",
-            nav_market: "Pazar & Analiz",
-            nav_tech: "Sistem Mimarisi",
-            nav_exp: "Deney Planı",
-            nav_pilot: "Pilot Test",
-            nav_compare: "Kıyas",
-            nav_build: "Üretim",
-            nav_demo: "Deney & Demo",
+    /* =========================
+       TRANSLATIONS (TR/EN)
+    ========================== */
+    const T = {
+      tr: {
+        nav_safety: "Güvenlik",
+        nav_tech: "Sistem",
+        nav_pilot: "Pilot Test",
+        nav_compare: "Karşılaştırma",
+        nav_demo: "Canlı Panel",
+        nav_team: "Ekip",
 
-            tag_school: "Özel İngiliz Kültür Koleji",
-            tag_project: "Teknofest 2026 İnsanlık Yararına Teknoloji",
-            hero_title: "Duvarlar Artık<br><span style='color:var(--green)'>Nefes Alıyor</span>",
-            hero_desc: "BİYODUVAR; kapalı okul ve ofis ortamlarındaki 'Hasta Bina Sendromunu' bitki tabanlı aktif filtreleme ile çözen, sensör kontrollü yeni nesil bir ekosistemdir.",
-            btn_explore: "Projeyi İncele",
-            btn_demo: "Canlı Simülasyon",
+        tag_school: "Özel İngiliz Kültür Koleji",
+        tag_topic: "İnsanlık Yararına Teknoloji • 2026",
+        hero_kicker: "SENSOR • BITKI • AKTIF FILTRELEME",
+        hero_title: "Duvarlar Artık<br><span style='color:var(--g)'>Nefes Alıyor</span>",
+        hero_desc: "BİYODUVAR; sınıf ve ofis gibi kapalı alanlarda CO₂ ve hava kalitesi takibini yapan, eşik aşıldığında hava akışını bitki kök bölgesine yönlendirerek “aktif” iyileştirme sağlayan akıllı bir duvar modülüdür.",
+        cta_pilot: "Pilot Testi Aç",
+        cta_demo: "Canlı Panel",
+        badge_1: "Düşük voltaj • okul uyumlu",
+        badge_2: "Topraksız • düşük koku riski",
+        badge_3: "Veri odaklı KPI",
+        hint_click: "Detaylar için (+) noktalarına tıklayın",
 
-            safe_kicker: "NEDEN BİYODUVAR?",
-            safe_title: "Sınıflar İçin Güvenli Tasarım",
-            safe_1_title: "Düşük Voltaj (5V)",
-            safe_1_desc: "Tüm elektronik bileşenler USB voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.",
-            safe_2_title: "Topraksız Sistem",
-            safe_2_desc: "Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, mantar ve kötü koku oluşumu tamamen engellenir.",
-            safe_3_title: "Sızdırmaz Kapalı Döngü",
-            safe_3_desc: "Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.",
+        safe_kicker: "GÜVENLİ TASARIM",
+        safe_title: "Sınıf İçin Uygun Mimari",
+        safe_desc: "Topraksız sistem, kapalı su döngüsü ve düşük voltaj yaklaşımı ile kullanım güvenliği hedeflenir.",
+        safe_1_t: "5V Düşük Voltaj",
+        safe_1_d: "Tüm bileşenler USB seviyesinde çalışır. Elektriksel riskleri azaltmak için yalıtım ve kablo yönetimi uygulanır.",
+        safe_2_t: "Topraksız (Keçe) Katman",
+        safe_2_d: "Hidroponik keçe, toprak kaynaklı kir ve taşıma risklerini azaltır. Düzenli bakım ile koku ve birikim kontrol edilir.",
+        safe_3_t: "Kapalı Su Döngüsü",
+        safe_3_d: "Su haznesi kapalı sistemdir. Sızdırmaz bağlantılar ve taşma payı ile kontrollü kullanım hedeflenir.",
 
-            tech_kicker: "TEKNİK ALTYAPI",
-            tech_1_title: "Hibrit Sensör Ağı",
-            tech_1_desc: "Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.",
-            tech_3_title: "Otomasyon & MCU",
-            tech_3_desc: "Arduino Nano, verileri anlık işleyerek eşik aşıldığında tahliye fanlarını otomatik devreye sokar.",
-            tech_5_title: "Çoklu Güç Kaynağı",
-            tech_5_desc: "Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve USB adaptörü hibrid olarak çalışır.",
+        tech_kicker: "SİSTEM MİMARİSİ",
+        tech_title: "Sensör + Fan + Rizosfer",
+        tech_desc: "CO₂ ve hava kalitesi verisi, eşik durumlarında hava akışını yönetmek için kullanılır. Hava, bitki kök bölgesine yönlendirilerek “aktif” etki hedeflenir.",
+        tech_1_t: "NDIR CO₂ + IAQ Sensörü",
+        tech_1_d: "CO₂ ppm ölçümü için NDIR sensör; genel hava kalitesi için IAQ/VOC sensörüyle desteklenir.",
+        tech_2_t: "Otomasyon Mantığı",
+        tech_2_d: "Eşik aşıldığında fanlar devreye girer; hava akışı kök bölgesine zorlanır. Log ve grafik ile süreç izlenir.",
+        tech_3_t: "Enerji Seçenekleri",
+        tech_3_d: "USB/Adaptör + batarya senaryolarına uygun yapı. Güneş paneli destekli kullanım kurgulanabilir.",
+        calc_t: "Etki Mantığı",
+        calc_d: "Aktif hava akışı ile kök bölgesindeki biyolojik filtreleme (rizosfer) alanının etkinliği artırılır.",
+        calc_note: "Not: Değerler ortama göre değişir. Pilot test ekranındaki girişlerle anlık sonuç görebilirsiniz.",
+        badge_active: "AKTİF",
 
-            calc_title: "Hesaplamalar & Verim",
-            calc_desc: "1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik etki yaratır.",
-            calc_co2: "Yıllık CO2 Azaltımı Hedefi:",
-            calc_oxy: "Tahmini O2 Üretimi:",
+        pilot_kicker: "PİLOT TEST",
+        pilot_title: "Değerleri Girin • Anlık KPI Görün",
+        pilot_desc: "Aşağıdaki alanlara kontrol günü ve BİYODUVAR aktifken ölçtüğünüz değerleri yazın. Grafik, tablo ve iyileşme yüzdesi otomatik hesaplanır.",
+        pilot_chart: "CO₂ Zaman Grafiği",
+        f_time0: "Zaman 0 (dk)",
+        f_time1: "Zaman 1 (dk)",
+        f_time2: "Zaman 2 (dk)",
+        f_threshold: "CO₂ Eşik (ppm)",
+        f_c0: "Kontrol • t0 (ppm)",
+        f_c1: "Kontrol • t1 (ppm)",
+        f_c2: "Kontrol • t2 (ppm)",
+        f_a0: "Aktif • t0 (ppm)",
+        f_a1: "Aktif • t1 (ppm)",
+        f_a2: "Aktif • t2 (ppm)",
+        pilot_save: "Kaydet",
+        pilot_reset: "Varsayılan",
+        pilot_copy: "Özet Metni",
+        pilot_table: "Ölçüm Tablosu",
+        th_time: "Zaman",
+        th_control: "Kontrol (ppm)",
+        th_active: "Aktif (ppm)",
+        th_delta: "Fark (Kontrol - Aktif)",
+        pilot_note: "İpucu: Zaman aralığını (0/20/40 dk yerine 0/15/30 dk gibi) kendi ders akışınıza göre ayarlayabilirsiniz.",
 
-            market_kicker: "TİCARİLEŞME POTANSİYELİ",
-            market_title: "Pazar Analizi & Gelir Modeli",
-            mkt_1_title: "Hedef Kitle",
-            mkt_1_desc: "İlk etapta okullar, kreşler ve etüt merkezleri. Ardından 'Hasta Bina Sendromu' yaşayan plaza ve ofisler.",
-            mkt_2_title: "Rekabet Avantajı",
-            mkt_2_desc: "Hava temizleyiciler gibi filtre atığı çıkarmaz. Salt dekoratif yeşil duvarlardan farklı olarak sensörlü 'aktif' temizlik yapar.",
-            mkt_3_title: "Maliyet & Gelir",
-            mkt_3_desc: "Prototip maliyeti ~3550 TL. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile gelir hedeflenir.",
+        cmp_kicker: "KARŞILAŞTIRMA",
+        cmp_title: "Alternatiflere Göre BİYODUVAR",
+        cmp_desc: "Piyasadaki farklı yaklaşımlarla aynı kriterlerde kıyas: ölçüm, aktif iyileştirme, sarf/atık ve eğitim etkisi.",
+        cmp_head: "Karşılaştırma Matrisi",
+        cmp_sub: "Örnek marka referansları: Dyson, Philips, Xiaomi, IQAir vb.",
+        cmp_pill: "Okul Odaklı • Veri Odaklı",
+        cmp_sol: "Çözüm",
+        cmp_meas: "Ölçüm",
+        cmp_act: "Aktif İyileştirme",
+        cmp_waste: "Sarf/Atık",
+        cmp_maint: "Bakım",
+        cmp_edu: "Eğitim Etkisi",
+        cmp_co2: "CO₂ Monitörü",
+        cmp_pur: "Hava Temizleyici",
+        cmp_vent: "Havalandırma / Pencere",
+        cmp_bio: "BİYODUVAR",
+        cmp_partial: "kısmi",
+        cmp_filter: "filtre sarfı",
+        cmp_control: "kontrollü akış",
+        cmp_nowaste: "düşük atık",
+        cmp_low: "Düşük",
+        cmp_mid: "Orta",
+        cmp_med: "Orta",
+        cmp_planned: "Planlı / düşük",
+        cmp_high: "Yüksek",
+        cmp_b1: "Ölç + İyileştir",
+        cmp_b2: "Sınıf içi görünür süreç",
+        cmp_b3: "KPI ile raporlanabilir",
 
-            exp_kicker: "BİLİMSEL YÖNTEM",
-            exp_title: "Uygulama ve Deney Planı",
-            exp_desc: "Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.",
-            exp_s1_title: "Ortam Belirleme",
-            exp_s1_desc: "Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.",
-            exp_s2_title: "Kontrol Ölçümü",
-            exp_s2_desc: "Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.",
-            exp_s3_title: "Aktif Ölçüm",
-            exp_s3_desc: "Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.",
-            exp_s4_title: "Başarı Kriteri (KPI)",
-            exp_s4_desc: "40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.",
+        dash_kicker: "CANLI PANEL",
+        dash_title: "Anlık Simülasyon",
+        dash_desc: "Bu bölüm demo amaçlıdır: CO₂ yükseldiğinde fan devreye girer ve değerleri aşağı çekmeye çalışır.",
+        dash_active: "SİSTEM AKTİF",
+        dash_temp: "Sıcaklık",
+        dash_hum: "Nem",
+        scenario_btn: "Sınıf Kalabalıklaşınca",
+        dash_note: "Not: Bu simülasyon, pilot test verilerinizle farklıdır. Pilot bölümünde gerçek ölçümlerinizi girerek KPI’yı hesaplayın.",
+        fan_wait: "Fan: beklemede",
 
-            pilot_kicker: "KANIT & VERİ",
-            pilot_title: "Pilot Test Sonuçları (Örnek Şablon)",
-            pilot_desc: "Jürinin en çok puan verdiği bölüm: Aynı sınıfta “Kontrol Günü” ve “Aktif Gün” ölçümünü tablo ve grafikle kanıtlamak. Aşağıdaki veriler şablondur; kendi ölçümünüzle değiştirip ekran görüntüsü ekleyin.",
-            pilot_chart_title: "CO₂ Değişimi (Kontrol vs Aktif)",
-            pilot_tip: "*İpucu: “Sınıf m² / öğrenci sayısı / havalandırma durumu” bilgisini altına eklemek jüri puanını artırır.",
-            pilot_meta_title: "Test Koşulları",
-            pilot_table_title: "Ölçüm Tablosu",
-            meta_area_lbl: "Sınıf Alanı:",
-            meta_volume_lbl: "Hacim:",
-            meta_students_lbl: "Öğrenci Sayısı:",
-            meta_duration_lbl: "Ders Süresi:",
-            meta_start_lbl: "Başlangıç CO₂:",
-            meta_threshold_lbl: "Eşik:",
-            tbl_time: "Zaman",
-            tbl_control: "Kontrol Günü (ppm)",
-            tbl_active: "Aktif Gün (ppm)",
-            tbl_note: "Not",
+        team_kicker: "EKİP",
+        team_title: "Bilim Kaşifleri",
+        team_desc: "Proje geliştirme, tasarım, üretim ve sunum süreçleri ekip içinde paylaşılmıştır.",
+        t1: "Kaptan",
+        t2: "Tasarım",
+        t3: "Proje Fikri",
+        t4: "Sunum",
+        t5: "Üretim",
+        t6: "Danışman",
 
-            compare_kicker: "ÖZGÜNLÜK & KARŞILAŞTIRMA",
-            compare_title: "Alternatiflere Göre BİYODUVAR",
-            compare_desc: "Jüri “neden siz?” sorusunun cevabını net görmek ister. Bu tablo puanı yükseltir.",
-            cmp_sol: "Çözüm",
-            cmp_meas: "Ölçüm",
-            cmp_act: "Aktif İyileştirme",
-            cmp_waste: "Atık / Sarf",
-            cmp_maint: "Bakım",
-            cmp_edu: "Eğitim/Farkındalık",
-            cmp_co2mon: "CO₂ Monitörü",
-            cmp_pur: "Hava Temizleyici (Filtreli)",
-            cmp_greenwall: "Dekoratif Yeşil Duvar",
-            cmp_biyoduvar: "BİYODUVAR",
-            cmp_low: "Düşük",
-            cmp_mid: "Orta",
-            cmp_medhigh: "Orta/Yüksek",
-            cmp_partial: "Kısmi",
-            cmp_filterwaste: "Filtre atığı",
-            cmp_passive: "Pasif",
-            cmp_sensorfan: "Sensör + Fan",
-            cmp_nowaste: "Filtre atığı yok",
-            cmp_plannedlow: "Planlı/Çok düşük (kit)",
-            cmp_veryhigh: "Çok yüksek",
-            cmp_badge1: "Ölç + İyileştir + Öğret",
-            cmp_badge2: "Okul odaklı güvenlik",
-            cmp_badge3: "Veriyle kanıtlanabilir KPI",
+        modal_solar_t: "Güneş Paneli",
+        modal_solar_d: "Enerji verimliliği için panel destekli kullanım kurgulanabilir. Bulutlu günler için USB/Batarya yedek senaryosu planlanır.",
+        modal_sensors_t: "Sensör Bloğu",
+        modal_sensors_d: "NDIR CO₂ sensörü ppm değerini okur. IAQ/VOC sensörü ortam kalitesini destekleyici olarak izler.",
+        modal_cleanair_t: "Çıkış Havası",
+        modal_cleanair_d: "Kök bölgesinden geçen hava üst bölümden geri verilir. Amaç: hava akışını biyolojik filtreleme bölgesine taşımak.",
+        modal_plants_t: "Bitki Modülü",
+        modal_plants_d: "Dikey modülde farklı bitkiler yetiştirilebilir. Görünür süreç, çevre ve üretim farkındalığı sağlar.",
+        modal_felt_t: "Hidroponik Keçe",
+        modal_felt_d: "Keçe katman suyu tutar ve kökleri destekler. Bakım planıyla birikim kontrol edilir.",
+        modal_fan_t: "Aktif Fan",
+        modal_fan_d: "Eşik aşıldığında fan devreye girer ve havayı kök bölgesine yönlendirir. Bu, “pasif” etkiye göre süreci hızlandırır.",
+        modal_water_t: "Su Haznesi",
+        modal_water_d: "Kapalı döngü hazne ve pompa hattı. Sızdırmaz bağlantılar ve taşma payı ile güvenli kullanım hedeflenir."
+      },
 
-            build_kicker: "ÜRETİLEBİLİRLİK",
-            build_title: "Üretim & Montaj Planı",
-            build_desc: "Jüri için “prototiplenebilirlik” çok kritiktir. Aşağıda üretim adımları, BOM (malzeme listesi) ve okul için bakım planı yer alır.",
+      en: {
+        nav_safety: "Safety",
+        nav_tech: "System",
+        nav_pilot: "Pilot",
+        nav_compare: "Comparison",
+        nav_demo: "Live Panel",
+        nav_team: "Team",
 
-            asm_title: "Montaj (7 Adım)",
-            asm_desc: "Modüler tasarım: Panel gövdesi → hidroponik katman → su haznesi → sensörler → fanlar → test → devreye alma.",
-            asm_s1: "Panel gövdesi ve çerçeve hazırlanır.",
-            asm_s2: "Keçe katmanlar ve raflar sabitlenir.",
-            asm_s3: "Hazne, pompa ve hortum hattı kurulup sızdırmazlık kontrol edilir.",
-            asm_s4: "MH-Z19B, MQ-135, DHT sensörleri konumlandırılır.",
-            asm_s5: "Fanlar ve hava kanalı montajı yapılır.",
-            asm_s6: "Arduino eşik değerleri yüklenir; kısa devre/izolasyon kontrol edilir.",
-            asm_s7: "Su döngüsü + sensör okuma testi sonrası sınıfa alınır.",
+        tag_school: "British Culture College",
+        tag_topic: "Humanity Tech • 2026",
+        hero_kicker: "SENSOR • PLANT • ACTIVE FILTERING",
+        hero_title: "Walls Are Now<br><span style='color:var(--g)'>Breathing</span>",
+        hero_desc: "BIOWALL is a smart wall module that tracks CO₂ and air quality in enclosed spaces. When thresholds are exceeded, it redirects airflow through the plant root zone to provide “active” improvement.",
+        cta_pilot: "Open Pilot",
+        cta_demo: "Live Panel",
+        badge_1: "Low voltage • school-friendly",
+        badge_2: "Soilless • reduced odor risk",
+        badge_3: "Data-driven KPI",
+        hint_click: "Click (+) points for details",
 
-            bom_title: "BOM (Malzeme Listesi)",
-            bom_desc: "Aşağıdaki liste prototip içindir. Seri üretimde birim maliyet düşer; jüriye “hesaplanmış üretim” gösterir.",
-            bom_item: "Parça",
-            bom_qty: "Adet",
-            bom_notes: "Not",
-            bom_n1: "Kontrol birimi",
-            bom_n2: "ppm bazlı CO₂ ölçümü",
-            bom_n3: "IAQ/VOC göstergesi",
-            bom_n4: "Sıcaklık + nem",
-            bom_n5: "Kapalı döngü su basma",
-            bom_n6: "Emiş / tahliye",
-            bom_n7: "Topraksız ortam",
-            bom_n8: "Sızdırmaz akış",
-            bom_n9: "Alt tank",
-            bom_n10: "Okul içi güvenli besleme",
-            bom_badge1: "Düşük voltaj / okul uyumlu",
-            bom_badge2: "Kalibrasyon planı",
-            bom_badge3: "Modüler üretim",
+        safe_kicker: "SAFE DESIGN",
+        safe_title: "Classroom-Suitable Architecture",
+        safe_desc: "Soilless structure, closed-loop water flow, and low-voltage approach target safer operation.",
+        safe_1_t: "5V Low Voltage",
+        safe_1_d: "All components run at USB level. Insulation and cable management help reduce electrical risks.",
+        safe_2_t: "Soilless (Felt) Layer",
+        safe_2_d: "Hydroponic felt reduces soil-borne mess and transfer risks. Regular maintenance controls odor and buildup.",
+        safe_3_t: "Closed Water Loop",
+        safe_3_d: "Closed reservoir design with leak-proof connections and overflow headroom for controlled usage.",
 
-            maint_title: "Bakım Checklist (Okul)",
-            maint_desc: "Haftalık bakım 10-15 dakika hedeflenir. İşaretlediğiniz kutular kaydedilir.",
-            c1_t: "Su seviyesi",
-            c1_d: "Hazne %30 altına düşmesin; eksiltme varsa tamamla.",
-            c2_t: "Keçe kontrolü",
-            c2_d: "Aşırı yosun/koku var mı? Gerekirse durulama.",
-            c3_t: "Pompa & hortum",
-            c3_d: "Sızdırma, tıkanma, ses artışı var mı?",
-            c4_t: "Sensör okuma",
-            c4_d: "CO₂ / nem değerleri mantıklı mı? Aykırılık varsa not al.",
-            c5_t: "Bitki sağlığı",
-            c5_d: "Sararma/solma varsa besin oranını düzenle.",
-            btn_reset: "Tümünü Sıfırla",
-            btn_markall: "Tümünü İşaretle",
-            btn_export: "Kayıt Metni",
+        tech_kicker: "SYSTEM ARCHITECTURE",
+        tech_title: "Sensor + Fan + Rhizosphere",
+        tech_desc: "CO₂ and air-quality data drive airflow control. Air is pushed through the plant root zone for an “active” effect.",
+        tech_1_t: "NDIR CO₂ + IAQ Sensor",
+        tech_1_d: "NDIR for CO₂ ppm; IAQ/VOC sensor as supportive air-quality signal.",
+        tech_2_t: "Automation Logic",
+        tech_2_d: "When thresholds are exceeded, fans engage and force airflow through the root zone. Logs and charts visualize the process.",
+        tech_3_t: "Power Options",
+        tech_3_d: "USB/adapter + battery scenarios. Solar-assisted usage can be designed.",
+        calc_t: "Effect Logic",
+        calc_d: "Active airflow increases the effectiveness of biological filtration around the roots (rhizosphere).",
+        calc_note: "Note: Results vary by room. Use the Pilot section to input real measurements and see KPI instantly.",
+        badge_active: "ACTIVE",
 
-            dash_kicker: "VERİ İZLEME",
-            dash_title: "Canlı Kontrol Paneli",
-            status_active: "SİSTEM AKTİF",
-            lbl_temp: "SICAKLIK",
-            lbl_hum: "NEM",
-            lbl_fan: "FAN DURUMU",
-            lbl_terminal: "SİSTEM TERMİNALİ",
-            btn_crowd: "⚡ Sınıf Kalabalıklaşınca",
+        pilot_kicker: "PILOT",
+        pilot_title: "Enter Values • See KPI Live",
+        pilot_desc: "Enter your measured values for the control day and the active BIOWALL day. The chart, table and improvement percent update instantly.",
+        pilot_chart: "CO₂ Timeline Chart",
+        f_time0: "Time 0 (min)",
+        f_time1: "Time 1 (min)",
+        f_time2: "Time 2 (min)",
+        f_threshold: "CO₂ Threshold (ppm)",
+        f_c0: "Control • t0 (ppm)",
+        f_c1: "Control • t1 (ppm)",
+        f_c2: "Control • t2 (ppm)",
+        f_a0: "Active • t0 (ppm)",
+        f_a1: "Active • t1 (ppm)",
+        f_a2: "Active • t2 (ppm)",
+        pilot_save: "Save",
+        pilot_reset: "Default",
+        pilot_copy: "Summary Text",
+        pilot_table: "Measurement Table",
+        th_time: "Time",
+        th_control: "Control (ppm)",
+        th_active: "Active (ppm)",
+        th_delta: "Diff (Control - Active)",
+        pilot_note: "Tip: You can set times to match your class flow (e.g., 0/15/30 instead of 0/20/40).",
 
-            team_kicker: "PROJE EKİBİ",
-            team_title: "BİLİM KAŞİFLERİ",
-            lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
-            role_captain: "KAPTAN",
-            role_design: "TASARIM",
-            role_idea: "PROJE FİKRİ",
-            role_pres: "SUNUM",
-            role_prod: "TASARIM & ÜRETİM",
-            role_advisor: "DANIŞMAN",
-            lbl_click: "SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN",
+        cmp_kicker: "COMPARISON",
+        cmp_title: "BIOWALL vs Alternatives",
+        cmp_desc: "Compare approaches across the same criteria: measurement, active improvement, consumables/waste and education impact.",
+        cmp_head: "Comparison Matrix",
+        cmp_sub: "Example brand refs: Dyson, Philips, Xiaomi, IQAir, etc.",
+        cmp_pill: "School-Focused • Data-Focused",
+        cmp_sol: "Solution",
+        cmp_meas: "Measurement",
+        cmp_act: "Active Improvement",
+        cmp_waste: "Consumables/Waste",
+        cmp_maint: "Maintenance",
+        cmp_edu: "Education Impact",
+        cmp_co2: "CO₂ Monitor",
+        cmp_pur: "Air Purifier",
+        cmp_vent: "Ventilation / Window",
+        cmp_bio: "BIOWALL",
+        cmp_partial: "partial",
+        cmp_filter: "filter consumables",
+        cmp_control: "controlled airflow",
+        cmp_nowaste: "low waste",
+        cmp_low: "Low",
+        cmp_mid: "Medium",
+        cmp_med: "Medium",
+        cmp_planned: "Planned / low",
+        cmp_high: "High",
+        cmp_b1: "Measure + Improve",
+        cmp_b2: "Visible in class",
+        cmp_b3: "KPI-reportable",
 
-            // Expanded Modal Data
-            modal_solar_title: "Güneş Paneli",
-            modal_solar_desc: "Sistem, enerji verimliliği için panel desteklidir. Okul içi bulutlu günler için USB/Batarya yedeklemesi bulunur.",
-            modal_sensors_title: "Gerçekçi Sensör Ağı",
-            modal_sensors_desc: "Kesin CO2 ppm değerini NDIR tabanlı MH-Z19B sensörü okur. MQ-135 ise genel sınıf havasını (VOC) kontrol eder.",
-            modal_cleanair_title: "Temiz Hava Çıkışı",
-            modal_cleanair_desc: "Bitkilerin kök bölgesindeki mikroorganizmalar (Rizosfer) tarafından filtrelenen temiz hava, en üst kısımdan sınıfa geri verilir.",
-            modal_plants_title: "Yenilebilir Bitkiler",
-            modal_plants_desc: "Dikey tarım modülünde Maydanoz, Roka gibi bitkiler yetiştirilir. Üretim bilinci aşılanır.",
-            modal_felt_title: "Topraksız Keçe",
-            modal_felt_desc: "Su tutma kapasitesi yüksek özel keçeler bitki köklerine yataklık eder. Toprak olmadığı için okulda böcek ve koku yapmaz.",
-            modal_fan_title: "Aktif Emiş Fanı",
-            modal_fan_desc: "Kirli hava dipten emilerek doğrudan köklere (fitoremediasyon alanına) zorlanır. Filtreleme hızı 3 kat artar.",
-            modal_water_title: "Sızdırmaz Pompa",
-            modal_water_desc: "5V dalgıç pompa suyu üst rafa basar. Keçelerden süzülen su döngüyü tamamlar. Kapalı sistem zemine su sızmasını önler."
-        },
-        en: {
-            brand_html: "BIO<span class='highlight'>WALL</span>",
-            nav_market: "Market & Analysis",
-            nav_tech: "Architecture",
-            nav_exp: "Test Plan",
-            nav_pilot: "Pilot Data",
-            nav_compare: "Comparison",
-            nav_build: "Build",
-            nav_demo: "Demo & Test",
+        dash_kicker: "LIVE PANEL",
+        dash_title: "Real-time Simulation",
+        dash_desc: "Demo only: when CO₂ rises, the fan engages and tries to bring it down.",
+        dash_active: "SYSTEM ACTIVE",
+        dash_temp: "Temperature",
+        dash_hum: "Humidity",
+        scenario_btn: "When Class Gets Crowded",
+        dash_note: "Note: This simulation differs from your pilot data. Use the Pilot section for real KPI.",
+        fan_wait: "Fan: standby",
 
-            tag_school: "British Culture College",
-            tag_project: "Teknofest 2026 Humanity Tech",
-            hero_title: "Walls Are Now<br><span style='color:var(--green)'>Breathing</span>",
-            hero_desc: "BIOWALL is a sensor-controlled smart ecosystem that solves 'Sick Building Syndrome' in classrooms through active plant-based filtering.",
-            btn_explore: "Explore Project",
-            btn_demo: "Live Simulation",
+        team_kicker: "TEAM",
+        team_title: "Science Explorers",
+        team_desc: "Development, design, build and presentation tasks are shared within the team.",
+        t1: "Captain",
+        t2: "Design",
+        t3: "Project Idea",
+        t4: "Presentation",
+        t5: "Production",
+        t6: "Advisor",
 
-            safe_kicker: "WHY BIOWALL?",
-            safe_title: "Safe Design for Classrooms",
-            safe_1_title: "Low Voltage (5V)",
-            safe_1_desc: "All components run on USB voltage. Zero risk of electric shock for children.",
-            safe_2_title: "Soilless System",
-            safe_2_desc: "Hydroponic felt eliminates soil-borne bugs, mold, and bad odors entirely.",
-            safe_3_title: "Leak-proof Loop",
-            safe_3_desc: "Water circulates in a closed chamber, preventing classroom spills and mold.",
-
-            tech_kicker: "TECHNICAL INFRASTRUCTURE",
-            tech_1_title: "Hybrid Sensor Net",
-            tech_1_desc: "Uses <b>NDIR CO2 Sensor (MH-Z19B)</b> for precise carbon reading and <b>MQ-135</b> for general Air Quality (VOC).",
-            tech_3_title: "Automation & MCU",
-            tech_3_desc: "Arduino Nano processes data and triggers exhaust fans automatically when thresholds are crossed.",
-            tech_5_title: "Multi-Power Source",
-            tech_5_desc: "Designed for indoor use; operates on a hybrid of Solar Panel, Battery, and USB adapter.",
-
-            calc_title: "Calculations & Efficiency",
-            calc_desc: "1 m² leaf area absorbs 5-20g CO2 daily. Our ~0.5 m² active panel acts like 1.5 m² due to <b>Rhizosphere ventilation and active fans</b> (3x efficiency).",
-            calc_co2: "Annual CO2 Reduction Target:",
-            calc_oxy: "Est. O2 Production:",
-
-            market_kicker: "COMMERCIALIZATION",
-            market_title: "Market Analysis & Revenue",
-            mkt_1_title: "Target Audience",
-            mkt_1_desc: "Initially schools, kindergartens. Then plazas and offices experiencing 'Sick Building Syndrome'.",
-            mkt_2_title: "Competitive Edge",
-            mkt_2_desc: "No filter waste like classic purifiers. Unlike purely decorative green walls, it does 'active' measured cleaning.",
-            mkt_3_title: "Cost & Revenue",
-            mkt_3_desc: "Prototype ~3550 TL. Mass production cuts cost by 40%. Revenue from device sales + monthly maintenance kit subscriptions.",
-
-            exp_kicker: "SCIENTIFIC METHOD",
-            exp_title: "Testing & Experiment Plan",
-            exp_desc: "Control test procedure designed to verify our project's impact in schools.",
-            exp_s1_title: "Environment",
-            exp_s1_desc: "An average classroom is selected. Class duration fixed at 40 mins.",
-            exp_s2_title: "Control Measure",
-            exp_s2_desc: "Day 1: BIOWALL off (no fans), CO2 ppm recorded at 0 and 40 mins.",
-            exp_s3_title: "Active Measure",
-            exp_s3_desc: "Day 2: Panel active, fan airflow engaged, measured at the same times.",
-            exp_s4_title: "Success KPI",
-            exp_s4_desc: "Proving a 20% improvement in CO2 concentration at min 40 compared to the control group.",
-
-            pilot_kicker: "EVIDENCE & DATA",
-            pilot_title: "Pilot Test Results (Template)",
-            pilot_desc: "Highest scoring part: prove impact with 'Control Day' vs 'Active Day' in the same classroom. Values below are placeholders—replace with real measurements.",
-            pilot_chart_title: "CO₂ Change (Control vs Active)",
-            pilot_tip: "*Tip: Add classroom area, number of students, and ventilation condition to increase judge trust.",
-            pilot_meta_title: "Test Conditions",
-            pilot_table_title: "Measurement Table",
-            meta_area_lbl: "Area:",
-            meta_volume_lbl: "Volume:",
-            meta_students_lbl: "Students:",
-            meta_duration_lbl: "Duration:",
-            meta_start_lbl: "Start CO₂:",
-            meta_threshold_lbl: "Threshold:",
-            tbl_time: "Time",
-            tbl_control: "Control Day (ppm)",
-            tbl_active: "Active Day (ppm)",
-            tbl_note: "Note",
-
-            compare_kicker: "NOVELTY & COMPARISON",
-            compare_title: "BIOWALL vs Alternatives",
-            compare_desc: "Judges want a clear answer to 'why you?'. This table boosts score.",
-            cmp_sol: "Solution",
-            cmp_meas: "Measurement",
-            cmp_act: "Active Improvement",
-            cmp_waste: "Waste/Consumables",
-            cmp_maint: "Maintenance",
-            cmp_edu: "Education/Awareness",
-            cmp_co2mon: "CO₂ Monitor",
-            cmp_pur: "Air Purifier (Filter)",
-            cmp_greenwall: "Decor Green Wall",
-            cmp_biyoduvar: "BIOWALL",
-            cmp_low: "Low",
-            cmp_mid: "Medium",
-            cmp_medhigh: "Med/High",
-            cmp_partial: "Partial",
-            cmp_filterwaste: "Filter waste",
-            cmp_passive: "Passive",
-            cmp_sensorfan: "Sensor + Fan",
-            cmp_nowaste: "No filter waste",
-            cmp_plannedlow: "Planned/Very low (kit)",
-            cmp_veryhigh: "Very high",
-            cmp_badge1: "Measure + Improve + Teach",
-            cmp_badge2: "School-safe design",
-            cmp_badge3: "Data-proven KPI",
-
-            build_kicker: "MANUFACTURABILITY",
-            build_title: "Build & Assembly Plan",
-            build_desc: "Prototypability is critical for judges. Here are assembly steps, BOM, and classroom maintenance plan.",
-
-            asm_title: "Assembly (7 Steps)",
-            asm_desc: "Modular design: Frame → hydro layer → water tank → sensors → fans → test → deploy.",
-            asm_s1: "Prepare frame and body.",
-            asm_s2: "Fix felt layers and shelves.",
-            asm_s3: "Install tank, pump and tubing; leak test.",
-            asm_s4: "Place MH-Z19B, MQ-135, DHT sensors.",
-            asm_s5: "Install fans and airflow path.",
-            asm_s6: "Upload thresholds; check isolation and shorts.",
-            asm_s7: "Run water + sensor tests, then place in class.",
-
-            bom_title: "BOM (Bill of Materials)",
-            bom_desc: "Prototype list. Unit cost drops in mass production; shows computed manufacturing to judges.",
-            bom_item: "Part",
-            bom_qty: "Qty",
-            bom_notes: "Notes",
-            bom_n1: "Controller",
-            bom_n2: "CO₂ ppm reading",
-            bom_n3: "IAQ/VOC indicator",
-            bom_n4: "Temp + humidity",
-            bom_n5: "Closed-loop pumping",
-            bom_n6: "Intake / exhaust",
-            bom_n7: "Soilless medium",
-            bom_n8: "Sealed flow",
-            bom_n9: "Bottom tank",
-            bom_n10: "Safe indoor supply",
-            bom_badge1: "Low-voltage / school-safe",
-            bom_badge2: "Calibration plan",
-            bom_badge3: "Modular build",
-
-            maint_title: "Maintenance Checklist (School)",
-            maint_desc: "Target weekly maintenance: 10–15 minutes. Checkboxes are saved.",
-            c1_t: "Water level",
-            c1_d: "Do not go below 30%; top up if needed.",
-            c2_t: "Felt check",
-            c2_d: "Any algae/odor? Rinse if required.",
-            c3_t: "Pump & tubing",
-            c3_d: "Leaks, clogs, unusual noise?",
-            c4_t: "Sensor readings",
-            c4_d: "CO₂/humidity reasonable? Note anomalies.",
-            c5_t: "Plant health",
-            c5_d: "Yellowing/wilting? Adjust nutrients.",
-            btn_reset: "Reset all",
-            btn_markall: "Mark all",
-            btn_export: "Log text",
-
-            dash_kicker: "DATA MONITORING",
-            dash_title: "Live Control Panel",
-            status_active: "SYSTEM ACTIVE",
-            lbl_temp: "TEMP",
-            lbl_hum: "HUM",
-            lbl_fan: "FAN STATUS",
-            lbl_terminal: "SYSTEM TERMINAL",
-            btn_crowd: "⚡ Class Crowded",
-
-            team_kicker: "PROJECT TEAM",
-            team_title: "SCIENCE EXPLORERS",
-            lbl_supporters: "DEVELOPER & SUPPORTERS",
-            role_captain: "CAPTAIN",
-            role_design: "DESIGN",
-            role_idea: "PROJECT IDEA",
-            role_pres: "PRESENTATION",
-            role_prod: "DESIGN & PRODUCTION",
-            role_advisor: "ADVISOR",
-            lbl_click: "CLICK ON (+) ICONS TO EXPLORE THE SYSTEM",
-
-            modal_solar_title: "Solar Panel",
-            modal_solar_desc: "Panel supported for energy efficiency. Includes USB/Battery backup for cloudy days indoors.",
-            modal_sensors_title: "Realistic Sensor Net",
-            modal_sensors_desc: "NDIR-based MH-Z19B reads precise CO2 ppm. MQ-135 monitors general classroom air (VOC).",
-            modal_cleanair_title: "Clean Air Output",
-            modal_cleanair_desc: "Clean air, filtered by microorganisms in the root zone (Rhizosphere), is released back into the room from the top.",
-            modal_plants_title: "Edible Plants",
-            modal_plants_desc: "Plants like Parsley and Arugula are grown. Instills production awareness.",
-            modal_felt_title: "Soilless Felt",
-            modal_felt_desc: "Special felts bed the roots. No soil means no bugs or odors in the school.",
-            modal_fan_title: "Active Intake Fan",
-            modal_fan_desc: "Dirty air is forced directly into the roots (phytoremediation area). Filtration speed increases 3x.",
-            modal_water_title: "Leak-proof Pump",
-            modal_water_desc: "5V submersible pump pushes water up. Closed loop prevents floor spills."
-        }
+        modal_solar_t: "Solar Panel",
+        modal_solar_d: "Solar-assisted operation can be designed. USB/Battery backup can cover cloudy indoor days.",
+        modal_sensors_t: "Sensor Block",
+        modal_sensors_d: "NDIR CO₂ reads ppm. IAQ/VOC sensor provides supportive air-quality indication.",
+        modal_cleanair_t: "Air Output",
+        modal_cleanair_d: "Air passing through the root zone is returned from the top section. Goal: route airflow into the biological filtration region.",
+        modal_plants_t: "Plant Module",
+        modal_plants_d: "Various plants can be used. The visible process supports environmental & production awareness.",
+        modal_felt_t: "Hydroponic Felt",
+        modal_felt_d: "Felt holds water and supports roots. Maintenance plan controls buildup.",
+        modal_fan_t: "Active Fan",
+        modal_fan_d: "When thresholds are exceeded, the fan forces airflow through the root zone, accelerating the process vs passive setups.",
+        modal_water_t: "Water Reservoir",
+        modal_water_d: "Closed-loop tank and pump line. Leak-proof connections with overflow headroom support safer use."
+      }
     };
 
-    let currentLang = 'tr';
-    const langBtn = document.getElementById('langToggle');
+    let lang = "tr";
+    const langToggle = document.getElementById("langToggle");
+    const langToggle2 = document.getElementById("langToggle2");
 
-    langBtn.addEventListener('click', () => {
-        currentLang = currentLang === 'tr' ? 'en' : 'tr';
-        updateLanguage();
-        // pilot chart labels + badges redraw
-        drawPilotChart();
-        renderPilotTable();
-        updateChecklistTexts();
+    function setLang(next){
+      lang = next;
+      document.querySelectorAll("[data-key]").forEach(el=>{
+        const k = el.getAttribute("data-key");
+        if(T[lang][k]) el.innerHTML = T[lang][k];
+      });
+      langToggle.textContent = (lang === "tr") ? "TR | EN" : "EN | TR";
+      langToggle2.textContent = langToggle.textContent;
+      document.getElementById("drawerSub").textContent = (lang === "tr") ? "Menü" : "Menu";
+      // Update dynamic labels
+      updatePilotUI();
+      updateDashThresholdLabel();
+      updateLcdFromDash();
+    }
+
+    langToggle.addEventListener("click", ()=> setLang(lang === "tr" ? "en" : "tr"));
+    langToggle2.addEventListener("click", ()=> setLang(lang === "tr" ? "en" : "tr"));
+
+    /* =========================
+       Drawer
+    ========================== */
+    const overlay = document.getElementById("drawerOverlay");
+    const drawer = document.getElementById("drawer");
+    const hamburger = document.getElementById("hamburger");
+    const drawerClose = document.getElementById("drawerClose");
+    const jumpTop = document.getElementById("jumpTop");
+
+    function openDrawer(){
+      document.documentElement.classList.add("drawer-open");
+      document.body.classList.add("drawer-open");
+    }
+    function closeDrawer(){
+      document.documentElement.classList.remove("drawer-open");
+      document.body.classList.remove("drawer-open");
+    }
+    hamburger.addEventListener("click", openDrawer);
+    overlay.addEventListener("click", closeDrawer);
+    drawerClose.addEventListener("click", closeDrawer);
+    jumpTop.addEventListener("click", ()=> { closeDrawer(); window.scrollTo({top:0, behavior:"smooth"}); });
+
+    document.querySelectorAll(".drawerLink").forEach(a=>{
+      a.addEventListener("click", ()=> closeDrawer());
     });
 
-    function updateLanguage() {
-        const elements = document.querySelectorAll('[data-key]');
-        elements.forEach(el => {
-            const key = el.getAttribute('data-key');
-            if(translations[currentLang][key]) {
-                el.innerHTML = translations[currentLang][key];
-            }
-        });
-        langBtn.textContent = currentLang === 'tr' ? 'TR | EN' : 'EN | TR';
+    document.getElementById("brandHome").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
+
+    /* =========================
+       Plants
+    ========================== */
+    function fillPlants(rowId){
+      const row = document.getElementById(rowId);
+      for(let i=0;i<4;i++){
+        const p = document.createElement("div");
+        p.className = "plant";
+        p.innerHTML = `<div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div>`;
+        row.appendChild(p);
+      }
     }
+    ["row1","row2","row3"].forEach(fillPlants);
 
-    /* --- INITIALIZE VISUALS --- */
-    function initPlants() {
-        const rows = [document.getElementById('row1'), document.getElementById('row2'), document.getElementById('row3')];
-        rows.forEach(row => {
-            for(let i=0; i<4; i++) {
-                const div = document.createElement('div');
-                div.className = 'plant-visual';
-                div.innerHTML = `<div class="leaf" style="transform:rotate(-20deg); left:5px; height:18px"></div>
-                                 <div class="leaf" style="transform:rotate(0deg); left:14px; height:24px; bottom:2px"></div>
-                                 <div class="leaf" style="transform:rotate(20deg); right:5px; height:18px"></div>`;
-                row.appendChild(div);
-            }
-        });
-    }
-    initPlants();
+    /* =========================
+       Modal
+    ========================== */
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalClose = document.getElementById("modalClose");
+    const mIcon = document.getElementById("mIcon");
+    const mTitle = document.getElementById("mTitle");
+    const mDesc = document.getElementById("mDesc");
 
-    /* --- MODAL LOGIC --- */
-    const modal = document.getElementById('infoModal');
-    const mTitle = document.getElementById('mTitle');
-    const mDesc = document.getElementById('mDesc');
-    const mIcon = document.getElementById('mIcon');
-
-    const icons = {
-        solar: '☀️',
-        sensors: '📡',
-        cleanair: '💨',
-        plants: '🥗',
-        felt: '🧽',
-        fan: '☢️',
-        water: '💧'
+    const modalMap = {
+      solar: { icon:"☀️", t:"modal_solar_t", d:"modal_solar_d" },
+      sensors:{ icon:"📡", t:"modal_sensors_t", d:"modal_sensors_d" },
+      cleanair:{ icon:"💨", t:"modal_cleanair_t", d:"modal_cleanair_d" },
+      plants:{ icon:"🌿", t:"modal_plants_t", d:"modal_plants_d" },
+      felt:{ icon:"🧽", t:"modal_felt_t", d:"modal_felt_d" },
+      fan:{ icon:"🌀", t:"modal_fan_t", d:"modal_fan_d" },
+      water:{ icon:"💧", t:"modal_water_t", d:"modal_water_d" }
     };
 
-    window.openInfo = function(type) {
-        mTitle.setAttribute('data-key', `modal_${type}_title`);
-        mDesc.setAttribute('data-key', `modal_${type}_desc`);
-        mIcon.innerText = icons[type];
-        mTitle.innerText = translations[currentLang][`modal_${type}_title`];
-        mDesc.innerText = translations[currentLang][`modal_${type}_desc`];
-        modal.classList.add('active');
+    function openModal(key){
+      const m = modalMap[key];
+      if(!m) return;
+      mIcon.textContent = m.icon;
+      mTitle.textContent = T[lang][m.t];
+      mDesc.textContent = T[lang][m.d];
+      modalOverlay.classList.add("active");
+      modalOverlay.setAttribute("aria-hidden","false");
+    }
+    function closeModal(){
+      modalOverlay.classList.remove("active");
+      modalOverlay.setAttribute("aria-hidden","true");
+    }
+    modalClose.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", (e)=>{ if(e.target === modalOverlay) closeModal(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+    document.querySelectorAll("[data-open]").forEach(btn=>{
+      btn.addEventListener("click", ()=> openModal(btn.getAttribute("data-open")));
+    });
+
+    /* =========================
+       Progress bar
+    ========================== */
+    const prog = document.getElementById("prog");
+    window.addEventListener("scroll", ()=>{
+      const doc = document.documentElement;
+      const sc = doc.scrollTop || document.body.scrollTop;
+      const max = (doc.scrollHeight - doc.clientHeight) || 1;
+      prog.style.width = `${Math.min(100, (sc / max) * 100)}%`;
+    });
+
+    /* =========================
+       Ambient particles
+    ========================== */
+    const air = document.getElementById("air");
+    const actx = air.getContext("2d", { alpha:true });
+    let W=0,H=0;
+    function resizeAir(){
+      W = air.width = window.innerWidth * (window.devicePixelRatio || 1);
+      H = air.height = window.innerHeight * (window.devicePixelRatio || 1);
+      air.style.width = window.innerWidth + "px";
+      air.style.height = window.innerHeight + "px";
+      actx.setTransform(1,0,0,1,0,0);
+    }
+    window.addEventListener("resize", resizeAir);
+    resizeAir();
+
+    const pr = window.devicePixelRatio || 1;
+    const parts = Array.from({length: 70}, ()=>({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      r: Math.random()*2.2 + 0.4,
+      s: Math.random()*0.55 + 0.12,
+      a: Math.random()*0.35 + 0.08
+    }));
+
+    function drawAir(){
+      actx.clearRect(0,0,W,H);
+      actx.save();
+      actx.scale(pr, pr);
+      for(const p of parts){
+        p.y -= p.s;
+        p.x += Math.sin((p.y*0.01)) * 0.15;
+        if(p.y < -10){ p.y = window.innerHeight + 10; p.x = Math.random()*window.innerWidth; }
+        actx.beginPath();
+        actx.fillStyle = `rgba(255,255,255,${p.a})`;
+        actx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        actx.fill();
+      }
+      actx.restore();
+      requestAnimationFrame(drawAir);
+    }
+    drawAir();
+
+    /* =========================
+       PILOT (interactive)
+    ========================== */
+    const pilotInputs = ["t0","t1","t2","thr","c0","c1","c2","a0","a1","a2"].reduce((acc,id)=>{
+      acc[id]=document.getElementById(id);
+      return acc;
+    },{});
+
+    const PILOT_KEY = "biyoduvar_pilot_v2026";
+
+    function getPilot(){
+      const data = {
+        t: [num(pilotInputs.t0.value), num(pilotInputs.t1.value), num(pilotInputs.t2.value)],
+        thr: num(pilotInputs.thr.value),
+        c: [num(pilotInputs.c0.value), num(pilotInputs.c1.value), num(pilotInputs.c2.value)],
+        a: [num(pilotInputs.a0.value), num(pilotInputs.a1.value), num(pilotInputs.a2.value)]
+      };
+      // sanitize times strictly increasing
+      if(data.t[1] <= data.t[0]) data.t[1] = data.t[0] + 1;
+      if(data.t[2] <= data.t[1]) data.t[2] = data.t[1] + 1;
+      return data;
     }
 
-    window.closeModal = function() { modal.classList.remove('active'); }
-    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
-
-    /* --- DASHBOARD LOGIC --- */
-    const valAir = document.getElementById('valAir');
-    const fanIcon = document.getElementById('fanIcon');
-    const fanText = document.getElementById('fanText');
-    const chartCanvas = document.getElementById('chartCanvas');
-    const consoleLog = document.getElementById('consoleLog');
-    const cctx = chartCanvas.getContext('2d');
-
-    function resizeCanvas(){
-        chartCanvas.width = chartCanvas.parentElement.offsetWidth;
-        chartCanvas.height = 180;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    let co2 = 410;
-    const history = Array(60).fill(410);
-    let isScenarioRunning = false;
-
-    function log(msg) {
-        const div = document.createElement('div');
-        div.className = 'log-line';
-        div.innerText = `> ${msg}`;
-        consoleLog.appendChild(div);
-        consoleLog.scrollTop = consoleLog.scrollHeight;
-        if(consoleLog.children.length > 6) consoleLog.removeChild(consoleLog.firstChild);
+    function setPilot(data){
+      pilotInputs.t0.value = data.t[0];
+      pilotInputs.t1.value = data.t[1];
+      pilotInputs.t2.value = data.t[2];
+      pilotInputs.thr.value = data.thr;
+      pilotInputs.c0.value = data.c[0];
+      pilotInputs.c1.value = data.c[1];
+      pilotInputs.c2.value = data.c[2];
+      pilotInputs.a0.value = data.a[0];
+      pilotInputs.a1.value = data.a[1];
+      pilotInputs.a2.value = data.a[2];
     }
 
-    function drawChart() {
-        const w = chartCanvas.width;
-        const h = chartCanvas.height;
-        cctx.clearRect(0,0,w,h);
-        cctx.strokeStyle = "rgba(255,255,255,0.05)";
-        cctx.beginPath(); cctx.moveTo(0, h/2); cctx.lineTo(w, h/2); cctx.stroke();
-
-        cctx.strokeStyle = co2 > 600 ? '#f56565' : '#48bb78';
-        cctx.lineWidth = 3;
-        cctx.beginPath();
-        const step = w / (history.length - 1);
-        history.forEach((val, i) => {
-            const y = h - ((val - 300) / 700) * h;
-            if(i===0) cctx.moveTo(0, y); else cctx.lineTo(i*step, y);
-        });
-        cctx.stroke();
+    function savePilot(){
+      const d = getPilot();
+      localStorage.setItem(PILOT_KEY, JSON.stringify(d));
+      renderPilot();
+      flashSummary(lang === "tr" ? "Kaydedildi." : "Saved.");
     }
 
-    function simulateLoop() {
-        if(isScenarioRunning) return;
-        co2 += (Math.random() * 8 - 4);
-        if(co2 < 400) co2 += 2;
+    function loadPilot(){
+      try{
+        const raw = localStorage.getItem(PILOT_KEY);
+        if(!raw) return false;
+        const d = JSON.parse(raw);
+        if(!d || !d.t || !d.c || !d.a) return false;
+        setPilot(d);
+        return true;
+      }catch(e){ return false; }
+    }
 
-        if(co2 > 550) {
-            co2 -= 5;
-            fanIcon.style.animationPlayState = 'running'; fanIcon.style.color = 'var(--red)';
-            if(fanText.innerText !== "AKTİF") { fanText.innerText = "AKTİF"; log(currentLang === 'tr' ? "CO2 arttı. Fanlar devrede." : "CO2 increased. Fans active."); }
-        } else {
-            fanIcon.style.animationPlayState = 'paused'; fanIcon.style.color = 'var(--muted)';
-            if(fanText.innerText !== "BEKLEMEDE") { fanText.innerText = "BEKLEMEDE"; }
+    function resetPilot(){
+      setPilot({
+        t:[0,20,40],
+        thr:800,
+        c:[520,980,1400],
+        a:[520,780,980]
+      });
+      localStorage.removeItem(PILOT_KEY);
+      renderPilot();
+      flashSummary(lang === "tr" ? "Varsayılanlar yüklendi." : "Defaults loaded.");
+    }
+
+    function num(v){
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    const pilotCanvas = document.getElementById("pilotChart");
+    const pctx = pilotCanvas.getContext("2d");
+
+    function resizeCanvasToBox(canvas){
+      const box = canvas.parentElement;
+      const dpr = window.devicePixelRatio || 1;
+      const w = box.clientWidth;
+      const h = box.clientHeight;
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      return { w, h, dpr };
+    }
+
+    function niceRange(minV, maxV){
+      if(maxV <= minV) return {min:minV-1, max:maxV+1};
+      const pad = (maxV - minV) * 0.12;
+      return {min: Math.max(0, minV - pad), max: maxV + pad};
+    }
+
+    function drawPilotChart(){
+      const d = getPilot();
+      const { w, h, dpr } = resizeCanvasToBox(pilotCanvas);
+      pctx.setTransform(1,0,0,1,0,0);
+      pctx.clearRect(0,0,pilotCanvas.width,pilotCanvas.height);
+      pctx.save();
+      pctx.scale(dpr, dpr);
+
+      const padL = 44, padR = 16, padT = 16, padB = 32;
+      const innerW = w - padL - padR;
+      const innerH = h - padT - padB;
+
+      const all = [...d.c, ...d.a, d.thr];
+      const mn = Math.min(...all);
+      const mx = Math.max(...all);
+      const rr = niceRange(mn, mx);
+
+      function X(i){
+        const tMin = d.t[0], tMax = d.t[2];
+        const tVal = d.t[i];
+        const p = (tVal - tMin) / ((tMax - tMin) || 1);
+        return padL + p * innerW;
+      }
+      function Y(v){
+        const p = (v - rr.min) / ((rr.max - rr.min) || 1);
+        return padT + (1 - p) * innerH;
+      }
+
+      // grid lines
+      pctx.strokeStyle = "rgba(255,255,255,0.06)";
+      pctx.lineWidth = 1;
+      for(let i=1;i<=3;i++){
+        const yy = padT + (innerH/4)*i;
+        pctx.beginPath();
+        pctx.moveTo(padL, yy);
+        pctx.lineTo(w - padR, yy);
+        pctx.stroke();
+      }
+
+      // threshold line
+      const yThr = Y(d.thr);
+      pctx.strokeStyle = "rgba(255,209,102,0.35)";
+      pctx.setLineDash([6,6]);
+      pctx.beginPath();
+      pctx.moveTo(padL, yThr);
+      pctx.lineTo(w - padR, yThr);
+      pctx.stroke();
+      pctx.setLineDash([]);
+
+      // axis labels
+      pctx.fillStyle = "rgba(244,246,255,0.55)";
+      pctx.font = "11px Montserrat";
+      pctx.fillText(`${Math.round(rr.max)} ppm`, 8, padT + 10);
+      pctx.fillText(`${Math.round(rr.min)} ppm`, 8, padT + innerH);
+
+      // x labels
+      pctx.fillStyle = "rgba(244,246,255,0.62)";
+      for(let i=0;i<3;i++){
+        const xx = X(i);
+        const label = `${d.t[i]} dk`;
+        pctx.fillText(label, xx - 12, h - 10);
+      }
+
+      // helper to draw line
+      function drawSeries(values, stroke, glow){
+        // glow
+        pctx.strokeStyle = glow;
+        pctx.lineWidth = 7;
+        pctx.globalAlpha = 0.22;
+        pctx.beginPath();
+        for(let i=0;i<3;i++){
+          const xx = X(i), yy = Y(values[i]);
+          if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy);
         }
-        valAir.innerText = Math.floor(co2);
-        history.push(co2); history.shift(); drawChart();
+        pctx.stroke();
+        pctx.globalAlpha = 1;
+
+        // main
+        pctx.strokeStyle = stroke;
+        pctx.lineWidth = 3.2;
+        pctx.beginPath();
+        for(let i=0;i<3;i++){
+          const xx = X(i), yy = Y(values[i]);
+          if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy);
+        }
+        pctx.stroke();
+
+        // points
+        for(let i=0;i<3;i++){
+          const xx = X(i), yy = Y(values[i]);
+          pctx.fillStyle = stroke;
+          pctx.beginPath();
+          pctx.arc(xx,yy,4.2,0,Math.PI*2);
+          pctx.fill();
+
+          pctx.fillStyle = "rgba(244,246,255,0.9)";
+          pctx.font = "11px Montserrat";
+          pctx.fillText(String(Math.round(values[i])), xx + 8, yy - 8);
+        }
+      }
+
+      drawSeries(d.c, "rgba(255,91,122,0.95)", "rgba(255,91,122,0.35)");
+      drawSeries(d.a, "rgba(72,187,120,0.95)", "rgba(72,187,120,0.35)");
+
+      pctx.restore();
     }
 
-    setInterval(simulateLoop, 800);
+    function computePilotMetrics(d){
+      const cRise = d.c[2] - d.c[0];
+      const aRise = d.a[2] - d.a[0];
+      const improve = (cRise > 0) ? Math.max(0, (cRise - aRise) / cRise) : 0;
 
-    /* --- SCENARIO EXECUTION --- */
-    function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
+      const endDiff = d.c[2] - d.a[2];
 
-    window.runScenario = async function() {
-        if(isScenarioRunning) return;
-        isScenarioRunning = true;
-        const btn = document.querySelector('button[onclick="runScenario()"]');
-        const originalBtnText = btn.innerText;
-        btn.disabled = true;
-        btn.innerText = currentLang === 'tr' ? "Simülasyon Sürüyor..." : "Simulation Running...";
+      // count times above threshold (simple check at points)
+      const cAbove = d.c.filter(v => v >= d.thr).length;
+      const aAbove = d.a.filter(v => v >= d.thr).length;
 
-        const langMap = {
-            tr: [
-                "⚠️ Sınıfta hareketlilik: CO2 yükseliyor...",
-                "📈 Karbon eşiği aşıldı (>800ppm)!",
-                "🚨 Mikrodenetleyici: Durum 'KÖTÜ' olarak güncellendi.",
-                "⚙️ FANLAR %100 güce alınıyor. Kirli hava emiliyor.",
-                "💧 POMPA devrede: Kök nemi dengeleniyor.",
-                "📉 Kök florası (Rizosfer) toksinleri parçalıyor...",
-                "✅ Hava kalitesi İYİ seviyeye düştü. Sistem beklemede."
-            ],
-            en: [
-                "⚠️ Motion detected: CO2 is rising...",
-                "📈 Carbon threshold exceeded (>800ppm)!",
-                "🚨 Microcontroller: Status updated to 'POOR'.",
-                "⚙️ FANS at 100% power. Dirty air intake active.",
-                "💧 PUMP active: Root humidity balancing.",
-                "📉 Root flora (Rhizosphere) breaking down toxins...",
-                "✅ Air quality dropped to GOOD. System on standby."
-            ]
-        };
-        const msgs = langMap[currentLang];
-
-        log(msgs[0]); await delay(3000);
-        log(msgs[1]);
-        for(let i=0; i<15; i++) {
-            co2 += 25 + Math.random()*15;
-            valAir.innerText = Math.floor(co2);
-            history.push(co2); history.shift(); drawChart();
-            await delay(250);
-        }
-
-        log(msgs[2]); await delay(2500);
-
-        fanIcon.style.animationPlayState = 'running';
-        fanIcon.style.color = 'var(--red)';
-        fanIcon.style.animationDuration = '0.2s';
-        fanText.innerText = "TURBO";
-        log(msgs[3]); await delay(4000);
-        log(msgs[4]); await delay(4000);
-        log(msgs[5]);
-
-        const steps = 30; const startCo2 = co2;
-        for(let i=0; i<steps; i++) {
-            co2 -= (startCo2 - 410) / steps;
-            co2 += (Math.random() * 6 - 3);
-            valAir.innerText = Math.floor(co2);
-            history.push(co2); history.shift(); drawChart();
-            await delay(300);
-        }
-
-        fanIcon.style.animationPlayState = 'paused';
-        fanIcon.style.color = 'var(--muted)';
-        fanIcon.style.animationDuration = '1s';
-        fanText.innerText = "BEKLEMEDE";
-        log(msgs[6]);
-
-        await delay(2000);
-        isScenarioRunning = false;
-        btn.disabled = false;
-        btn.innerText = originalBtnText;
+      return { cRise, aRise, improve, endDiff, cAbove, aAbove };
     }
-
-    /* --- PILOT EVIDENCE (Chart + Table) --- */
-    const pilotCanvas = document.getElementById('pilotChart');
-    let pilotCtx = null;
-
-    const pilotData = {
-      // Şablon değerler: KENDİ ÖLÇÜMÜNÜZLE DEĞİŞTİRİN
-      times: ["0 dk", "20 dk", "40 dk"],
-      control: [520, 980, 1400], // Kontrol Günü
-      active:  [520, 780, 980],  // Aktif Gün (BİYODUVAR açık)
-      note: ["Ders başlangıcı", "Sınıf dolu", "Ders sonu"]
-    };
 
     function renderPilotTable(){
-      const tb = document.getElementById('pilotTableBody');
-      if(!tb) return;
+      const d = getPilot();
+      const tb = document.getElementById("pilotTbody");
       tb.innerHTML = "";
-      for(let i=0;i<pilotData.times.length;i++){
-        const tr = document.createElement('tr');
+      for(let i=0;i<3;i++){
+        const tr = document.createElement("tr");
+        const delta = d.c[i] - d.a[i];
         tr.innerHTML = `
-          <td style="color:#fff; font-weight:600;">${pilotData.times[i]}</td>
-          <td>${pilotData.control[i]}</td>
-          <td style="color:var(--green); font-weight:700;">${pilotData.active[i]}</td>
-          <td>${pilotData.note[i] || ""}</td>
+          <td style="color:#fff; font-weight:800;">${d.t[i]} dk</td>
+          <td>${Math.round(d.c[i])}</td>
+          <td style="color: rgba(72,187,120,0.95); font-weight:900;">${Math.round(d.a[i])}</td>
+          <td style="color:${delta>=0 ? "rgba(72,187,120,0.95)" : "rgba(255,91,122,0.95)"}; font-weight:900;">${delta>=0?"+":""}${Math.round(delta)}</td>
         `;
         tb.appendChild(tr);
       }
     }
 
-    function resizePilotCanvas(){
-      if(!pilotCanvas) return;
-      pilotCanvas.width = pilotCanvas.parentElement.offsetWidth;
-      pilotCanvas.height = 220;
-      pilotCtx = pilotCanvas.getContext('2d');
+    function updatePilotUI(){
+      const d = getPilot();
+      const m = computePilotMetrics(d);
+
+      const bControl = document.getElementById("bControl");
+      const bActive = document.getElementById("bActive");
+      const bImprove = document.getElementById("bImprove");
+      const endDiffEl = document.getElementById("endDiff");
+      const overThr = document.getElementById("overThreshold");
+
+      bControl.textContent = (lang === "tr") ? `Kontrol: ${fmtRise(m.cRise)} ppm` : `Control: ${fmtRise(m.cRise)} ppm`;
+      bActive.textContent = (lang === "tr") ? `Aktif: ${fmtRise(m.aRise)} ppm` : `Active: ${fmtRise(m.aRise)} ppm`;
+
+      const pct = Math.round(m.improve * 100);
+      bImprove.innerHTML = `<span class="mini-dot"></span>${lang === "tr" ? "KPI" : "KPI"}: %${pct}`;
+
+      endDiffEl.innerHTML = `<span class="mini-dot"></span>${lang === "tr" ? `t2 farkı: ${Math.round(m.endDiff)} ppm` : `t2 diff: ${Math.round(m.endDiff)} ppm`}`;
+
+      // threshold summary
+      overThr.textContent =
+        (lang === "tr")
+          ? `Eşik üstü nokta sayısı: Kontrol ${m.cAbove} • Aktif ${m.aAbove}`
+          : `Points above threshold: Control ${m.cAbove} • Active ${m.aAbove}`;
+
+      // keep tech threshold label synced
+      document.getElementById("co2ThresholdLbl").textContent = (lang === "tr") ? `Eşik: ${Math.round(d.thr)} ppm` : `Threshold: ${Math.round(d.thr)} ppm`;
+      updateDashThresholdLabel();
     }
 
-    function drawPilotChart(){
-      if(!pilotCtx) return;
-
-      const w = pilotCanvas.width;
-      const h = pilotCanvas.height;
-      pilotCtx.clearRect(0,0,w,h);
-
-      // grid
-      pilotCtx.strokeStyle = "rgba(255,255,255,0.06)";
-      pilotCtx.lineWidth = 1;
-      for(let i=1;i<=3;i++){
-        pilotCtx.beginPath();
-        pilotCtx.moveTo(0, (h/4)*i);
-        pilotCtx.lineTo(w, (h/4)*i);
-        pilotCtx.stroke();
-      }
-
-      const all = [...pilotData.control, ...pilotData.active];
-      const minV = Math.min(...all, 400);
-      const maxV = Math.max(...all, 1600);
-      const pad = 24;
-
-      const xStep = (w - pad*2) / (pilotData.times.length - 1);
-      const y = (val)=> {
-        const t = (val - minV) / (maxV - minV || 1);
-        return (h - pad) - t*(h - pad*2);
-      };
-
-      function line(values, stroke){
-        pilotCtx.strokeStyle = stroke;
-        pilotCtx.lineWidth = 3;
-        pilotCtx.beginPath();
-        values.forEach((v,i)=>{
-          const xx = pad + i*xStep;
-          const yy = y(v);
-          if(i===0) pilotCtx.moveTo(xx,yy);
-          else pilotCtx.lineTo(xx,yy);
-        });
-        pilotCtx.stroke();
-
-        pilotCtx.fillStyle = stroke;
-        values.forEach((v,i)=>{
-          const xx = pad + i*xStep;
-          const yy = y(v);
-          pilotCtx.beginPath();
-          pilotCtx.arc(xx,yy,4,0,Math.PI*2);
-          pilotCtx.fill();
-        });
-      }
-
-      line(pilotData.control, "#f56565");
-      line(pilotData.active, "#48bb78");
-
-      pilotCtx.fillStyle = "rgba(255,255,255,0.7)";
-      pilotCtx.font = "12px Montserrat";
-      pilotData.times.forEach((t,i)=>{
-        const xx = pad + i*xStep;
-        pilotCtx.fillText(t, xx-10, h-8);
-      });
-
-      const cStart = pilotData.control[0], cEnd = pilotData.control[pilotData.control.length-1];
-      const aStart = pilotData.active[0],  aEnd = pilotData.active[pilotData.active.length-1];
-      const controlRise = cEnd - cStart;
-      const activeRise = aEnd - aStart;
-      const improvement = controlRise > 0 ? Math.max(0, (controlRise - activeRise) / controlRise) : 0;
-
-      const b1 = document.getElementById('pilotBadge1');
-      const b2 = document.getElementById('pilotBadge2');
-      const b3 = document.getElementById('pilotBadge3');
-      if(b1) b1.textContent = (currentLang==='tr' ? `Kontrol: +${Math.round(controlRise)} ppm` : `Control: +${Math.round(controlRise)} ppm`);
-      if(b2) b2.textContent = (currentLang==='tr' ? `Aktif: +${Math.round(activeRise)} ppm` : `Active: +${Math.round(activeRise)} ppm`);
-      if(b3) b3.textContent = (currentLang==='tr' ? `KPI: %${Math.round(improvement*100)} iyileşme` : `KPI: ${Math.round(improvement*100)}% improvement`);
+    function fmtRise(x){
+      const v = Math.round(x);
+      return (v >= 0 ? "+" : "") + v;
     }
 
-    function initPilot(){
-      if(!pilotCanvas) return;
-      resizePilotCanvas();
+    function renderPilot(){
       renderPilotTable();
       drawPilotChart();
+      updatePilotUI();
+
+      // summary
+      const d = getPilot();
+      const m = computePilotMetrics(d);
+      const pct = Math.round(m.improve*100);
+      const summary =
+        (lang === "tr")
+          ? `Özet: Kontrol ${fmtRise(m.cRise)} ppm, Aktif ${fmtRise(m.aRise)} ppm • İyileşme: %${pct} • t2 farkı: ${Math.round(m.endDiff)} ppm • Eşik: ${Math.round(d.thr)} ppm`
+          : `Summary: Control ${fmtRise(m.cRise)} ppm, Active ${fmtRise(m.aRise)} ppm • Improvement: ${pct}% • t2 diff: ${Math.round(m.endDiff)} ppm • Threshold: ${Math.round(d.thr)} ppm`;
+      document.getElementById("pilotSummary").textContent = summary;
     }
 
-    window.addEventListener('resize', ()=>{
-      resizePilotCanvas();
-      drawPilotChart();
-    });
+    function flashSummary(text){
+      const el = document.getElementById("pilotSummary");
+      const prev = el.textContent;
+      el.textContent = text;
+      setTimeout(()=> { renderPilot(); }, 450);
+      setTimeout(()=> { el.textContent = prev; renderPilot(); }, 1200);
+    }
 
-    initPilot();
-
-    /* --- CHECKLIST (save to localStorage) --- */
-    const CHECK_KEY = "biyoduvar_checklist_v1";
-
-    function loadChecklist(){
+    document.getElementById("savePilot").addEventListener("click", savePilot);
+    document.getElementById("resetPilot").addEventListener("click", resetPilot);
+    document.getElementById("copyPilot").addEventListener("click", async ()=>{
+      const txt = document.getElementById("pilotSummary").textContent || "";
       try{
-        const saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}");
-        document.querySelectorAll('[data-check]').forEach(cb=>{
-          cb.checked = !!saved[cb.getAttribute('data-check')];
-        });
-      }catch(e){}
-    }
-
-    function saveChecklist(){
-      const obj = {};
-      document.querySelectorAll('[data-check]').forEach(cb=>{
-        obj[cb.getAttribute('data-check')] = cb.checked;
-      });
-      localStorage.setItem(CHECK_KEY, JSON.stringify(obj));
-    }
-
-    function updateChecklistTexts(){
-      // metinler data-key ile zaten değişiyor; burada sadece export alanını temizleyelim
-      const exp = document.getElementById('checkExport');
-      if(exp) exp.textContent = "";
-    }
-
-    document.addEventListener('change', (e)=>{
-      if(e.target && e.target.matches('[data-check]')) saveChecklist();
+        await navigator.clipboard.writeText(txt);
+        flashSummary(lang === "tr" ? "Kopyalandı." : "Copied.");
+      }catch(e){
+        flashSummary(lang === "tr" ? "Kopyalama desteklenmiyor." : "Clipboard not supported.");
+      }
     });
 
-    window.resetChecklist = function(){
-      document.querySelectorAll('[data-check]').forEach(cb=> cb.checked = false);
-      saveChecklist();
-      exportChecklist();
-    }
-
-    window.markAllChecklist = function(){
-      document.querySelectorAll('[data-check]').forEach(cb=> cb.checked = true);
-      saveChecklist();
-      exportChecklist();
-    }
-
-    window.exportChecklist = function(){
-      const exp = document.getElementById('checkExport');
-      if(!exp) return;
-
-      const items = [
-        {k:'c1', t: translations[currentLang].c1_t},
-        {k:'c2', t: translations[currentLang].c2_t},
-        {k:'c3', t: translations[currentLang].c3_t},
-        {k:'c4', t: translations[currentLang].c4_t},
-        {k:'c5', t: translations[currentLang].c5_t},
-      ];
-
-      const states = {};
-      document.querySelectorAll('[data-check]').forEach(cb=>{
-        states[cb.getAttribute('data-check')] = cb.checked;
+    Object.values(pilotInputs).forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        // live update
+        renderPilot();
       });
-
-      const done = items.filter(it => states[it.k]).map(it=>`✅ ${it.t}`);
-      const todo = items.filter(it => !states[it.k]).map(it=>`⬜ ${it.t}`);
-
-      const title = (currentLang==='tr') ? "Bakım Kaydı:" : "Maintenance Log:";
-      exp.textContent = `${title}  ${done.concat(todo).join("  |  ")}`;
-    }
-
-    loadChecklist();
-
-    /* --- PROGRESS BAR --- */
-    const prog = document.getElementById('prog');
-    window.addEventListener('scroll', ()=>{
-      const h = document.documentElement;
-      const sc = h.scrollTop || document.body.scrollTop;
-      const max = (h.scrollHeight - h.clientHeight) || 1;
-      prog.style.width = `${Math.min(100, (sc / max) * 100)}%`;
     });
 
-    /* --- AIR PARTICLES --- */
-    const air = document.getElementById('air'); const ctx = air.getContext('2d');
-    let W, H;
-    function resizeAir(){ W=air.width=window.innerWidth; H=air.height=window.innerHeight; }
-    window.addEventListener('resize', resizeAir); resizeAir();
-    const parts = Array.from({length:60}, ()=>({x:Math.random()*W, y:Math.random()*H, r:Math.random()*2, s:Math.random()*0.5+0.1}));
-    function drawAirLoop(){
-        ctx.clearRect(0,0,W,H); ctx.fillStyle = "rgba(255,255,255,0.2)";
-        parts.forEach(p=>{ p.y -= p.s; if(p.y<0) p.y=H; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); });
-        requestAnimationFrame(drawAirLoop);
+    window.addEventListener("resize", ()=>{
+      drawPilotChart();
+      drawDashChart();
+    });
+
+    // load saved pilot if exists
+    loadPilot();
+    renderPilot();
+
+    /* =========================
+       DASHBOARD SIM
+    ========================== */
+    const dashCanvas = document.getElementById("dashChart");
+    const dctx = dashCanvas.getContext("2d");
+
+    const valCo2 = document.getElementById("valCo2");
+    const valTemp = document.getElementById("valTemp");
+    const valHum = document.getElementById("valHum");
+    const consoleEl = document.getElementById("console");
+    const fanBadge = document.getElementById("fanBadge");
+    const dashThr = document.getElementById("dashThr");
+
+    let co2 = 410;
+    let temp = 24;
+    let hum = 55;
+    const hist = Array(70).fill(410);
+
+    function logLine(msg){
+      const div = document.createElement("div");
+      div.className = "logline";
+      div.textContent = `> ${msg}`;
+      consoleEl.appendChild(div);
+      if(consoleEl.children.length > 7) consoleEl.removeChild(consoleEl.firstChild);
     }
-    drawAirLoop();
+
+    function updateDashThresholdLabel(){
+      const d = getPilot();
+      dashThr.textContent = (lang === "tr") ? `Eşik: ${Math.round(d.thr)} ppm` : `Threshold: ${Math.round(d.thr)} ppm`;
+    }
+
+    function updateLcdFromDash(){
+      const lcdPpm = document.getElementById("lcdPpm");
+      const lcdStatus = document.getElementById("lcdStatus");
+      const thr = getPilot().thr;
+
+      lcdPpm.textContent = String(Math.round(co2));
+      const status = co2 < thr ? (lang === "tr" ? "İYİ" : "GOOD") : (lang === "tr" ? "YÜKSEK" : "HIGH");
+      lcdStatus.textContent = status;
+    }
+
+    function drawDashChart(){
+      const { w, h, dpr } = resizeCanvasToBox(dashCanvas);
+      dctx.setTransform(1,0,0,1,0,0);
+      dctx.clearRect(0,0,dashCanvas.width,dashCanvas.height);
+      dctx.save();
+      dctx.scale(dpr, dpr);
+
+      const padL = 12, padR = 12, padT = 12, padB = 12;
+      const iw = w - padL - padR;
+      const ih = h - padT - padB;
+
+      const minV = Math.min(...hist, 360);
+      const maxV = Math.max(...hist, 900);
+      const rr = niceRange(minV, maxV);
+
+      // grid
+      dctx.strokeStyle = "rgba(255,255,255,0.06)";
+      dctx.lineWidth = 1;
+      for(let i=1;i<=2;i++){
+        const yy = padT + (ih/3)*i;
+        dctx.beginPath();
+        dctx.moveTo(padL, yy);
+        dctx.lineTo(w - padR, yy);
+        dctx.stroke();
+      }
+
+      // line
+      const thr = getPilot().thr;
+      const isHigh = co2 >= thr;
+      dctx.strokeStyle = isHigh ? "rgba(255,91,122,0.95)" : "rgba(72,187,120,0.95)";
+      dctx.lineWidth = 3;
+      dctx.beginPath();
+      hist.forEach((v,i)=>{
+        const x = padL + (i/(hist.length-1))*iw;
+        const y = padT + (1 - (v - rr.min)/((rr.max - rr.min)||1)) * ih;
+        if(i===0) dctx.moveTo(x,y); else dctx.lineTo(x,y);
+      });
+      dctx.stroke();
+
+      // threshold line
+      const yThr = padT + (1 - (thr - rr.min)/((rr.max - rr.min)||1)) * ih;
+      dctx.strokeStyle = "rgba(255,209,102,0.30)";
+      dctx.setLineDash([6,6]);
+      dctx.beginPath();
+      dctx.moveTo(padL, yThr);
+      dctx.lineTo(w - padR, yThr);
+      dctx.stroke();
+      dctx.setLineDash([]);
+
+      dctx.restore();
+    }
+
+    let scenarioRunning = false;
+
+    function tickDash(){
+      const thr = getPilot().thr;
+
+      // base drift
+      co2 += (Math.random()*9 - 4.5);
+
+      // fan effect
+      const fanOn = co2 >= thr;
+      if(fanOn) co2 -= 7 + Math.random()*2;
+
+      // clamp
+      if(co2 < 380) co2 = 380 + Math.random()*4;
+
+      // temp/hum drift
+      temp += (Math.random()*0.28 - 0.14);
+      hum += (Math.random()*0.6 - 0.3);
+      temp = Math.max(18, Math.min(30, temp));
+      hum = Math.max(35, Math.min(70, hum));
+
+      hist.push(co2); hist.shift();
+
+      valCo2.textContent = String(Math.round(co2));
+      valTemp.textContent = `${Math.round(temp)}°C`;
+      valHum.textContent = `${Math.round(hum)}%`;
+
+      if(fanOn){
+        fanBadge.innerHTML = `<span class="mini-dot"></span>${lang === "tr" ? "Fan: aktif" : "Fan: active"}`;
+      }else{
+        fanBadge.innerHTML = `<span class="mini-dot"></span>${lang === "tr" ? "Fan: beklemede" : "Fan: standby"}`;
+      }
+
+      updateLcdFromDash();
+      drawDashChart();
+    }
+
+    setInterval(tickDash, 850);
+    drawDashChart();
+    updateDashThresholdLabel();
+    updateLcdFromDash();
+
+    const scenarioBtn = document.getElementById("scenarioBtn");
+    scenarioBtn.addEventListener("click", async ()=>{
+      if(scenarioRunning) return;
+      scenarioRunning = true;
+      scenarioBtn.disabled = true;
+
+      const thr = getPilot().thr;
+      logLine(lang === "tr" ? "Sınıf yoğunluğu artıyor…" : "Class occupancy increasing…");
+      await sleep(1300);
+
+      logLine(lang === "tr" ? `CO₂ yükseliyor (eşik: ${Math.round(thr)} ppm)` : `CO₂ rising (threshold: ${Math.round(thr)} ppm)`);
+      await sleep(1200);
+
+      // push CO2 high quickly
+      const target = Math.max(thr + 250, co2 + 280);
+      while(co2 < target){
+        co2 += 30 + Math.random()*15;
+        await sleep(140);
+      }
+      logLine(lang === "tr" ? "Eşik aşıldı. Fan devrede." : "Threshold exceeded. Fan engaged.");
+      await sleep(1400);
+
+      // let it recover
+      logLine(lang === "tr" ? "Hava akışı kök bölgesine yönlendirildi." : "Airflow routed through root zone.");
+      await sleep(1400);
+
+      logLine(lang === "tr" ? "Değerler düşüyor…" : "Values decreasing…");
+      await sleep(1700);
+
+      scenarioRunning = false;
+      scenarioBtn.disabled = false;
+    });
+
+    function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+    /* =========================
+       INIT language
+    ========================== */
+    setLang("tr");
   </script>
 </body>
 </html>
