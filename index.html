@@ -7,21 +7,20 @@
   <meta name="description" content="BİYODUVAR — Karbon Azaltıcı Akıllı Duvar Paneli. Bilim Kaşifleri Takımı - Teknofest 2026.">
   <title>BİYODUVAR | Bilim Kaşifleri</title>
 
-  <!-- Google Fonts: Montserrat & Rajdhani -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#1a202c; 
-      --bg-card:rgba(255,255,255,0.03);
+      --bg:#11151c; 
+      --bg-card:rgba(25, 30, 40, 0.7);
       --text:#f0f0f0;
-      --muted:rgba(255,255,255,.7);
-      --muted2:rgba(255,255,255,.5);
-      --stroke:rgba(255,255,255,.1);
+      --muted:rgba(255,255,255,.65);
+      --muted2:rgba(255,255,255,.45);
+      --stroke:rgba(255,255,255,.08);
       
-      /* Renk Paleti (Referans Görselden) */
       --green:#48bb78; 
       --green-lcd: #2ecc71;
       --wood:#8d6e63;
@@ -41,27 +40,27 @@
     body{
       margin:0;
       font-family:'Montserrat', sans-serif;
-      background: #0f1218;
+      background: var(--bg);
       background-image: 
-        radial-gradient(at 10% 10%, rgba(72,187,120,0.15) 0px, transparent 50%),
-        radial-gradient(at 90% 90%, rgba(66,153,225,0.10) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(72,187,120,0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(66,153,225,0.06) 0px, transparent 50%);
       color:var(--text);
       overflow-x:hidden;
       scroll-behavior:smooth;
       font-size: 16px;
     }
 
-    /* Ambient Effects */
+    /* Ambient */
     #air{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.6; }
     .progress{ position:fixed; top:0; left:0; width:100%; height:4px; background:transparent; z-index:1000; }
     .progress > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--green), var(--blue)); box-shadow:0 0 15px var(--green); transition: width 0.1s linear; }
 
-    /* Navigation */
+    /* Nav */
     .nav{
       position:fixed; top:20px; left:50%; transform:translateX(-50%); width:min(var(--max), calc(100% - 30px)); z-index:100;
       display:flex; align-items:center; justify-content:space-between; padding:10px 20px;
-      border:1px solid var(--stroke); background:rgba(15, 18, 24, 0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-      border-radius:99px; box-shadow:0 10px 30px rgba(0,0,0,.3);
+      border:1px solid var(--stroke); background:rgba(17, 21, 28, 0.85); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      border-radius:99px; box-shadow:0 10px 30px rgba(0,0,0,.5);
     }
     .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); white-space: nowrap; }
     .brand span.highlight { color: var(--green); }
@@ -76,262 +75,159 @@
     /* Layout */
     .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; position: relative; z-index: 1; }
     section{ padding:100px 0; }
-    .alt-bg { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02) 15%, rgba(255,255,255,0.02) 85%, transparent); }
+    .alt-bg { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01) 15%, rgba(255,255,255,0.01) 85%, transparent); }
 
     h1{ font-family: 'Rajdhani', sans-serif; margin:20px 0 20px; font-size:clamp(36px, 7vw, 76px); line-height:1.05; font-weight: 700; text-transform: uppercase; }
-    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(26px, 5vw, 42px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
+    h2{ font-family: 'Rajdhani', sans-serif; font-size:clamp(26px, 5vw, 38px); margin-bottom: 20px; line-height: 1.2; color: #fff; }
+    h3{ font-family: 'Rajdhani', sans-serif; font-size: 22px; color: #fff; margin-top:0; }
     .lead{ font-size:clamp(15px, 4vw, 19px); color:var(--muted); max-width:65ch; line-height: 1.6; font-weight: 300; }
     .kicker { color: var(--wood); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 10px; display: block; }
 
-    /* --- VISUAL PANEL (ECO-WALL SIMULATION) --- */
+    /* --- HERO & INTERACTIVE VISUAL --- */
     .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
-    /* Hero Padding Fix for Mobile Overlap */
     .heroGrid { padding-top: 150px; }
     
     .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); white-space: nowrap; }
     .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
 
-    .panel-wrapper { position: relative; margin: 40px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
-    
+    .panel-wrapper { position: relative; margin: 60px auto 0; width: 100%; max-width: 420px; perspective: 1000px; }
     .solar-panel {
-        position: absolute; top: 0px; right: -30px; width: 110px; height: 70px;
+        position: absolute; top: -15px; right: -30px; width: 110px; height: 70px;
         background: linear-gradient(135deg, #1a237e, #283593);
         border: 4px solid #90a4ae; border-radius: 6px;
-        transform: rotate(-12deg) skewX(-5deg); z-index: 0;
+        transform: rotate(-12deg) skewX(-5deg); z-index: 51;
         box-shadow: 10px 10px 20px rgba(0,0,0,0.6);
         display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 4px;
     }
     .solar-cell { background: rgba(255,255,255,0.15); width: 100%; height: 100%; border-radius: 1px; }
 
     .panel-visual {
-        position: relative; z-index: 2;
-        width: 100%; aspect-ratio: 3/4.5;
-        border: 12px solid var(--wood-frame);
-        border-radius: 12px 12px 6px 6px;
-        background: #212121;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+        position: relative; z-index: 2; width: 100%; aspect-ratio: 3/4.5;
+        border: 12px solid var(--wood-frame); border-radius: 12px 12px 6px 6px;
+        background: #212121; box-shadow: 0 40px 80px rgba(0,0,0,0.7);
         display: flex; flex-direction: column;
-        /* Dot pattern background */
-        background-image: radial-gradient(#333 1px, transparent 1px);
-        background-size: 10px 10px;
+        background-image: radial-gradient(#333 1px, transparent 1px); background-size: 10px 10px;
     }
-    
-    /* Roof Structure */
     .panel-visual::before {
         content: ''; position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-        border-left: 220px solid transparent; border-right: 220px solid transparent; border-bottom: 45px solid var(--wood-frame);
-        z-index: 2;
+        border-left: 220px solid transparent; border-right: 220px solid transparent; border-bottom: 45px solid var(--wood-frame); z-index: 2;
     }
 
-    /* Interactive Hotspots */
     .hotspot {
-        position: absolute; width: 28px; height: 28px;
-        background: #fff; border-radius: 50%;
+        position: absolute; width: 26px; height: 26px; background: #fff; border-radius: 50%;
         color: var(--wood-dark); font-weight: 800; font-size: 16px;
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 50;
-        box-shadow: 0 0 0 rgba(255,255,255, 0.5);
-        animation: pulse-white 2s infinite;
-        transition: transform 0.2s;
-        border: 2px solid var(--wood-dark);
-        -webkit-tap-highlight-color: transparent;
+        cursor: pointer; z-index: 60; box-shadow: 0 0 0 rgba(255,255,255, 0.4);
+        animation: pulse-white 2s infinite; transition: transform 0.2s;
+        border: 2px solid var(--wood-dark); -webkit-tap-highlight-color: transparent;
     }
-    .hotspot:hover, .hotspot:active { transform: scale(1.1); background: #f0f0f0; }
-    @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+    .hotspot:hover, .hotspot:active { transform: scale(1.15); background: #f0f0f0; }
+    @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-    /* Internal Components */
-    .section-header { 
-        height: 12%; background: #2d3436; border-bottom: 4px solid var(--wood-dark); 
-        padding: 10px; display: flex; align-items: center; justify-content: center; position: relative; 
-    }
-    
+    .section-header { height: 12%; background: #2d3436; border-bottom: 4px solid var(--wood-dark); padding: 10px; display: flex; align-items: center; justify-content: center; position: relative; }
     .lcd-display {
-        background: #000; border: 2px solid #555; border-radius: 4px;
-        padding: 5px 15px; width: 85%;
+        background: #000; border: 2px solid #555; border-radius: 4px; padding: 5px 15px; width: 85%;
         color: var(--green-lcd); font-family: monospace; font-weight: bold; font-size: 13px;
-        text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
-        display: flex; justify-content: space-between; align-items: center;
+        text-shadow: 0 0 5px rgba(46, 204, 113, 0.5); display: flex; justify-content: space-between; align-items: center;
     }
 
-    .section-grow { 
-        height: 68%; position: relative; 
-        display: flex; flex-direction: column; justify-content: space-evenly; 
-        padding-top: 10px;
-    }
-    
-    .shelf { 
-        height: 8px; background: var(--wood-dark); width: 100%; position: relative; margin-top: auto; 
-        box-shadow: 0 5px 10px rgba(0,0,0,0.5);
-    }
-    
-    /* Hydroponic Felt */
+    .section-grow { height: 68%; position: relative; display: flex; flex-direction: column; justify-content: space-evenly; padding-top: 10px; }
+    .shelf { height: 8px; background: var(--wood-dark); width: 100%; position: relative; margin-top: auto; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
     .felt-layer { 
-        position: absolute; bottom: 8px; left: 5%; width: 90%; height: 50px; 
-        background: #3e2723; border-radius: 4px;
-        background-image: repeating-linear-gradient(45deg, #3e2723 0, #3e2723 2px, #4e342e 2px, #4e342e 4px);
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        position: absolute; bottom: 8px; left: 5%; width: 90%; height: 50px; background: #3e2723; border-radius: 4px;
+        background-image: repeating-linear-gradient(45deg, #3e2723 0, #3e2723 2px, #4e342e 2px, #4e342e 4px); box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
-
-    .plant-row { 
-        display: flex; justify-content: space-around; position: absolute; bottom: 8px; width: 90%; left: 5%; z-index: 10;
-        align-items: flex-end;
-    }
-    
-    /* CSS Plant Graphics */
+    .plant-row { display: flex; justify-content: space-around; position: absolute; bottom: 8px; width: 90%; left: 5%; z-index: 10; align-items: flex-end; }
     .plant-visual { position: relative; width: 40px; height: 40px; }
-    .leaf { 
-        position: absolute; bottom: 0; width: 12px; height: 20px; 
-        background: var(--green); border-radius: 0 10px 0 10px; 
-        transform-origin: bottom center; 
-    }
+    .leaf { position: absolute; bottom: 0; width: 12px; height: 20px; background: var(--green); border-radius: 0 10px 0 10px; transform-origin: bottom center; }
     .plant-visual:nth-child(odd) .leaf { background: #43A047; }
     
-    .water-flow-indicator {
-        position: absolute; right: 10px; top: 0; bottom: 0; width: 4px;
-        background: linear-gradient(180deg, var(--blue), transparent);
-        opacity: 0.5; animation: flowDown 2s linear infinite;
-    }
+    .water-flow-indicator { position: absolute; right: 10px; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue), transparent); opacity: 0.5; animation: flowDown 2s linear infinite; }
     @keyframes flowDown { 0%{background-position: 0 0;} 100%{background-position: 0 100px;} }
 
-    .section-tank { 
-        height: 20%; background: rgba(52, 152, 219, 0.2); 
-        border-top: 6px solid var(--wood-dark); 
-        position: relative; overflow: hidden; 
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-    }
-    
-    /* Roots in tank */
-    .root-system {
-        position: absolute; top: 0; width: 100%; height: 40px;
-        background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
-        mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px);
-        -webkit-mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px);
-        opacity: 0.6;
-    }
-
-    .water-line { 
-        position: absolute; bottom: 0; width: 100%; height: 75%; 
-        background: rgba(66,153,225,0.4); 
-        border-top: 1px solid rgba(255,255,255,0.3);
-        animation: waterLevel 5s infinite ease-in-out; 
-    }
+    .section-tank { height: 20%; background: rgba(52, 152, 219, 0.2); border-top: 6px solid var(--wood-dark); position: relative; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+    .root-system { position: absolute; top: 0; width: 100%; height: 40px; background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%); mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px); -webkit-mask-image: repeating-linear-gradient(90deg, black 1px, transparent 4px); opacity: 0.6; }
+    .water-line { position: absolute; bottom: 0; width: 100%; height: 75%; background: rgba(66,153,225,0.4); border-top: 1px solid rgba(255,255,255,0.3); animation: waterLevel 5s infinite ease-in-out; }
     @keyframes waterLevel { 0%,100%{height:75%} 50%{height:78%} }
+    .pump-unit { position: absolute; bottom: 5px; left: 10px; width: 50px; height: 40px; background: #111; border: 1px solid #444; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 10px; font-weight: bold; z-index: 5; }
     
-    .pump-unit {
-        position: absolute; bottom: 5px; left: 10px; width: 50px; height: 40px;
-        background: #111; border: 1px solid #444; border-radius: 4px;
-        display: flex; align-items: center; justify-content: center;
-        color: #777; font-size: 10px; font-weight: bold; z-index: 5;
-    }
-    
-    /* Airflow Arrows */
-    .arrow-flow {
-        position: absolute; left: -60px; width: 50px; height: 20px;
-        background: linear-gradient(90deg, rgba(255,255,255,0), #81d4fa);
-        clip-path: polygon(0% 40%, 60% 40%, 60% 0%, 100% 50%, 60% 100%, 60% 60%, 0% 60%);
-        opacity: 0.8; animation: flowIn 2s infinite; z-index: 10;
-    }
-    .arrow-flow.out {
-        top: -40px; left: 50%; transform: translateX(-50%) rotate(-90deg);
-        background: linear-gradient(90deg, rgba(255,255,255,0), var(--green-lcd));
-        width: 40px;
-    }
+    .arrow-flow { position: absolute; left: -60px; width: 50px; height: 20px; background: linear-gradient(90deg, rgba(255,255,255,0), #81d4fa); clip-path: polygon(0% 40%, 60% 40%, 60% 0%, 100% 50%, 60% 100%, 60% 60%, 0% 60%); opacity: 0.8; animation: flowIn 2s infinite; z-index: 10; }
+    .arrow-flow.out { top: -55px; left: 50%; transform: translateX(-50%) rotate(-90deg); background: linear-gradient(90deg, rgba(255,255,255,0), var(--green-lcd)); width: 50px; }
     @keyframes flowIn { 0%{transform:translateX(-10px); opacity:0;} 50%{opacity:1;} 100%{transform:translateX(10px); opacity:0;} }
 
-    /* Modal Styles */
-    .modal-overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-        z-index: 2000; display: none; align-items: center; justify-content: center;
-        opacity: 0; transition: opacity 0.3s;
+    /* --- COMMON CARDS --- */
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
+    .card{ background: var(--bg-card); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 30px; transition: 0.3s; }
+    .card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .icon-box { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--wood); }
+
+    /* --- TECH LIST & CALC --- */
+    .tech-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start; }
+    .tech-list { padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; margin: 0; }
+    .tech-list li { 
+        background: var(--bg-card); padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+        font-size: 14px; line-height: 1.6; color: var(--muted); display: flex; flex-direction: column;
     }
+    .tech-list li strong { font-family: 'Rajdhani', sans-serif; color: #fff; margin-bottom: 6px; font-size: 18px; letter-spacing: 0.5px; }
+    .calc-card { background: var(--bg-card); padding: 35px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: sticky; top: 100px; }
+
+    /* --- DASHBOARD --- */
+    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 20px;}
+    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+    .kpi-card { background: rgba(0,0,0,0.3); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; text-align: center; }
+    .kpi-val { font-family: 'Rajdhani'; font-size: 28px; font-weight: 700; color: #fff; }
+    .kpi-lbl { font-size: 11px; color: var(--muted2); text-transform: uppercase; margin-top: 4px; }
+    .console-log { font-family: monospace; font-size: 11px; color: var(--green); background: #050505; padding: 15px; border-radius: 8px; height: 140px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
+    .log-line { opacity: 0.9; margin-bottom: 6px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 4px;}
+
+    /* --- EXPERIMENT TIMELINE --- */
+    .timeline { display: flex; justify-content: space-between; position: relative; margin-top: 30px; }
+    .timeline::before { content:''; position: absolute; top: 20px; left: 0; right: 0; height: 2px; background: var(--stroke); z-index: 1;}
+    .tl-step { flex: 1; text-align: center; position: relative; z-index: 2; padding: 0 10px;}
+    .tl-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--bg); border: 2px solid var(--wood); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--wood); font-family:'Rajdhani';}
+    .tl-step h4 { margin: 0 0 5px; font-size: 16px; color: #fff; }
+    .tl-step p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.4;}
+
+    /* --- OTHERS --- */
+    .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: 0.2s; border: none; cursor: pointer; }
+    .btn:disabled { background: var(--muted2); cursor: not-allowed; opacity: 0.7; }
+    .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
+    
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
+    .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
+    .role { font-size: 10px; text-transform: uppercase; color: var(--wood); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+    .name { font-size: 14px; font-weight: 600; }
+    .logo-container { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; }
+    .footer-logo { height: 70px; width: auto; object-fit: contain; background: #fff; padding: 8px; border-radius: 8px; transition: transform 0.3s; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
     .modal-overlay.active { display: flex; opacity: 1; }
-    .modal-content {
-        background: #1a202c; border: 1px solid var(--stroke); border-radius: 16px;
-        padding: 30px; max-width: 500px; width: 85%; position: relative;
-        transform: translateY(20px); transition: transform 0.3s;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;
-    }
+    .modal-content { background: #1a202c; border: 1px solid var(--stroke); border-radius: 16px; padding: 30px; max-width: 500px; width: 85%; position: relative; transform: translateY(20px); transition: transform 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; padding: 10px;}
     .modal-icon { font-size: 48px; margin-bottom: 15px; display: inline-block; }
     .modal-title { font-family: 'Rajdhani'; font-size: 24px; color: var(--green); margin-bottom: 10px; }
     .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text); }
 
-    /* Standard Sections */
-    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
-    .card{ background: var(--bg-card); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 24px; transition: 0.3s; }
-    .icon-box { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--wood); }
-    
-    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-    .kpi-card { background: rgba(0,0,0,0.2); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; text-align: center; }
-    .kpi-val { font-family: 'Rajdhani'; font-size: 28px; font-weight: 700; color: #fff; }
-    .kpi-lbl { font-size: 11px; color: var(--muted2); text-transform: uppercase; margin-top: 4px; }
-    .console-log { font-family: monospace; font-size: 10px; color: var(--green); background: #000; padding: 10px; border-radius: 8px; height: 120px; overflow: hidden; border: 1px solid var(--stroke); display: flex; flex-direction: column; justify-content: flex-end; }
-    .log-line { opacity: 0.9; margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2px;}
-
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
-    .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
-    .role { font-size: 10px; text-transform: uppercase; color: var(--wood); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
-    .name { font-size: 14px; font-weight: 600; }
-
-    .logo-container { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; }
-    .footer-logo { height: 70px; width: auto; object-fit: contain; background: #fff; padding: 8px; border-radius: 8px; box-shadow: 0 0 20px rgba(255,255,255,0.1); transition: transform 0.3s; }
-    
-    .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin-top: 20px; transition: 0.2s; border: none; cursor: pointer; }
-    .btn:disabled { background: var(--muted2); cursor: not-allowed; opacity: 0.7; }
-    .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
-
-    /* Technical List Styling */
-    .tech-list { padding: 0; list-style: none; }
-    .tech-list li { 
-        background: rgba(255,255,255,0.03); 
-        margin-bottom: 12px; 
-        padding: 15px; 
-        border-radius: 12px; 
-        border: 1px solid var(--stroke);
-        font-size: 14px;
-        line-height: 1.5;
-        color: var(--muted);
-        display: flex;
-        flex-direction: column;
-    }
-    .tech-list li strong { color: var(--text); margin-bottom: 4px; font-size: 15px; }
-
-    /* --- RESPONSIVE OPTIMIZATION --- */
     @media(max-width:900px){
-        .heroGrid{ grid-template-columns: 1fr; text-align: center; }
-        /* Hero Padding Fix for Mobile Overlap */
-        .heroGrid { padding-top: 150px; }
-        
+        .heroGrid{ grid-template-columns: 1fr; text-align: center; padding-top: 130px; }
         .hero-tags { justify-content: center; }
-        .grid, .dash-grid { grid-template-columns: 1fr; }
-        
-        /* Mobile Nav: Hide links, Keep Lang button */
-        .nav-links { display: none; } 
-        .nav { padding: 15px 20px; }
-        
-        .panel-wrapper { max-width: 100%; margin-top: 60px; }
-        /* Solar Panel Adjustment for Mobile */
-        .solar-panel { 
-            right: 50%; left: auto; top: -55px; 
-            transform: translateX(50%) rotate(0); 
-            width: 120px; height: 50px; 
-        }
-        
+        .tech-grid, .dash-grid, .grid { grid-template-columns: 1fr; }
+        .nav-links { display: none; } .nav { padding: 15px 20px; }
+        .panel-wrapper { max-width: 100%; margin-top: 60px; padding: 0 10px; }
+        .solar-panel { right: 20px; top: -45px; width: 100px; height: 50px; }
         section { padding: 60px 0; }
         .kpi-row { grid-template-columns: 1fr 1fr 1fr; }
-        
-        .modal-content { width: 90%; padding: 20px; }
-        .logo-container { gap: 20px; }
-        .footer-logo { height: 50px; }
+        .timeline { flex-direction: column; gap: 30px; }
+        .timeline::before { left: 20px; top: 0; bottom: 0; width: 2px; height: 100%; }
+        .tl-step { display: flex; text-align: left; align-items: flex-start; gap: 15px; }
+        .tl-dot { margin: 0; flex-shrink: 0; }
     }
-    
     @media(max-width:480px){
-        h1 { font-size: 36px; }
+        h1 { font-size: 32px; }
         .kpi-row { grid-template-columns: 1fr; }
-        .tech-list li { font-size: 13px; }
     }
   </style>
 </head>
@@ -344,16 +240,11 @@
     <div class="brand" data-key="brand_html">
       BİYO<span class="highlight">DUVAR</span>
     </div>
-    
-    <!-- Linkler Masaüstünde var, Mobilde gizli -->
     <div class="nav-links">
-      <a href="#why" data-key="nav_why">Neden?</a>
-      <a href="#tech" data-key="nav_tech">Teknoloji</a>
-      <a href="#demo" data-key="nav_demo">Demo</a>
-      <a href="#team" data-key="nav_team">Takım</a>
+      <a href="#market" data-key="nav_market">Pazar & Analiz</a>
+      <a href="#tech" data-key="nav_tech">Sistem Mimarisi</a>
+      <a href="#demo" data-key="nav_demo">Deney & Demo</a>
     </div>
-
-    <!-- Dil Butonu Her Zaman Görünür -->
     <button id="langToggle" class="lang-btn">TR | EN</button>
   </nav>
 
@@ -373,149 +264,212 @@
       <div>
         <div class="hero-tags">
           <span class="tag" data-key="tag_school">Özel İngiliz Kültür Koleji</span>
-          <span class="tag blue" data-key="tag_project">Teknofest 2026</span>
+          <span class="tag blue" data-key="tag_project">Teknofest 2026 İnsanlık Yararına Teknoloji</span>
         </div>
-        <div class="kicker" data-key="kicker_hero">İnsanlık Yararına Teknoloji</div>
         <h1 data-key="hero_title">Duvarlar Artık<br><span style="color:var(--green)">Nefes Alıyor</span></h1>
         <p class="lead" data-key="hero_desc">
-            BİYODUVAR; topraksız, kokusuz ve yenilebilir bir yaşam duvarıdır. 
-            Sensör kontrollü bu akıllı ekosistem, havayı temizlerken maydanoz ve roka üretir.
+            BİYODUVAR; kapalı okul ve ofis ortamlarındaki "Hasta Bina Sendromunu" bitki tabanlı aktif filtreleme ile çözen, 
+            sensör kontrollü yeni nesil bir ekosistemdir.
         </p>
-        <div style="display:flex; gap:16px; margin-top:20px; flex-wrap:wrap; justify-content: center; md:justify-content: flex-start;">
-            <a href="#tech" class="btn" data-key="btn_explore">Sistemi Keşfet</a>
-            <a href="#demo" class="btn secondary" data-key="btn_demo">Simülasyon</a>
+        <div style="display:flex; gap:16px; margin-top:30px; flex-wrap:wrap; justify-content: center; md:justify-content: flex-start;">
+            <a href="#market" class="btn" data-key="btn_explore">Projeyi İncele</a>
+            <a href="#demo" class="btn secondary" data-key="btn_demo">Canlı Simülasyon</a>
         </div>
       </div>
 
       <!-- INTERACTIVE VISUAL -->
       <div class="panel-wrapper">
+          <div class="hotspot" style="top:-60px; left:50%; transform:translateX(-50%); z-index:60;" onclick="openInfo('cleanair')">+</div>
           <div class="solar-panel">
-               <div class="hotspot" style="top:-10px; right:-10px;" onclick="openInfo('solar')">+</div>
+               <div class="hotspot" style="top:-10px; right:-10px; background:var(--yellow); color:#000;" onclick="openInfo('solar')">+</div>
                <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
                <div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div><div class="solar-cell"></div>
           </div>
-          
           <div class="arrow-flow" style="bottom:25%; left:-50px;"></div>
           <div class="arrow-flow" style="bottom:50%; left:-50px;"></div>
           <div class="arrow-flow out"></div>
-
           <div class="panel-visual">
-              <!-- Header -->
               <div class="section-header">
-                  <div class="hotspot" style="top:-10px; right:10px;" onclick="openInfo('sensors')">+</div>
-                  <div class="lcd-display">
-                      <span>Karbon: İYİ</span>
-                      <span>410ppm</span>
-                  </div>
+                  <div class="hotspot" style="top:-10px; left:10px;" onclick="openInfo('sensors')">+</div>
+                  <div class="lcd-display"><span>Karbon: İYİ</span><span>410ppm</span></div>
               </div>
-
-              <!-- Grow Area -->
               <div class="section-grow">
-                   <div class="hotspot" style="top:50%; left:50%; transform:translate(-50%,-50%)" onclick="openInfo('plants')">+</div>
+                   <div class="hotspot" style="top:30%; left:50%; transform:translate(-50%,-50%)" onclick="openInfo('plants')">+</div>
+                   <div class="hotspot" style="top:75%; right:5%; transform:translateY(-50%); width:22px; height:22px; font-size:14px;" onclick="openInfo('felt')">+</div>
+                   <div class="hotspot" style="top:75%; left:-10px; transform:translateY(-50%); width:24px; height:24px; font-size:14px; background:var(--blue); color:#fff;" onclick="openInfo('fan')">+</div>
                    <div class="water-flow-indicator"></div>
-                   
-                   <!-- Shelf 1 -->
-                   <div class="shelf">
-                       <div class="felt-layer"></div>
-                       <div class="plant-row" id="row1"></div>
-                   </div>
-                   <!-- Shelf 2 -->
-                   <div class="shelf">
-                       <div class="felt-layer"></div>
-                       <div class="plant-row" id="row2"></div>
-                   </div>
-                   <!-- Shelf 3 -->
-                   <div class="shelf">
-                       <div class="felt-layer"></div>
-                       <div class="plant-row" id="row3"></div>
-                   </div>
+                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row1"></div></div>
+                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row2"></div></div>
+                   <div class="shelf"><div class="felt-layer"></div><div class="plant-row" id="row3"></div></div>
               </div>
-
-              <!-- Tank Area -->
               <div class="section-tank">
                   <div class="hotspot" style="top:10px; right:10px;" onclick="openInfo('water')">+</div>
                   <div class="root-system"></div>
                   <div class="water-line"></div>
-                  <div class="pump-unit">
-                      <span>5V PUMP</span>
-                  </div>
+                  <div class="pump-unit"><span>5V PUMP</span></div>
                   <div style="position:absolute; bottom:5px; left:40%; width:4px; height:4px; background:rgba(255,255,255,0.5); border-radius:50%; animation:rise 2s infinite;"></div>
               </div>
           </div>
-          <div style="text-align:center; margin-top:15px; font-size:11px; color:var(--muted); letter-spacing:1px;">
-              <span data-key="lbl_click">İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span>
-          </div>
+          <div style="text-align:center; margin-top:20px; font-size:11px; color:var(--muted); letter-spacing:1px; opacity:0.8;"><span data-key="lbl_click">SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span></div>
       </div>
     </section>
 
-    <!-- TECH SPECS -->
-    <section id="tech" class="container">
-        <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: start;">
+    <!-- NEW: SAFETY & HYGIENE (Okul ortamı için kritik) -->
+    <section id="safety" class="container">
+        <div class="kicker" data-key="safe_kicker">NEDEN BİYODUVAR?</div>
+        <h2 data-key="safe_title">Sınıflar İçin Güvenli Tasarım</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="icon-box">🛡️</div>
+                <h3 data-key="safe_1_title">Düşük Voltaj (5V)</h3>
+                <p data-key="safe_1_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Tüm elektronik bileşenler ve pompalar USB/Powerbank voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🚫</div>
+                <h3 data-key="safe_2_title">Topraksız Sistem</h3>
+                <p data-key="safe_2_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, sinek, mantar ve kötü koku oluşumu tamamen engellenir.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">💧</div>
+                <h3 data-key="safe_3_title">Sızdırmaz Kapalı Döngü</h3>
+                <p data-key="safe_3_desc" style="font-size:14px; color:var(--muted); line-height:1.6;">Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECH SPECS (Updated with real sensors & calculations) -->
+    <section id="tech" class="container alt-bg">
+        <div class="kicker" data-key="tech_kicker" style="margin-bottom: 20px;">TEKNİK ALTYAPI</div>
+        <div class="tech-grid">
             <div>
-                <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
-                <h2 data-key="tech_title">Teknik Bileşenler</h2>
                 <ul class="tech-list">
-                    <li data-key="tech_list_1"><strong>Gövde</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.</li>
-                    <li data-key="tech_list_2"><strong>Sensörler</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).</li>
-                    <li data-key="tech_list_3"><strong>Otomasyon</strong> Arduino Nano Mikrodenetleyici.</li>
-                    <li data-key="tech_list_4"><strong>Su Döngüsü</strong> 5V Dalgıç Pompa + Hidroponik Keçe.</li>
-                    <li data-key="tech_list_5"><strong>Enerji</strong> Güneş Paneli desteği ile sürdürülebilir güç.</li>
+                    <li>
+                        <strong data-key="tech_1_title">Hibrit Sensör Ağı</strong> 
+                        <span data-key="tech_1_desc">Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.</span>
+                    </li>
+                    <li>
+                        <strong data-key="tech_3_title">Otomasyon & MCU</strong> 
+                        <span data-key="tech_3_desc">Arduino Nano, verileri anlık işleyerek eşik aşıldığında (örn: 800ppm) tahliye fanlarını otomatik devreye sokar.</span>
+                    </li>
+                    <li>
+                        <strong data-key="tech_5_title">Çoklu Güç Kaynağı</strong> 
+                        <span data-key="tech_5_desc">Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve şebeke adaptörü hibrid olarak çalışır.</span>
+                    </li>
                 </ul>
             </div>
-            <div style="background: rgba(255,255,255,0.05); padding:30px; border-radius: 20px; border:1px solid var(--stroke);">
-                <h3 style="margin-top:0; color:var(--wood);" data-key="calc_title">Hesaplamalar & Verim</h3>
-                <p style="font-size:14px; line-height: 1.6;" data-key="calc_desc">
-                    NASA verilerine göre 1 m² yaprak alanı günde ortalama 5-20g CO2 emer. BİYODUVAR, aktif hava akışıyla bu süreci 3 katına kadar hızlandırır.
-                </p>
-                <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--stroke);">
-                    <div style="display:flex; justify-content: space-between; font-size:14px; margin-bottom: 8px;">
-                        <span data-key="calc_co2">Yıllık CO2 Azaltımı:</span>
-                        <span style="color:var(--green); font-weight:700;">~3.65 kg</span>
+            <div>
+                <div class="calc-card">
+                    <h3 style="margin-top:0; color:var(--wood); font-family:'Rajdhani', sans-serif; font-size:22px;" data-key="calc_title">Hesaplamalar & Verim</h3>
+                    <p style="font-size:14px; line-height: 1.7; color: var(--muted); margin-bottom:20px;" data-key="calc_desc">
+                        1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve aktif fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik bir etki yaratır.
+                    </p>
+                    <div style="padding-top:20px; border-top:1px solid rgba(255,255,255,0.1);">
+                        <div style="display:flex; justify-content: space-between; font-size:14px; margin-bottom: 10px;">
+                            <span data-key="calc_co2">Yıllık CO2 Azaltımı Hedefi:</span>
+                            <span style="color:var(--green); font-weight:700;">~3.65 kg - 5.0 kg</span>
+                        </div>
+                        <div style="display:flex; justify-content: space-between; font-size:14px;">
+                            <span data-key="calc_oxy">Tahmini O2 Üretimi:</span>
+                            <span style="color:var(--blue); font-weight:700;">~11 gr/gün</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: MARKET & COMMERCIALIZATION -->
+    <section id="market" class="container">
+        <div class="kicker" data-key="market_kicker">TİCARİLEŞME POTANSİYELİ</div>
+        <h2 data-key="market_title">Pazar Analizi & Gelir Modeli</h2>
+        <div class="grid">
+            <div class="card" style="border-color: rgba(66,153,225,0.3);">
+                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_1_title">Hedef Kitle</div>
+                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_1_desc">İlk etapta okullar, kreşler ve etüt merkezleri. Ardından "Hasta Bina Sendromu" yaşayan plaza ve ofisler.</p>
+            </div>
+            <div class="card" style="border-color: rgba(72,187,120,0.3);">
+                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_2_title">Rekabet Avantajı</div>
+                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_2_desc">Klasik hava temizleyiciler gibi filtre atığı çıkarmaz (Doğal). Sadece ölçüm yapan cihazlardan farklı olarak aktif temizlik yapar.</p>
+            </div>
+            <div class="card" style="border-color: rgba(236,201,75,0.3);">
+                <div style="font-family:'Rajdhani'; font-size:20px; color:#fff; margin-bottom:10px;" data-key="mkt_3_title">Maliyet & Gelir</div>
+                <p style="font-size:13px; color:var(--muted); line-height:1.6;" data-key="mkt_3_desc">Prototip ~3550 TL'dir. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile sürdürülebilir gelir hedeflenir.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: EXPERIMENT PLAN -->
+    <section id="experiment" class="container alt-bg">
+        <div class="kicker" data-key="exp_kicker">BİLİMSEL YÖNTEM</div>
+        <h2 data-key="exp_title">Uygulama ve Deney Planı</h2>
+        <p class="lead" data-key="exp_desc">Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.</p>
+        
+        <div class="timeline">
+            <div class="tl-step">
+                <div class="tl-dot">1</div>
+                <h4 data-key="exp_s1_title">Ortam Belirleme</h4>
+                <p data-key="exp_s1_desc">Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot">2</div>
+                <h4 data-key="exp_s2_title">Kontrol Ölçümü</h4>
+                <p data-key="exp_s2_desc">Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot">3</div>
+                <h4 data-key="exp_s3_title">Aktif Ölçüm</h4>
+                <p data-key="exp_s3_desc">Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-dot" style="background:rgba(72,187,120,0.1); border-color:var(--green); color:var(--green)">4</div>
+                <h4 data-key="exp_s4_title">Başarı Kriteri (KPI)</h4>
+                <p data-key="exp_s4_desc">40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.</p>
             </div>
         </div>
     </section>
 
     <!-- DASHBOARD SIMULATION -->
-    <section id="demo" class="alt-bg">
-        <div class="container">
-            <h2 data-key="dash_title">Canlı Kontrol Paneli</h2>
-            <div class="card dash-grid">
+    <section id="demo" class="container">
+        <div class="kicker" data-key="dash_kicker">VERİ İZLEME</div>
+        <h2 data-key="dash_title" style="margin-bottom:30px;">Canlı Kontrol Paneli</h2>
+        <div class="card dash-grid">
+            <div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
+                    <h3 style="margin:0; font-family:'Rajdhani', sans-serif; font-size:20px;">BİYODUVAR v1.0</h3>
+                    <div class="status-badge" id="sysStatus" data-key="status_active" style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(72,187,120,0.15); border:1px solid rgba(72,187,120,0.3); border-radius:20px; color:var(--green); font-size:12px; font-weight:700;">SİSTEM AKTİF</div>
+                </div>
+                
+                <div class="kpi-row">
+                    <div class="kpi-card"><div class="kpi-val" id="valAir">410</div><div class="kpi-lbl">CO2 (PPM)</div></div>
+                    <div class="kpi-card"><div class="kpi-val" id="valTemp">24°C</div><div class="kpi-lbl" data-key="lbl_temp">SICAKLIK</div></div>
+                    <div class="kpi-card"><div class="kpi-val" id="valHum">55%</div><div class="kpi-lbl" data-key="lbl_hum">NEM</div></div>
+                </div>
+                <div style="background:#050505; height:180px; border-radius:12px; position:relative; overflow:hidden; border: 1px solid var(--stroke);">
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+            </div>
+            <div style="border-left:1px solid var(--stroke); padding-left:24px; display:flex; flex-direction:column; justify-content:space-between;">
                 <div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-                        <h3 style="margin:0;">BİYODUVAR v1.0</h3>
-                        <div class="status-badge" id="sysStatus" data-key="status_active" style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px; background:rgba(72,187,120,0.15); border:1px solid rgba(72,187,120,0.3); border-radius:20px; color:var(--green); font-size:12px; font-weight:600;">SİSTEM AKTİF</div>
-                    </div>
-                    
-                    <div class="kpi-row">
-                        <div class="kpi-card"><div class="kpi-val" id="valAir">420</div><div class="kpi-lbl">CO2 (PPM)</div></div>
-                        <div class="kpi-card"><div class="kpi-val" id="valTemp">24°C</div><div class="kpi-lbl">TEMP</div></div>
-                        <div class="kpi-card"><div class="kpi-val" id="valHum">55%</div><div class="kpi-lbl">HUM</div></div>
-                    </div>
-                    <div style="background:#000; height:180px; border-radius:8px; position:relative; overflow:hidden;">
-                        <canvas id="chartCanvas"></canvas>
+                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;" data-key="lbl_fan">FAN DURUMU</div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div id="fanIcon" style="font-size:28px; animation:spin 1s linear infinite; color:var(--muted);">☢</div>
+                        <span id="fanText" style="font-weight:700; color:var(--muted); font-size:18px; font-family:'Rajdhani';">BEKLEMEDE</span>
                     </div>
                 </div>
-                <div style="border-left:1px solid var(--stroke); padding-left:20px; display:flex; flex-direction:column; justify-content:center;">
-                    <div style="margin-bottom:20px;">
-                        <div class="kpi-lbl" style="text-align:left;">FAN</div>
-                        <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
-                            <div id="fanIcon" style="font-size:24px; animation:spin 1s linear infinite;">☢</div>
-                            <span id="fanText" style="font-weight:700; color:var(--wood);">AUTO</span>
-                        </div>
-                    </div>
+                <div style="margin-top:20px;">
+                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;">SİSTEM TERMİNALİ</div>
                     <div class="console-log" id="consoleLog">
                         <div class="log-line">> System initialized...</div>
                     </div>
-                    <button class="btn secondary" style="width:100%; font-size:12px; margin-top:20px" onclick="runScenario()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
                 </div>
+                <button class="btn secondary" style="width:100%; font-size:13px; margin-top:20px; border-color:var(--wood); color:var(--wood);" onclick="runScenario()" data-key="btn_crowd">⚡ Sınıf Kalabalıklaşınca</button>
             </div>
         </div>
     </section>
 
     <!-- TEAM -->
-    <section id="team" class="container">
+    <section id="team" class="container alt-bg">
+        <div class="kicker" style="text-align:center;" data-key="team_kicker">PROJE EKİBİ</div>
         <h2 style="text-align:center;" data-key="team_title">BİLİM KAŞİFLERİ</h2>
         <div class="team-grid">
             <div class="member"><div class="role" data-key="role_captain">KAPTAN</div><div class="name">Rüzgar Özmen</div></div>
@@ -523,7 +477,7 @@
             <div class="member"><div class="role" data-key="role_idea">PROJE FİKRİ</div><div class="name">Archer Ege Webb</div></div>
             <div class="member"><div class="role" data-key="role_pres">SUNUM</div><div class="name">Toprak Tekin</div></div>
             <div class="member"><div class="role" data-key="role_prod">TASARIM & ÜRETİM</div><div class="name">Volkan Önsay</div></div>
-            <div class="member" style="border-color:var(--wood);"><div class="role" style="color:var(--green);" data-key="role_advisor">DANIŞMAN</div><div class="name">Gamze Yaylaönü</div></div>
+            <div class="member" style="border-color:var(--wood); background:rgba(141, 110, 99, 0.05);"><div class="role" style="color:var(--green);" data-key="role_advisor">DANIŞMAN</div><div class="name">Gamze Yaylaönü</div></div>
         </div>
         <div style="margin-top: 60px; text-align: center;">
              <p class="kicker" data-key="lbl_supporters">GELİŞTİRİCİ & DESTEKÇİLER</p>
@@ -535,7 +489,7 @@
     </section>
 
     <footer style="text-align:center; padding:40px; border-top:1px solid var(--stroke); font-size:12px; color:var(--muted2);">
-        &copy; 2026 BİLİM KAŞİFLERİ - TEKNOFEST
+        &copy; 2026 BİLİM KAŞİFLERİ - TEKNOFEST İNSANLIK YARARINA TEKNOLOJİLER
     </footer>
 
   </main>
@@ -547,75 +501,100 @@
     const translations = {
         tr: {
             brand_html: "BİYO<span class='highlight'>DUVAR</span>",
-            nav_why: "Neden?", nav_tech: "Teknoloji", nav_demo: "Demo", nav_team: "Takım",
-            tag_school: "Özel İngiliz Kültür Koleji", tag_project: "Teknofest 2026",
+            nav_market: "Pazar & Analiz", nav_tech: "Teknoloji", nav_demo: "Deney & Demo", nav_team: "Takım",
+            tag_school: "Özel İngiliz Kültür Koleji", tag_project: "Teknofest 2026 İnsanlık Yararına Teknoloji",
             kicker_hero: "İnsanlık Yararına Teknoloji",
             hero_title: "Duvarlar Artık<br><span style='color:var(--green)'>Nefes Alıyor</span>",
-            hero_desc: "BİYODUVAR; topraksız, kokusuz ve yenilebilir bir yaşam duvarıdır. Sensör kontrollü bu akıllı ekosistem, havayı temizlerken maydanoz ve roka üretir.",
-            btn_explore: "Sistemi Keşfet", btn_demo: "Simülasyon",
-            tech_kicker: "SİSTEM MİMARİSİ", tech_title: "Teknik Bileşenler",
-            tech_list_1: "<strong>Gövde</strong> Geri dönüştürülmüş ahşap panel & Çatı tasarımı.",
-            tech_list_2: "<strong>Sensörler</strong> MQ-135 (Hava Kalitesi) + DHT11 (Isı/Nem).",
-            tech_list_3: "<strong>Otomasyon</strong> Arduino Nano Mikrodenetleyici.",
-            tech_list_4: "<strong>Su Döngüsü</strong> 5V Dalgıç Pompa + Hidroponik Keçe.",
-            tech_list_5: "<strong>Enerji</strong> Güneş Paneli desteği ile sürdürülebilir güç.",
-            calc_title: "Hesaplamalar & Verim", calc_desc: "NASA verilerine göre 1 m² yaprak alanı günde ortalama 5-20g CO2 emer. BİYODUVAR, aktif hava akışıyla bu süreci 3 katına kadar hızlandırır.",
-            calc_co2: "Yıllık CO2 Azaltımı:", 
-            dash_title: "Canlı Kontrol Paneli", status_active: "SİSTEM AKTİF",
-            btn_crowd: "⚡ Sınıf Kalabalıklaşınca",
-            team_title: "BİLİM KAŞİFLERİ", lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
-            role_captain: "KAPTAN", role_design: "TASARIM", role_idea: "PROJE FİKRİ", role_pres: "SUNUM", role_prod: "TASARIM & ÜRETİM", role_advisor: "DANIŞMAN",
-            lbl_click: "İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN",
-            modal_solar_title: "Güneş Enerjisi", modal_solar_desc: "Sistem, sürdürülebilir enerji için güneş paneli desteğiyle çalışır. Düşük voltajlı (5V) bileşenler sayesinde karbon ayak izi minimize edilir.",
-            modal_sensors_title: "Sensörler & Kontrol", modal_sensors_desc: "MQ-135 sensörü havadaki CO2 ve zararlı gazları (VOC) tespit eder. Mikrodenetleyici, hava kirlendiğinde fanları otomatik çalıştırır.",
-            modal_plants_title: "Hidroponik Tarım", modal_plants_desc: "Özel keçe sistemi sayesinde toprak kullanılmaz. Roka, Maydanoz ve Fesleğen gibi bitkiler su ve besin çözeltisiyle yetişir. Koku ve böcek yapmaz.",
-            modal_water_title: "Su Döngüsü", modal_water_desc: "Alt tanktaki su, 5V pompa ile en üst rafa basılır ve keçelerden süzülerek tekrar tanka döner. Kapalı devre sistem su tasarrufu sağlar.",
+            hero_desc: "BİYODUVAR; kapalı okul ve ofis ortamlarındaki 'Hasta Bina Sendromunu' bitki tabanlı aktif filtreleme ile çözen, sensör kontrollü yeni nesil bir ekosistemdir.",
+            btn_explore: "Projeyi İncele", btn_demo: "Canlı Simülasyon",
             
-            // Scenario Logs
-            scen_step1: "⚠️ Hareket algılandı: Sınıf doluyor...",
-            scen_step2: "📈 CO2 seviyesi hızla yükseliyor!",
-            scen_step3: "🚨 Sensör: Kritik Eşik (>800ppm) aşıldı.",
-            scen_step4: "⚙️ İşlemci: Tahliye modu başlatılıyor.",
-            scen_step5: "☢️ FANLAR: %100 Güçte çalıştırıldı.",
-            scen_step6: "💧 POMPA: Nem dengesi için su basılıyor.",
-            scen_step7: "📉 Fitoremediasyon (Bitkisel Arıtım) devrede.",
-            scen_step8: "✅ Hava kalitesi normal seviyeye döndü."
+            safe_kicker: "NEDEN BİYODUVAR?", safe_title: "Sınıflar İçin Güvenli Tasarım",
+            safe_1_title: "Düşük Voltaj (5V)", safe_1_desc: "Tüm elektronik bileşenler USB voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.",
+            safe_2_title: "Topraksız Sistem", safe_2_desc: "Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, mantar ve kötü koku oluşumu tamamen engellenir.",
+            safe_3_title: "Sızdırmaz Kapalı Döngü", safe_3_desc: "Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.",
+
+            tech_kicker: "TEKNİK ALTYAPI",
+            tech_1_title: "Hibrit Sensör Ağı", tech_1_desc: "Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.",
+            tech_3_title: "Otomasyon & MCU", tech_3_desc: "Arduino Nano, verileri anlık işleyerek eşik aşıldığında tahliye fanlarını otomatik devreye sokar.",
+            tech_5_title: "Çoklu Güç Kaynağı", tech_5_desc: "Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve USB adaptörü hibrid olarak çalışır.",
+            
+            calc_title: "Hesaplamalar & Verim", calc_desc: "1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik etki yaratır.",
+            calc_co2: "Yıllık CO2 Azaltımı Hedefi:", calc_oxy: "Tahmini O2 Üretimi:",
+            
+            market_kicker: "TİCARİLEŞME POTANSİYELİ", market_title: "Pazar Analizi & Gelir Modeli",
+            mkt_1_title: "Hedef Kitle", mkt_1_desc: "İlk etapta okullar, kreşler ve etüt merkezleri. Ardından 'Hasta Bina Sendromu' yaşayan plaza ve ofisler.",
+            mkt_2_title: "Rekabet Avantajı", mkt_2_desc: "Hava temizleyiciler gibi filtre atığı çıkarmaz. Salt dekoratif yeşil duvarlardan farklı olarak sensörlü 'aktif' temizlik yapar.",
+            mkt_3_title: "Maliyet & Gelir", mkt_3_desc: "Prototip maliyeti ~3550 TL. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile gelir hedeflenir.",
+
+            exp_kicker: "BİLİMSEL YÖNTEM", exp_title: "Uygulama ve Deney Planı", exp_desc: "Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.",
+            exp_s1_title: "Ortam Belirleme", exp_s1_desc: "Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.",
+            exp_s2_title: "Kontrol Ölçümü", exp_s2_desc: "Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.",
+            exp_s3_title: "Aktif Ölçüm", exp_s3_desc: "Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.",
+            exp_s4_title: "Başarı Kriteri (KPI)", exp_s4_desc: "40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.",
+
+            dash_kicker: "VERİ İZLEME", dash_title: "Canlı Kontrol Paneli", status_active: "SİSTEM AKTİF",
+            lbl_temp: "SICAKLIK", lbl_hum: "NEM", lbl_fan: "FAN DURUMU",
+            btn_crowd: "⚡ Sınıf Kalabalıklaşınca",
+            team_kicker: "PROJE EKİBİ", team_title: "BİLİM KAŞİFLERİ", lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
+            role_captain: "KAPTAN", role_design: "TASARIM", role_idea: "PROJE FİKRİ", role_pres: "SUNUM", role_prod: "TASARIM & ÜRETİM", role_advisor: "DANIŞMAN",
+            lbl_click: "SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN",
+            
+            // Expanded Modal Data
+            modal_solar_title: "Güneş Paneli", modal_solar_desc: "Sistem, enerji verimliliği için panel desteklidir. Okul içi bulutlu günler için USB/Batarya yedeklemesi bulunur.",
+            modal_sensors_title: "Gerçekçi Sensör Ağı", modal_sensors_desc: "Kesin CO2 ppm değerini NDIR tabanlı MH-Z19B sensörü okur. MQ-135 ise genel sınıf havasını (VOC) kontrol eder.",
+            modal_cleanair_title: "Temiz Hava Çıkışı", modal_cleanair_desc: "Bitkilerin kök bölgesindeki mikroorganizmalar (Rizosfer) tarafından filtrelenen temiz hava, en üst kısımdan sınıfa geri verilir.",
+            modal_plants_title: "Yenilebilir Bitkiler", modal_plants_desc: "Dikey tarım modülünde Maydanoz, Roka gibi bitkiler yetiştirilir. Üretim bilinci aşılanır.",
+            modal_felt_title: "Topraksız Keçe", modal_felt_desc: "Su tutma kapasitesi yüksek özel keçeler bitki köklerine yataklık eder. Toprak olmadığı için okulda böcek ve koku yapmaz.",
+            modal_fan_title: "Aktif Emiş Fanı", modal_fan_desc: "Kirli hava dipten emilerek doğrudan köklere (fitoremediasyon alanına) zorlanır. Filtreleme hızı 3 kat artar.",
+            modal_water_title: "Sızdırmaz Pompa", modal_water_desc: "5V dalgıç pompa suyu üst rafa basar. Keçelerden süzülen su döngüyü tamamlar. Kapalı sistem zemine su sızmasını önler."
         },
         en: {
             brand_html: "BIO<span class='highlight'>WALL</span>",
-            nav_why: "Why?", nav_tech: "Technology", nav_demo: "Demo", nav_team: "Team",
-            tag_school: "British Culture College", tag_project: "Teknofest 2026",
+            nav_market: "Market & Analysis", nav_tech: "Technology", nav_demo: "Demo & Test", nav_team: "Team",
+            tag_school: "British Culture College", tag_project: "Teknofest 2026 Humanity Tech",
             kicker_hero: "Technology for Humanity",
             hero_title: "Walls Are Now<br><span style='color:var(--green)'>Breathing</span>",
-            hero_desc: "BIOWALL is a soilless, odorless, and edible living wall. This sensor-controlled smart ecosystem purifies air while growing parsley and arugula.",
-            btn_explore: "Explore System", btn_demo: "Simulation",
-            tech_kicker: "SYSTEM ARCHITECTURE", tech_title: "Technical Components",
-            tech_list_1: "<strong>Body</strong> Recycled wood panel & Roof design.",
-            tech_list_2: "<strong>Sensors</strong> MQ-135 (Air Quality) + DHT11 (Temp/Hum).",
-            tech_list_3: "<strong>Automation</strong> Arduino Nano Microcontroller.",
-            tech_list_4: "<strong>Water Loop</strong> 5V Submersible Pump + Hydroponic Felt.",
-            tech_list_5: "<strong>Energy</strong> Sustainable power with Solar Panel support.",
-            calc_title: "Calculations & Efficiency", calc_desc: "According to NASA, 1 m² leaf area absorbs 5-20g CO2 daily. BIOWALL accelerates this process up to 3x with active airflow.",
-            calc_co2: "Annual CO2 Reduction:", 
-            dash_title: "Live Control Panel", status_active: "SYSTEM ACTIVE",
-            btn_crowd: "⚡ Class Crowded",
-            team_title: "SCIENCE EXPLORERS", lbl_supporters: "DEVELOPER & SUPPORTERS",
-            role_captain: "CAPTAIN", role_design: "DESIGN", role_idea: "PROJECT IDEA", role_pres: "PRESENTATION", role_prod: "DESIGN & PRODUCTION", role_advisor: "ADVISOR",
-            lbl_click: "CLICK ON (+) ICONS TO EXPLORE",
-            modal_solar_title: "Solar Energy", modal_solar_desc: "The system operates with solar panel support for sustainable energy. Low voltage (5V) components minimize carbon footprint.",
-            modal_sensors_title: "Sensors & Control", modal_sensors_desc: "MQ-135 sensor detects CO2 and harmful gases (VOCs). The microcontroller automatically activates fans when air quality drops.",
-            modal_plants_title: "Hydroponic Farming", modal_plants_desc: "No soil is used thanks to the special felt system. Plants like Arugula, Parsley, and Basil grow with water and nutrient solution. No odor, no bugs.",
-            modal_water_title: "Water Loop", modal_water_desc: "Water in the bottom tank is pumped to the top shelf via a 5V pump, trickles down through felts, and returns to the tank. Closed-loop system saves water.",
+            hero_desc: "BIOWALL is a sensor-controlled smart ecosystem that solves 'Sick Building Syndrome' in classrooms through active plant-based filtering.",
+            btn_explore: "Explore Project", btn_demo: "Live Simulation",
             
-            // Scenario Logs
-            scen_step1: "⚠️ Motion Detected: Class is filling up...",
-            scen_step2: "📈 CO2 levels rising rapidly!",
-            scen_step3: "🚨 Sensor: Critical Threshold (>800ppm).",
-            scen_step4: "⚙️ Processor: Initiating Evacuation Mode.",
-            scen_step5: "☢️ FANS: Activated at 100% Power.",
-            scen_step6: "💧 PUMP: Water injection for humidity balance.",
-            scen_step7: "📉 Phytoremediation (Plant Filtering) active.",
-            scen_step8: "✅ Air quality returned to normal levels."
+            safe_kicker: "WHY BIOWALL?", safe_title: "Safe Design for Classrooms",
+            safe_1_title: "Low Voltage (5V)", safe_1_desc: "All components run on USB voltage. Zero risk of electric shock for children.",
+            safe_2_title: "Soilless System", safe_2_desc: "Hydroponic felt eliminates soil-borne bugs, mold, and bad odors entirely.",
+            safe_3_title: "Leak-proof Loop", safe_3_desc: "Water circulates in a closed chamber, preventing classroom spills and mold.",
+
+            tech_kicker: "TECHNICAL INFRASTRUCTURE",
+            tech_1_title: "Hybrid Sensor Net", tech_1_desc: "Uses <b>NDIR CO2 Sensor (MH-Z19B)</b> for precise carbon reading and <b>MQ-135</b> for general Air Quality (VOC).",
+            tech_3_title: "Automation & MCU", tech_3_desc: "Arduino Nano processes data and triggers exhaust fans automatically when thresholds are crossed.",
+            tech_5_title: "Multi-Power Source", tech_5_desc: "Designed for indoor use; operates on a hybrid of Solar Panel, Battery, and USB adapter.",
+            
+            calc_title: "Calculations & Efficiency", calc_desc: "1 m² leaf area absorbs 5-20g CO2 daily. Our ~0.5 m² active panel acts like 1.5 m² due to <b>Rhizosphere ventilation and active fans</b> (3x efficiency).",
+            calc_co2: "Annual CO2 Reduction Target:", calc_oxy: "Est. O2 Production:",
+            
+            market_kicker: "COMMERCIALIZATION", market_title: "Market Analysis & Revenue",
+            mkt_1_title: "Target Audience", mkt_1_desc: "Initially schools, kindergartens. Then plazas and offices experiencing 'Sick Building Syndrome'.",
+            mkt_2_title: "Competitive Edge", mkt_2_desc: "No filter waste like classic purifiers. Unlike purely decorative green walls, it does 'active' measured cleaning.",
+            mkt_3_title: "Cost & Revenue", mkt_3_desc: "Prototype ~3550 TL. Mass production cuts cost by 40%. Revenue from device sales + monthly maintenance kit subscriptions.",
+
+            exp_kicker: "SCIENTIFIC METHOD", exp_title: "Testing & Experiment Plan", exp_desc: "Control test procedure designed to verify our project's impact in schools.",
+            exp_s1_title: "Environment", exp_s1_desc: "An average classroom is selected. Class duration fixed at 40 mins.",
+            exp_s2_title: "Control Measure", exp_s2_desc: "Day 1: BIOWALL off (no fans), CO2 ppm recorded at 0 and 40 mins.",
+            exp_s3_title: "Active Measure", exp_s3_desc: "Day 2: Panel active, fan airflow engaged, measured at the same times.",
+            exp_s4_title: "Success KPI", exp_s4_desc: "Proving a 20% improvement in CO2 concentration at min 40 compared to the control group.",
+
+            dash_kicker: "DATA MONITORING", dash_title: "Live Control Panel", status_active: "SYSTEM ACTIVE",
+            lbl_temp: "TEMP", lbl_hum: "HUM", lbl_fan: "FAN STATUS",
+            btn_crowd: "⚡ Class Crowded",
+            team_kicker: "PROJECT TEAM", team_title: "SCIENCE EXPLORERS", lbl_supporters: "DEVELOPER & SUPPORTERS",
+            role_captain: "CAPTAIN", role_design: "DESIGN", role_idea: "PROJECT IDEA", role_pres: "PRESENTATION", role_prod: "DESIGN & PRODUCTION", role_advisor: "ADVISOR",
+            lbl_click: "CLICK ON (+) ICONS TO EXPLORE THE SYSTEM",
+            
+            modal_solar_title: "Solar Panel", modal_solar_desc: "Panel supported for energy efficiency. Includes USB/Battery backup for cloudy days indoors.",
+            modal_sensors_title: "Realistic Sensor Net", modal_sensors_desc: "NDIR-based MH-Z19B reads precise CO2 ppm. MQ-135 monitors general classroom air (VOC).",
+            modal_cleanair_title: "Clean Air Output", modal_cleanair_desc: "Clean air, filtered by microorganisms in the root zone (Rhizosphere), is released back into the room from the top.",
+            modal_plants_title: "Edible Plants", modal_plants_desc: "Plants like Parsley and Arugula are grown. Instills production awareness.",
+            modal_felt_title: "Soilless Felt", modal_felt_desc: "Special felts bed the roots. No soil means no bugs or odors in the school.",
+            modal_fan_title: "Active Intake Fan", modal_fan_desc: "Dirty air is forced directly into the roots (phytoremediation area). Filtration speed increases 3x.",
+            modal_water_title: "Leak-proof Pump", modal_water_desc: "5V submersible pump pushes water up. Closed loop prevents floor spills."
         }
     };
 
@@ -645,7 +624,6 @@
             for(let i=0; i<4; i++) {
                 const div = document.createElement('div');
                 div.className = 'plant-visual';
-                // 3 leaves per plant
                 div.innerHTML = `<div class="leaf" style="transform:rotate(-20deg); left:5px; height:18px"></div>
                                  <div class="leaf" style="transform:rotate(0deg); left:14px; height:24px; bottom:2px"></div>
                                  <div class="leaf" style="transform:rotate(20deg); right:5px; height:18px"></div>`;
@@ -661,7 +639,15 @@
     const mDesc = document.getElementById('mDesc');
     const mIcon = document.getElementById('mIcon');
     
-    const icons = { solar: '☀️', sensors: '📡', plants: '🥗', water: '💧' };
+    const icons = { 
+        solar: '☀️', 
+        sensors: '📡', 
+        cleanair: '💨',
+        plants: '🥗', 
+        felt: '🧽',
+        fan: '☢️',
+        water: '💧' 
+    };
 
     window.openInfo = function(type) {
         mTitle.setAttribute('data-key', `modal_${type}_title`);
@@ -692,8 +678,6 @@
 
     let co2 = 410;
     const history = Array(60).fill(410);
-    
-    // Scenario Logic
     let isScenarioRunning = false;
 
     function log(msg) {
@@ -702,7 +686,7 @@
         div.innerText = `> ${msg}`;
         consoleLog.appendChild(div);
         consoleLog.scrollTop = consoleLog.scrollHeight;
-        if(consoleLog.children.length > 5) consoleLog.removeChild(consoleLog.firstChild);
+        if(consoleLog.children.length > 6) consoleLog.removeChild(consoleLog.firstChild);
     }
 
     function drawChart() {
@@ -713,7 +697,8 @@
         cctx.beginPath(); cctx.moveTo(0, h/2); cctx.lineTo(w, h/2); cctx.stroke();
 
         cctx.strokeStyle = co2 > 600 ? '#f56565' : '#48bb78';
-        cctx.lineWidth = 2; cctx.beginPath();
+        cctx.lineWidth = 3; 
+        cctx.beginPath();
         const step = w / (history.length - 1);
         history.forEach((val, i) => {
             const y = h - ((val - 300) / 700) * h; 
@@ -723,25 +708,23 @@
     }
 
     function simulateLoop() {
-        if(isScenarioRunning) return; // Stop random loop if scenario is active
-
-        co2 += (Math.random() * 10 - 6); 
+        if(isScenarioRunning) return; 
+        co2 += (Math.random() * 8 - 4); 
         if(co2 < 400) co2 += 2;
 
         if(co2 > 550) {
             co2 -= 5; 
             fanIcon.style.animationPlayState = 'running'; fanIcon.style.color = 'var(--red)';
-            if(fanText.innerText !== "HIGH") { fanText.innerText = "HIGH"; log(currentLang === 'tr' ? "Yüksek CO2 tespit edildi." : "High CO2 detected."); }
+            if(fanText.innerText !== "AKTİF") { fanText.innerText = "AKTİF"; log(currentLang === 'tr' ? "CO2 arttı. Fanlar devrede." : "CO2 increased. Fans active."); }
         } else {
             fanIcon.style.animationPlayState = 'paused'; fanIcon.style.color = 'var(--muted)';
-            if(fanText.innerText !== "AUTO") { fanText.innerText = "AUTO"; }
+            if(fanText.innerText !== "BEKLEMEDE") { fanText.innerText = "BEKLEMEDE"; }
         }
         valAir.innerText = Math.floor(co2);
         history.push(co2); history.shift(); drawChart();
     }
     
-    // Main loop
-    setInterval(simulateLoop, 600);
+    setInterval(simulateLoop, 800);
 
     /* --- SCENARIO EXECUTION --- */
     function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
@@ -754,60 +737,61 @@
         btn.disabled = true;
         btn.innerText = currentLang === 'tr' ? "Simülasyon Sürüyor..." : "Simulation Running...";
         
-        // Helper for localized log
-        const t = (key) => translations[currentLang][key];
+        const langMap = {
+            tr: [
+                "⚠️ Sınıfta hareketlilik: CO2 yükseliyor...",
+                "📈 Karbon eşiği aşıldı (>800ppm)!",
+                "🚨 Mikrodenetleyici: Durum 'KÖTÜ' olarak güncellendi.",
+                "⚙️ FANLAR %100 güce alınıyor. Kirli hava emiliyor.",
+                "💧 POMPA devrede: Kök nemi dengeleniyor.",
+                "📉 Kök florası (Rizosfer) toksinleri parçalıyor...",
+                "✅ Hava kalitesi İYİ seviyeye düştü. Sistem beklemede."
+            ],
+            en: [
+                "⚠️ Motion detected: CO2 is rising...",
+                "📈 Carbon threshold exceeded (>800ppm)!",
+                "🚨 Microcontroller: Status updated to 'POOR'.",
+                "⚙️ FANS at 100% power. Dirty air intake active.",
+                "💧 PUMP active: Root humidity balancing.",
+                "📉 Root flora (Rhizosphere) breaking down toxins...",
+                "✅ Air quality dropped to GOOD. System on standby."
+            ]
+        };
+        const msgs = langMap[currentLang];
 
-        // Adım 1: Tespit
-        log(t('scen_step1')); // Hareket algılandı
-        await delay(3000);
-
-        // Adım 2: Yükseliş Efekti (Döngü ile)
-        log(t('scen_step2')); // CO2 yükseliyor
+        log(msgs[0]); await delay(3000);
+        log(msgs[1]); 
         for(let i=0; i<15; i++) {
-            co2 += 30 + Math.random()*10; 
-            valAir.innerText = Math.floor(co2);
-            history.push(co2); history.shift(); drawChart();
-            await delay(200);
-        }
-        
-        // Adım 3: Alarm
-        log(t('scen_step3')); // Kritik eşik
-        await delay(3000);
-
-        // Adım 4: Karar
-        log(t('scen_step4')); // İşlemci karar veriyor
-        await delay(2000);
-
-        // Adım 5: Fanlar
-        fanIcon.style.animationPlayState = 'running'; 
-        fanIcon.style.color = 'var(--red)';
-        fanIcon.style.animationDuration = '0.2s'; 
-        fanText.innerText = "TURBO";
-        log(t('scen_step5')); // Fanlar max
-        await delay(4000);
-
-        // Adım 6: Pompa
-        log(t('scen_step6')); // Su basılıyor
-        await delay(4000);
-
-        // Adım 7: Temizleme (Düşüş Efekti)
-        log(t('scen_step7')); // Fitoremediasyon
-        const steps = 30;
-        const startCo2 = co2;
-        for(let i=0; i<steps; i++) {
-            co2 -= (startCo2 - 420) / steps; 
-            co2 += (Math.random() * 5 - 2.5);
+            co2 += 25 + Math.random()*15; 
             valAir.innerText = Math.floor(co2);
             history.push(co2); history.shift(); drawChart();
             await delay(250);
         }
         
-        // Adım 8: Normalleşme
+        log(msgs[2]); await delay(2500);
+
+        fanIcon.style.animationPlayState = 'running'; 
+        fanIcon.style.color = 'var(--red)';
+        fanIcon.style.animationDuration = '0.2s'; 
+        fanText.innerText = "TURBO";
+        log(msgs[3]); await delay(4000);
+        log(msgs[4]); await delay(4000);
+        log(msgs[5]); 
+        
+        const steps = 30; const startCo2 = co2;
+        for(let i=0; i<steps; i++) {
+            co2 -= (startCo2 - 410) / steps; 
+            co2 += (Math.random() * 6 - 3);
+            valAir.innerText = Math.floor(co2);
+            history.push(co2); history.shift(); drawChart();
+            await delay(300);
+        }
+        
         fanIcon.style.animationPlayState = 'paused'; 
         fanIcon.style.color = 'var(--muted)';
         fanIcon.style.animationDuration = '1s';
-        fanText.innerText = "AUTO";
-        log(t('scen_step8')); // Normal
+        fanText.innerText = "BEKLEMEDE";
+        log(msgs[6]); 
         
         await delay(2000);
         isScenarioRunning = false;
@@ -820,9 +804,9 @@
     let W, H;
     function resizeAir(){ W=air.width=window.innerWidth; H=air.height=window.innerHeight; }
     window.addEventListener('resize', resizeAir); resizeAir();
-    const parts = Array.from({length:50}, ()=>({x:Math.random()*W, y:Math.random()*H, r:Math.random()*2, s:Math.random()*0.5+0.2}));
+    const parts = Array.from({length:60}, ()=>({x:Math.random()*W, y:Math.random()*H, r:Math.random()*2, s:Math.random()*0.5+0.1}));
     function drawAirLoop(){
-        ctx.clearRect(0,0,W,H); ctx.fillStyle = "rgba(255,255,255,0.3)";
+        ctx.clearRect(0,0,W,H); ctx.fillStyle = "rgba(255,255,255,0.2)";
         parts.forEach(p=>{ p.y -= p.s; if(p.y<0) p.y=H; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); });
         requestAnimationFrame(drawAirLoop);
     }
