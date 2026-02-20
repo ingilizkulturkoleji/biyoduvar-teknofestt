@@ -14,34 +14,34 @@
 
   <style>
     :root{
-      --bg:#11151c; 
+      --bg:#11151c;
       --bg-card:rgba(25, 30, 40, 0.7);
       --text:#f0f0f0;
       --muted:rgba(255,255,255,.65);
       --muted2:rgba(255,255,255,.45);
       --stroke:rgba(255,255,255,.08);
-      
-      --green:#48bb78; 
+
+      --green:#48bb78;
       --green-lcd: #2ecc71;
       --wood:#8d6e63;
       --wood-dark: #5d4037;
       --wood-frame: #8D6E63;
-      --blue:#4299e1; 
+      --blue:#4299e1;
       --red:#f56565;
       --yellow: #ecc94b;
-      
+
       --max:1120px;
       --radius:20px;
     }
-    
+
     *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
     html,body{height:100%}
-    
+
     body{
       margin:0;
       font-family:'Montserrat', sans-serif;
       background: var(--bg);
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(72,187,120,0.08) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(66,153,225,0.06) 0px, transparent 50%);
       color:var(--text);
@@ -64,11 +64,11 @@
     }
     .brand{ display:flex; gap:5px; align-items:center; font-family: 'Rajdhani', sans-serif; font-weight:700; font-size: 20px; letter-spacing:1px; cursor: pointer; color: var(--text); white-space: nowrap; }
     .brand span.highlight { color: var(--green); }
-    
-    .nav-links{ display:flex; gap:6px; align-items:center; }
-    .nav-links a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 16px; border-radius:99px; transition:.2s; font-weight: 500; }
+
+    .nav-links{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+    .nav-links a{ color:var(--muted); text-decoration:none; font-size:13px; padding:8px 14px; border-radius:99px; transition:.2s; font-weight: 500; white-space:nowrap;}
     .nav-links a:hover{ color:#fff; background:rgba(255,255,255,.05); }
-    
+
     .lang-btn { background: transparent; border: 1px solid var(--wood); color: var(--wood); padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 5px; transition: 0.2s; text-transform: uppercase; white-space: nowrap; }
     .lang-btn:hover { background: var(--wood); color: #000; }
 
@@ -86,7 +86,7 @@
     /* --- HERO & INTERACTIVE VISUAL --- */
     .heroGrid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; }
     .heroGrid { padding-top: 150px; }
-    
+
     .hero-tags { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .tag { background: rgba(72,187,120,0.1); color: var(--green); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid rgba(72,187,120,0.2); white-space: nowrap; }
     .tag.blue { background: rgba(66,153,225,0.1); color: var(--blue); border-color: rgba(66,153,225,0.2); }
@@ -134,7 +134,7 @@
 
     .section-grow { height: 68%; position: relative; display: flex; flex-direction: column; justify-content: space-evenly; padding-top: 10px; }
     .shelf { height: 8px; background: var(--wood-dark); width: 100%; position: relative; margin-top: auto; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
-    .felt-layer { 
+    .felt-layer {
         position: absolute; bottom: 8px; left: 5%; width: 90%; height: 50px; background: #3e2723; border-radius: 4px;
         background-image: repeating-linear-gradient(45deg, #3e2723 0, #3e2723 2px, #4e342e 2px, #4e342e 4px); box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
@@ -142,7 +142,7 @@
     .plant-visual { position: relative; width: 40px; height: 40px; }
     .leaf { position: absolute; bottom: 0; width: 12px; height: 20px; background: var(--green); border-radius: 0 10px 0 10px; transform-origin: bottom center; }
     .plant-visual:nth-child(odd) .leaf { background: #43A047; }
-    
+
     .water-flow-indicator { position: absolute; right: 10px; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue), transparent); opacity: 0.5; animation: flowDown 2s linear infinite; }
     @keyframes flowDown { 0%{background-position: 0 0;} 100%{background-position: 0 100px;} }
 
@@ -151,7 +151,7 @@
     .water-line { position: absolute; bottom: 0; width: 100%; height: 75%; background: rgba(66,153,225,0.4); border-top: 1px solid rgba(255,255,255,0.3); animation: waterLevel 5s infinite ease-in-out; }
     @keyframes waterLevel { 0%,100%{height:75%} 50%{height:78%} }
     .pump-unit { position: absolute; bottom: 5px; left: 10px; width: 50px; height: 40px; background: #111; border: 1px solid #444; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 10px; font-weight: bold; z-index: 5; }
-    
+
     .arrow-flow { position: absolute; left: -60px; width: 50px; height: 20px; background: linear-gradient(90deg, rgba(255,255,255,0), #81d4fa); clip-path: polygon(0% 40%, 60% 40%, 60% 0%, 100% 50%, 60% 100%, 60% 60%, 0% 60%); opacity: 0.8; animation: flowIn 2s infinite; z-index: 10; }
     .arrow-flow.out { top: -55px; left: 50%; transform: translateX(-50%) rotate(-90deg); background: linear-gradient(90deg, rgba(255,255,255,0), var(--green-lcd)); width: 50px; }
     @keyframes flowIn { 0%{transform:translateX(-10px); opacity:0;} 50%{opacity:1;} 100%{transform:translateX(10px); opacity:0;} }
@@ -165,7 +165,7 @@
     /* --- TECH LIST & CALC --- */
     .tech-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start; }
     .tech-list { padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; margin: 0; }
-    .tech-list li { 
+    .tech-list li {
         background: var(--bg-card); padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
         font-size: 14px; line-height: 1.6; color: var(--muted); display: flex; flex-direction: column;
     }
@@ -189,11 +189,12 @@
     .tl-step h4 { margin: 0 0 5px; font-size: 16px; color: #fff; }
     .tl-step p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.4;}
 
-    /* --- OTHERS --- */
+    /* --- BUTTONS --- */
     .btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: 0.2s; border: none; cursor: pointer; }
     .btn:disabled { background: var(--muted2); cursor: not-allowed; opacity: 0.7; }
     .btn.secondary { background: transparent; border: 1px solid var(--stroke); color: var(--text); }
-    
+
+    /* --- TEAM --- */
     .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 30px; }
     .member { text-align: center; padding: 20px; border: 1px solid var(--stroke); border-radius: 12px; background: rgba(255,255,255,0.02); }
     .role { font-size: 10px; text-transform: uppercase; color: var(--wood); font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
@@ -211,6 +212,99 @@
     .modal-title { font-family: 'Rajdhani'; font-size: 24px; color: var(--green); margin-bottom: 10px; }
     .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text); }
 
+    /* --- NEW: TABLES (Pilot & Comparison & BOM) --- */
+    .table-wrap{
+      overflow:auto;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,0.25);
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td{
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      color: var(--muted);
+      vertical-align: top;
+    }
+    th{
+      color:#fff;
+      font-family:'Rajdhani',sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      background: rgba(255,255,255,0.03);
+      position: sticky;
+      top: 0;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      font-size: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .badge.good{ border-color: rgba(72,187,120,0.35); color: var(--green); background: rgba(72,187,120,0.12);}
+    .badge.warn{ border-color: rgba(236,201,75,0.35); color: var(--yellow); background: rgba(236,201,75,0.10);}
+    .badge.bad{ border-color: rgba(245,101,101,0.35); color: var(--red); background: rgba(245,101,101,0.10); }
+
+    .pilot-grid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    /* --- NEW: CHECKLIST --- */
+    .checklist{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .check-item{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      background: rgba(0,0,0,0.20);
+    }
+    .check-item input{
+      margin-top: 3px;
+      width: 18px; height: 18px;
+      accent-color: var(--green);
+    }
+    .check-item .txt{
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .check-item .txt b{ color:#fff; font-weight:700; }
+    .check-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .mini-btn{
+      background: transparent;
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor:pointer;
+      font-size: 12px;
+      transition: .2s;
+    }
+    .mini-btn:hover{ background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+
     @media(max-width:900px){
         .heroGrid{ grid-template-columns: 1fr; text-align: center; padding-top: 130px; }
         .hero-tags { justify-content: center; }
@@ -224,6 +318,8 @@
         .timeline::before { left: 20px; top: 0; bottom: 0; width: 2px; height: 100%; }
         .tl-step { display: flex; text-align: left; align-items: flex-start; gap: 15px; }
         .tl-dot { margin: 0; flex-shrink: 0; }
+        .pilot-grid{ grid-template-columns: 1fr; }
+        table{ min-width: 640px; }
     }
     @media(max-width:480px){
         h1 { font-size: 32px; }
@@ -243,6 +339,10 @@
     <div class="nav-links">
       <a href="#market" data-key="nav_market">Pazar & Analiz</a>
       <a href="#tech" data-key="nav_tech">Sistem Mimarisi</a>
+      <a href="#experiment" data-key="nav_exp">Deney Planı</a>
+      <a href="#pilot" data-key="nav_pilot">Pilot Test</a>
+      <a href="#compare" data-key="nav_compare">Kıyas</a>
+      <a href="#build" data-key="nav_build">Üretim</a>
       <a href="#demo" data-key="nav_demo">Deney & Demo</a>
     </div>
     <button id="langToggle" class="lang-btn">TR | EN</button>
@@ -268,10 +368,10 @@
         </div>
         <h1 data-key="hero_title">Duvarlar Artık<br><span style="color:var(--green)">Nefes Alıyor</span></h1>
         <p class="lead" data-key="hero_desc">
-            BİYODUVAR; kapalı okul ve ofis ortamlarındaki "Hasta Bina Sendromunu" bitki tabanlı aktif filtreleme ile çözen, 
+            BİYODUVAR; kapalı okul ve ofis ortamlarındaki "Hasta Bina Sendromunu" bitki tabanlı aktif filtreleme ile çözen,
             sensör kontrollü yeni nesil bir ekosistemdir.
         </p>
-        <div style="display:flex; gap:16px; margin-top:30px; flex-wrap:wrap; justify-content: center; md:justify-content: flex-start;">
+        <div style="display:flex; gap:16px; margin-top:30px; flex-wrap:wrap; justify-content: center;">
             <a href="#market" class="btn" data-key="btn_explore">Projeyi İncele</a>
             <a href="#demo" class="btn secondary" data-key="btn_demo">Canlı Simülasyon</a>
         </div>
@@ -310,11 +410,13 @@
                   <div style="position:absolute; bottom:5px; left:40%; width:4px; height:4px; background:rgba(255,255,255,0.5); border-radius:50%; animation:rise 2s infinite;"></div>
               </div>
           </div>
-          <div style="text-align:center; margin-top:20px; font-size:11px; color:var(--muted); letter-spacing:1px; opacity:0.8;"><span data-key="lbl_click">SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span></div>
+          <div style="text-align:center; margin-top:20px; font-size:11px; color:var(--muted); letter-spacing:1px; opacity:0.8;">
+            <span data-key="lbl_click">SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN</span>
+          </div>
       </div>
     </section>
 
-    <!-- NEW: SAFETY & HYGIENE (Okul ortamı için kritik) -->
+    <!-- SAFETY -->
     <section id="safety" class="container">
         <div class="kicker" data-key="safe_kicker">NEDEN BİYODUVAR?</div>
         <h2 data-key="safe_title">Sınıflar İçin Güvenli Tasarım</h2>
@@ -337,22 +439,22 @@
         </div>
     </section>
 
-    <!-- TECH SPECS (Updated with real sensors & calculations) -->
+    <!-- TECH -->
     <section id="tech" class="container alt-bg">
         <div class="kicker" data-key="tech_kicker" style="margin-bottom: 20px;">TEKNİK ALTYAPI</div>
         <div class="tech-grid">
             <div>
                 <ul class="tech-list">
                     <li>
-                        <strong data-key="tech_1_title">Hibrit Sensör Ağı</strong> 
+                        <strong data-key="tech_1_title">Hibrit Sensör Ağı</strong>
                         <span data-key="tech_1_desc">Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.</span>
                     </li>
                     <li>
-                        <strong data-key="tech_3_title">Otomasyon & MCU</strong> 
+                        <strong data-key="tech_3_title">Otomasyon & MCU</strong>
                         <span data-key="tech_3_desc">Arduino Nano, verileri anlık işleyerek eşik aşıldığında (örn: 800ppm) tahliye fanlarını otomatik devreye sokar.</span>
                     </li>
                     <li>
-                        <strong data-key="tech_5_title">Çoklu Güç Kaynağı</strong> 
+                        <strong data-key="tech_5_title">Çoklu Güç Kaynağı</strong>
                         <span data-key="tech_5_desc">Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve şebeke adaptörü hibrid olarak çalışır.</span>
                     </li>
                 </ul>
@@ -378,7 +480,7 @@
         </div>
     </section>
 
-    <!-- NEW: MARKET & COMMERCIALIZATION -->
+    <!-- MARKET -->
     <section id="market" class="container">
         <div class="kicker" data-key="market_kicker">TİCARİLEŞME POTANSİYELİ</div>
         <h2 data-key="market_title">Pazar Analizi & Gelir Modeli</h2>
@@ -398,12 +500,12 @@
         </div>
     </section>
 
-    <!-- NEW: EXPERIMENT PLAN -->
+    <!-- EXPERIMENT PLAN -->
     <section id="experiment" class="container alt-bg">
         <div class="kicker" data-key="exp_kicker">BİLİMSEL YÖNTEM</div>
         <h2 data-key="exp_title">Uygulama ve Deney Planı</h2>
         <p class="lead" data-key="exp_desc">Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.</p>
-        
+
         <div class="timeline">
             <div class="tl-step">
                 <div class="tl-dot">1</div>
@@ -428,6 +530,232 @@
         </div>
     </section>
 
+    <!-- PILOT TEST -->
+    <section id="pilot" class="container">
+      <div class="kicker" data-key="pilot_kicker">KANIT & VERİ</div>
+      <h2 data-key="pilot_title">Pilot Test Sonuçları (Örnek Şablon)</h2>
+      <p class="lead" data-key="pilot_desc">
+        Jürinin en çok puan verdiği bölüm: Aynı sınıfta “Kontrol Günü” ve “Aktif Gün” ölçümünü tablo ve grafikle kanıtlamak.
+        Aşağıdaki veriler şablondur; kendi ölçümünüzle değiştirip ekran görüntüsü ekleyin.
+      </p>
+
+      <div class="pilot-grid">
+        <div class="card">
+          <h3 style="margin-top:0;" data-key="pilot_chart_title">CO₂ Değişimi (Kontrol vs Aktif)</h3>
+          <div style="background:#050505; height:220px; border-radius:12px; position:relative; overflow:hidden; border: 1px solid var(--stroke);">
+            <canvas id="pilotChart"></canvas>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <span class="badge warn" id="pilotBadge1">Kontrol: +?? ppm</span>
+            <span class="badge good" id="pilotBadge2">Aktif: -?? ppm</span>
+            <span class="badge" id="pilotBadge3">KPI: %?? iyileşme</span>
+          </div>
+          <p style="font-size:12px; color:var(--muted2); margin-top:10px;" data-key="pilot_tip">
+            *İpucu: “Sınıf m² / öğrenci sayısı / havalandırma durumu” bilgisini altına eklemek jüri puanını artırır.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0;" data-key="pilot_meta_title">Test Koşulları</h3>
+          <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.8; font-size:14px;">
+            <li><b data-key="meta_area_lbl">Sınıf Alanı:</b> <span id="metaArea">?? m²</span></li>
+            <li><b data-key="meta_volume_lbl">Hacim:</b> <span id="metaVolume">?? m³</span></li>
+            <li><b data-key="meta_students_lbl">Öğrenci Sayısı:</b> <span id="metaStudents">??</span></li>
+            <li><b data-key="meta_duration_lbl">Ders Süresi:</b> <span id="metaDuration">40 dk</span></li>
+            <li><b data-key="meta_start_lbl">Başlangıç CO₂:</b> <span id="metaStart">520 ppm</span></li>
+            <li><b data-key="meta_threshold_lbl">Eşik:</b> <span id="metaThreshold">800 ppm</span></li>
+          </ul>
+
+          <div style="margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08);">
+            <h3 style="margin:0 0 10px;" data-key="pilot_table_title">Ölçüm Tablosu</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-key="tbl_time">Zaman</th>
+                    <th data-key="tbl_control">Kontrol Günü (ppm)</th>
+                    <th data-key="tbl_active">Aktif Gün (ppm)</th>
+                    <th data-key="tbl_note">Not</th>
+                  </tr>
+                </thead>
+                <tbody id="pilotTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section id="compare" class="container alt-bg">
+      <div class="kicker" data-key="compare_kicker">ÖZGÜNLÜK & KARŞILAŞTIRMA</div>
+      <h2 data-key="compare_title">Alternatiflere Göre BİYODUVAR</h2>
+      <p class="lead" data-key="compare_desc">
+        Jüri “neden siz?” sorusunun cevabını net görmek ister. Bu tablo puanı yükseltir.
+      </p>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-key="cmp_sol">Çözüm</th>
+                <th data-key="cmp_meas">Ölçüm</th>
+                <th data-key="cmp_act">Aktif İyileştirme</th>
+                <th data-key="cmp_waste">Atık / Sarf</th>
+                <th data-key="cmp_maint">Bakım</th>
+                <th data-key="cmp_edu">Eğitim/Farkındalık</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b data-key="cmp_co2mon">CO₂ Monitörü</b></td>
+                <td>✅ CO₂</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td data-key="cmp_low">Düşük</td>
+                <td data-key="cmp_mid">Orta</td>
+              </tr>
+              <tr>
+                <td><b data-key="cmp_pur">Hava Temizleyici (Filtreli)</b></td>
+                <td>⚠️ <span data-key="cmp_partial">Kısmi</span></td>
+                <td>✅</td>
+                <td>⚠️ <span data-key="cmp_filterwaste">Filtre atığı</span></td>
+                <td data-key="cmp_medhigh">Orta/Yüksek</td>
+                <td data-key="cmp_low">Düşük</td>
+              </tr>
+              <tr>
+                <td><b data-key="cmp_greenwall">Dekoratif Yeşil Duvar</b></td>
+                <td>❌</td>
+                <td>⚠️ <span data-key="cmp_passive">Pasif</span></td>
+                <td>❌</td>
+                <td data-key="cmp_mid">Orta</td>
+                <td data-key="cmp_mid">Orta</td>
+              </tr>
+              <tr>
+                <td><b style="color:var(--green)" data-key="cmp_biyoduvar">BİYODUVAR</b></td>
+                <td>✅ CO₂ + IAQ</td>
+                <td>✅ <span data-key="cmp_sensorfan">Sensör + Fan</span></td>
+                <td>✅ <span data-key="cmp_nowaste">Filtre atığı yok</span></td>
+                <td data-key="cmp_plannedlow">Planlı/Çok düşük (kit)</td>
+                <td>✅ <span data-key="cmp_veryhigh">Çok yüksek</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+          <span class="badge good" data-key="cmp_badge1">Ölç + İyileştir + Öğret</span>
+          <span class="badge" data-key="cmp_badge2">Okul odaklı güvenlik</span>
+          <span class="badge warn" data-key="cmp_badge3">Veriyle kanıtlanabilir KPI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILD (ADIM 2) -->
+    <section id="build" class="container">
+      <div class="kicker" data-key="build_kicker">ÜRETİLEBİLİRLİK</div>
+      <h2 data-key="build_title">Üretim & Montaj Planı</h2>
+      <p class="lead" data-key="build_desc">
+        Jüri için “prototiplenebilirlik” çok kritiktir. Aşağıda üretim adımları, BOM (malzeme listesi) ve okul için bakım planı yer alır.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon-box">🧩</div>
+          <h3 data-key="asm_title">Montaj (7 Adım)</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="asm_desc">
+            Modüler tasarım: Panel gövdesi → hidroponik katman → su haznesi → sensörler → fanlar → test → devreye alma.
+          </p>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px; font-size:13px; color:var(--muted); line-height:1.6;">
+            <div><b style="color:#fff;">1.</b> <span data-key="asm_s1">Panel gövdesi ve çerçeve hazırlanır.</span></div>
+            <div><b style="color:#fff;">2.</b> <span data-key="asm_s2">Keçe katmanlar ve raflar sabitlenir.</span></div>
+            <div><b style="color:#fff;">3.</b> <span data-key="asm_s3">Hazne, pompa ve hortum hattı kurulup sızdırmazlık kontrol edilir.</span></div>
+            <div><b style="color:#fff;">4.</b> <span data-key="asm_s4">MH-Z19B, MQ-135, DHT sensörleri konumlandırılır.</span></div>
+            <div><b style="color:#fff;">5.</b> <span data-key="asm_s5">Fanlar ve hava kanalı montajı yapılır.</span></div>
+            <div><b style="color:#fff;">6.</b> <span data-key="asm_s6">Arduino eşik değerleri yüklenir; kısa devre/izolasyon kontrol edilir.</span></div>
+            <div><b style="color:#fff;">7.</b> <span data-key="asm_s7">Su döngüsü + sensör okuma testi sonrası sınıfa alınır.</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon-box">📦</div>
+          <h3 data-key="bom_title">BOM (Malzeme Listesi)</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="bom_desc">
+            Aşağıdaki liste prototip içindir. Seri üretimde birim maliyet düşer; jüriye “hesaplanmış üretim” gösterir.
+          </p>
+          <div class="table-wrap" style="margin-top:14px;">
+            <table>
+              <thead>
+                <tr>
+                  <th data-key="bom_item">Parça</th>
+                  <th data-key="bom_qty">Adet</th>
+                  <th data-key="bom_notes">Not</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><b style="color:#fff;">Arduino Nano</b></td><td>1</td><td data-key="bom_n1">Kontrol birimi</td></tr>
+                <tr><td><b style="color:#fff;">MH-Z19B (NDIR CO₂)</b></td><td>1</td><td data-key="bom_n2">ppm bazlı CO₂ ölçümü</td></tr>
+                <tr><td><b style="color:#fff;">MQ-135</b></td><td>1</td><td data-key="bom_n3">IAQ/VOC göstergesi</td></tr>
+                <tr><td><b style="color:#fff;">DHT11/DHT22</b></td><td>1</td><td data-key="bom_n4">Sıcaklık + nem</td></tr>
+                <tr><td><b style="color:#fff;">5V Dalgıç Pompa</b></td><td>1</td><td data-key="bom_n5">Kapalı döngü su basma</td></tr>
+                <tr><td><b style="color:#fff;">5V Fan</b></td><td>1-2</td><td data-key="bom_n6">Emiş / tahliye</td></tr>
+                <tr><td><b style="color:#fff;">Hidroponik Keçe</b></td><td>3 kat</td><td data-key="bom_n7">Topraksız ortam</td></tr>
+                <tr><td><b style="color:#fff;">Hortum + Bağlantılar</b></td><td>1 set</td><td data-key="bom_n8">Sızdırmaz akış</td></tr>
+                <tr><td><b style="color:#fff;">Su Haznesi</b></td><td>1</td><td data-key="bom_n9">Alt tank</td></tr>
+                <tr><td><b style="color:#fff;">Güç (USB/Batarya)</b></td><td>1</td><td data-key="bom_n10">Okul içi güvenli besleme</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <span class="badge" data-key="bom_badge1">Düşük voltaj / okul uyumlu</span>
+            <span class="badge warn" data-key="bom_badge2">Kalibrasyon planı</span>
+            <span class="badge good" data-key="bom_badge3">Modüler üretim</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon-box">🧼</div>
+          <h3 data-key="maint_title">Bakım Checklist (Okul)</h3>
+          <p style="font-size:14px; color:var(--muted); line-height:1.7;" data-key="maint_desc">
+            Haftalık bakım 10-15 dakika hedeflenir. İşaretlediğiniz kutular kaydedilir.
+          </p>
+
+          <div class="checklist" id="checklist">
+            <label class="check-item">
+              <input type="checkbox" data-check="c1">
+              <div class="txt"><b data-key="c1_t">Su seviyesi</b> — <span data-key="c1_d">Hazne %30 altına düşmesin; eksiltme varsa tamamla.</span></div>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="c2">
+              <div class="txt"><b data-key="c2_t">Keçe kontrolü</b> — <span data-key="c2_d">Aşırı yosun/koku var mı? Gerekirse durulama.</span></div>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="c3">
+              <div class="txt"><b data-key="c3_t">Pompa & hortum</b> — <span data-key="c3_d">Sızdırma, tıkanma, ses artışı var mı?</span></div>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="c4">
+              <div class="txt"><b data-key="c4_t">Sensör okuma</b> — <span data-key="c4_d">CO₂ / nem değerleri mantıklı mı? Aykırılık varsa not al.</span></div>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="c5">
+              <div class="txt"><b data-key="c5_t">Bitki sağlığı</b> — <span data-key="c5_d">Sararma/solma varsa besin oranını düzenle.</span></div>
+            </label>
+          </div>
+
+          <div class="check-actions">
+            <button class="mini-btn" onclick="resetChecklist()" data-key="btn_reset">Tümünü Sıfırla</button>
+            <button class="mini-btn" onclick="markAllChecklist()" data-key="btn_markall">Tümünü İşaretle</button>
+            <button class="mini-btn" onclick="exportChecklist()" data-key="btn_export">Kayıt Metni</button>
+          </div>
+
+          <div style="margin-top:12px; font-size:12px; color:var(--muted2);" id="checkExport"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- DASHBOARD SIMULATION -->
     <section id="demo" class="container">
         <div class="kicker" data-key="dash_kicker">VERİ İZLEME</div>
@@ -438,7 +766,7 @@
                     <h3 style="margin:0; font-family:'Rajdhani', sans-serif; font-size:20px;">BİYODUVAR v1.0</h3>
                     <div class="status-badge" id="sysStatus" data-key="status_active" style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(72,187,120,0.15); border:1px solid rgba(72,187,120,0.3); border-radius:20px; color:var(--green); font-size:12px; font-weight:700;">SİSTEM AKTİF</div>
                 </div>
-                
+
                 <div class="kpi-row">
                     <div class="kpi-card"><div class="kpi-val" id="valAir">410</div><div class="kpi-lbl">CO2 (PPM)</div></div>
                     <div class="kpi-card"><div class="kpi-val" id="valTemp">24°C</div><div class="kpi-lbl" data-key="lbl_temp">SICAKLIK</div></div>
@@ -457,7 +785,7 @@
                     </div>
                 </div>
                 <div style="margin-top:20px;">
-                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;">SİSTEM TERMİNALİ</div>
+                    <div class="kpi-lbl" style="text-align:left; margin-bottom:8px;" data-key="lbl_terminal">SİSTEM TERMİNALİ</div>
                     <div class="console-log" id="consoleLog">
                         <div class="log-line">> System initialized...</div>
                     </div>
@@ -494,107 +822,392 @@
 
   </main>
 
-  <style> @keyframes spin { 100% { transform: rotate(360deg); } } @keyframes rise { 0% { transform: translateY(0); opacity:0;} 50% { opacity:1; } 100% { transform: translateY(-40px); opacity:0;} } </style>
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes rise { 0% { transform: translateY(0); opacity:0;} 50% { opacity:1; } 100% { transform: translateY(-40px); opacity:0;} }
+  </style>
 
   <script>
     /* --- DATA & TRANSLATION --- */
     const translations = {
         tr: {
             brand_html: "BİYO<span class='highlight'>DUVAR</span>",
-            nav_market: "Pazar & Analiz", nav_tech: "Teknoloji", nav_demo: "Deney & Demo", nav_team: "Takım",
-            tag_school: "Özel İngiliz Kültür Koleji", tag_project: "Teknofest 2026 İnsanlık Yararına Teknoloji",
-            kicker_hero: "İnsanlık Yararına Teknoloji",
+            nav_market: "Pazar & Analiz",
+            nav_tech: "Sistem Mimarisi",
+            nav_exp: "Deney Planı",
+            nav_pilot: "Pilot Test",
+            nav_compare: "Kıyas",
+            nav_build: "Üretim",
+            nav_demo: "Deney & Demo",
+
+            tag_school: "Özel İngiliz Kültür Koleji",
+            tag_project: "Teknofest 2026 İnsanlık Yararına Teknoloji",
             hero_title: "Duvarlar Artık<br><span style='color:var(--green)'>Nefes Alıyor</span>",
             hero_desc: "BİYODUVAR; kapalı okul ve ofis ortamlarındaki 'Hasta Bina Sendromunu' bitki tabanlı aktif filtreleme ile çözen, sensör kontrollü yeni nesil bir ekosistemdir.",
-            btn_explore: "Projeyi İncele", btn_demo: "Canlı Simülasyon",
-            
-            safe_kicker: "NEDEN BİYODUVAR?", safe_title: "Sınıflar İçin Güvenli Tasarım",
-            safe_1_title: "Düşük Voltaj (5V)", safe_1_desc: "Tüm elektronik bileşenler USB voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.",
-            safe_2_title: "Topraksız Sistem", safe_2_desc: "Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, mantar ve kötü koku oluşumu tamamen engellenir.",
-            safe_3_title: "Sızdırmaz Kapalı Döngü", safe_3_desc: "Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.",
+            btn_explore: "Projeyi İncele",
+            btn_demo: "Canlı Simülasyon",
+
+            safe_kicker: "NEDEN BİYODUVAR?",
+            safe_title: "Sınıflar İçin Güvenli Tasarım",
+            safe_1_title: "Düşük Voltaj (5V)",
+            safe_1_desc: "Tüm elektronik bileşenler USB voltajıyla çalışır. Çocuklar için elektrik çarpma riski sıfırdır.",
+            safe_2_title: "Topraksız Sistem",
+            safe_2_desc: "Hidroponik keçe kullanımı sayesinde toprak kaynaklı böcek, mantar ve kötü koku oluşumu tamamen engellenir.",
+            safe_3_title: "Sızdırmaz Kapalı Döngü",
+            safe_3_desc: "Su döngüsü kapalı bir hazne içinde gerçekleşir. Sınıf zeminine su dökülmesi veya küf oluşumu engellenir.",
 
             tech_kicker: "TEKNİK ALTYAPI",
-            tech_1_title: "Hibrit Sensör Ağı", tech_1_desc: "Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.",
-            tech_3_title: "Otomasyon & MCU", tech_3_desc: "Arduino Nano, verileri anlık işleyerek eşik aşıldığında tahliye fanlarını otomatik devreye sokar.",
-            tech_5_title: "Çoklu Güç Kaynağı", tech_5_desc: "Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve USB adaptörü hibrid olarak çalışır.",
-            
-            calc_title: "Hesaplamalar & Verim", calc_desc: "1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik etki yaratır.",
-            calc_co2: "Yıllık CO2 Azaltımı Hedefi:", calc_oxy: "Tahmini O2 Üretimi:",
-            
-            market_kicker: "TİCARİLEŞME POTANSİYELİ", market_title: "Pazar Analizi & Gelir Modeli",
-            mkt_1_title: "Hedef Kitle", mkt_1_desc: "İlk etapta okullar, kreşler ve etüt merkezleri. Ardından 'Hasta Bina Sendromu' yaşayan plaza ve ofisler.",
-            mkt_2_title: "Rekabet Avantajı", mkt_2_desc: "Hava temizleyiciler gibi filtre atığı çıkarmaz. Salt dekoratif yeşil duvarlardan farklı olarak sensörlü 'aktif' temizlik yapar.",
-            mkt_3_title: "Maliyet & Gelir", mkt_3_desc: "Prototip maliyeti ~3550 TL. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile gelir hedeflenir.",
+            tech_1_title: "Hibrit Sensör Ağı",
+            tech_1_desc: "Karbon emisyonunu net ölçmek için <b>NDIR CO2 Sensörü (MH-Z19B)</b> ve Genel Hava Kalitesi için <b>MQ-135</b> kullanılır.",
+            tech_3_title: "Otomasyon & MCU",
+            tech_3_desc: "Arduino Nano, verileri anlık işleyerek eşik aşıldığında tahliye fanlarını otomatik devreye sokar.",
+            tech_5_title: "Çoklu Güç Kaynağı",
+            tech_5_desc: "Sınıf içi kullanım göz önüne alınarak; Güneş Paneli, Batarya ve USB adaptörü hibrid olarak çalışır.",
 
-            exp_kicker: "BİLİMSEL YÖNTEM", exp_title: "Uygulama ve Deney Planı", exp_desc: "Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.",
-            exp_s1_title: "Ortam Belirleme", exp_s1_desc: "Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.",
-            exp_s2_title: "Kontrol Ölçümü", exp_s2_desc: "Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.",
-            exp_s3_title: "Aktif Ölçüm", exp_s3_desc: "Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.",
-            exp_s4_title: "Başarı Kriteri (KPI)", exp_s4_desc: "40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.",
+            calc_title: "Hesaplamalar & Verim",
+            calc_desc: "1 m² yaprak alanı günde 5-20g CO2 emer. Panelimizdeki ~0.5 m² aktif alan, <b>Rizosfer (kök) havalandırması ve fan sistemiyle</b> 3 kat verimli çalışarak 1.5 m²'lik etki yaratır.",
+            calc_co2: "Yıllık CO2 Azaltımı Hedefi:",
+            calc_oxy: "Tahmini O2 Üretimi:",
 
-            dash_kicker: "VERİ İZLEME", dash_title: "Canlı Kontrol Paneli", status_active: "SİSTEM AKTİF",
-            lbl_temp: "SICAKLIK", lbl_hum: "NEM", lbl_fan: "FAN DURUMU",
+            market_kicker: "TİCARİLEŞME POTANSİYELİ",
+            market_title: "Pazar Analizi & Gelir Modeli",
+            mkt_1_title: "Hedef Kitle",
+            mkt_1_desc: "İlk etapta okullar, kreşler ve etüt merkezleri. Ardından 'Hasta Bina Sendromu' yaşayan plaza ve ofisler.",
+            mkt_2_title: "Rekabet Avantajı",
+            mkt_2_desc: "Hava temizleyiciler gibi filtre atığı çıkarmaz. Salt dekoratif yeşil duvarlardan farklı olarak sensörlü 'aktif' temizlik yapar.",
+            mkt_3_title: "Maliyet & Gelir",
+            mkt_3_desc: "Prototip maliyeti ~3550 TL. Seri üretimde maliyet %40 düşecektir. Cihaz satışı + Aylık Besin/Keçe bakım kiti aboneliği ile gelir hedeflenir.",
+
+            exp_kicker: "BİLİMSEL YÖNTEM",
+            exp_title: "Uygulama ve Deney Planı",
+            exp_desc: "Projemizin okullardaki etkisini doğrulamak için tasarlanan kontrol test prosedürü.",
+            exp_s1_title: "Ortam Belirleme",
+            exp_s1_desc: "Ortalama büyüklükte bir sınıf seçilir. Ders süresi 40 dk olarak sabitlenir.",
+            exp_s2_title: "Kontrol Ölçümü",
+            exp_s2_desc: "Gün 1: BİYODUVAR kapalıyken (fansız), 0. ve 40. dakikada CO2 ppm ölçülür.",
+            exp_s3_title: "Aktif Ölçüm",
+            exp_s3_desc: "Gün 2: Panel aktifken, fan hava akışı devredeyken aynı dakikalarda ölçüm yapılır.",
+            exp_s4_title: "Başarı Kriteri (KPI)",
+            exp_s4_desc: "40. dk sonundaki CO2 yoğunluğunda kontrol grubuna göre %20 iyileşme kanıtlanması.",
+
+            pilot_kicker: "KANIT & VERİ",
+            pilot_title: "Pilot Test Sonuçları (Örnek Şablon)",
+            pilot_desc: "Jürinin en çok puan verdiği bölüm: Aynı sınıfta “Kontrol Günü” ve “Aktif Gün” ölçümünü tablo ve grafikle kanıtlamak. Aşağıdaki veriler şablondur; kendi ölçümünüzle değiştirip ekran görüntüsü ekleyin.",
+            pilot_chart_title: "CO₂ Değişimi (Kontrol vs Aktif)",
+            pilot_tip: "*İpucu: “Sınıf m² / öğrenci sayısı / havalandırma durumu” bilgisini altına eklemek jüri puanını artırır.",
+            pilot_meta_title: "Test Koşulları",
+            pilot_table_title: "Ölçüm Tablosu",
+            meta_area_lbl: "Sınıf Alanı:",
+            meta_volume_lbl: "Hacim:",
+            meta_students_lbl: "Öğrenci Sayısı:",
+            meta_duration_lbl: "Ders Süresi:",
+            meta_start_lbl: "Başlangıç CO₂:",
+            meta_threshold_lbl: "Eşik:",
+            tbl_time: "Zaman",
+            tbl_control: "Kontrol Günü (ppm)",
+            tbl_active: "Aktif Gün (ppm)",
+            tbl_note: "Not",
+
+            compare_kicker: "ÖZGÜNLÜK & KARŞILAŞTIRMA",
+            compare_title: "Alternatiflere Göre BİYODUVAR",
+            compare_desc: "Jüri “neden siz?” sorusunun cevabını net görmek ister. Bu tablo puanı yükseltir.",
+            cmp_sol: "Çözüm",
+            cmp_meas: "Ölçüm",
+            cmp_act: "Aktif İyileştirme",
+            cmp_waste: "Atık / Sarf",
+            cmp_maint: "Bakım",
+            cmp_edu: "Eğitim/Farkındalık",
+            cmp_co2mon: "CO₂ Monitörü",
+            cmp_pur: "Hava Temizleyici (Filtreli)",
+            cmp_greenwall: "Dekoratif Yeşil Duvar",
+            cmp_biyoduvar: "BİYODUVAR",
+            cmp_low: "Düşük",
+            cmp_mid: "Orta",
+            cmp_medhigh: "Orta/Yüksek",
+            cmp_partial: "Kısmi",
+            cmp_filterwaste: "Filtre atığı",
+            cmp_passive: "Pasif",
+            cmp_sensorfan: "Sensör + Fan",
+            cmp_nowaste: "Filtre atığı yok",
+            cmp_plannedlow: "Planlı/Çok düşük (kit)",
+            cmp_veryhigh: "Çok yüksek",
+            cmp_badge1: "Ölç + İyileştir + Öğret",
+            cmp_badge2: "Okul odaklı güvenlik",
+            cmp_badge3: "Veriyle kanıtlanabilir KPI",
+
+            build_kicker: "ÜRETİLEBİLİRLİK",
+            build_title: "Üretim & Montaj Planı",
+            build_desc: "Jüri için “prototiplenebilirlik” çok kritiktir. Aşağıda üretim adımları, BOM (malzeme listesi) ve okul için bakım planı yer alır.",
+
+            asm_title: "Montaj (7 Adım)",
+            asm_desc: "Modüler tasarım: Panel gövdesi → hidroponik katman → su haznesi → sensörler → fanlar → test → devreye alma.",
+            asm_s1: "Panel gövdesi ve çerçeve hazırlanır.",
+            asm_s2: "Keçe katmanlar ve raflar sabitlenir.",
+            asm_s3: "Hazne, pompa ve hortum hattı kurulup sızdırmazlık kontrol edilir.",
+            asm_s4: "MH-Z19B, MQ-135, DHT sensörleri konumlandırılır.",
+            asm_s5: "Fanlar ve hava kanalı montajı yapılır.",
+            asm_s6: "Arduino eşik değerleri yüklenir; kısa devre/izolasyon kontrol edilir.",
+            asm_s7: "Su döngüsü + sensör okuma testi sonrası sınıfa alınır.",
+
+            bom_title: "BOM (Malzeme Listesi)",
+            bom_desc: "Aşağıdaki liste prototip içindir. Seri üretimde birim maliyet düşer; jüriye “hesaplanmış üretim” gösterir.",
+            bom_item: "Parça",
+            bom_qty: "Adet",
+            bom_notes: "Not",
+            bom_n1: "Kontrol birimi",
+            bom_n2: "ppm bazlı CO₂ ölçümü",
+            bom_n3: "IAQ/VOC göstergesi",
+            bom_n4: "Sıcaklık + nem",
+            bom_n5: "Kapalı döngü su basma",
+            bom_n6: "Emiş / tahliye",
+            bom_n7: "Topraksız ortam",
+            bom_n8: "Sızdırmaz akış",
+            bom_n9: "Alt tank",
+            bom_n10: "Okul içi güvenli besleme",
+            bom_badge1: "Düşük voltaj / okul uyumlu",
+            bom_badge2: "Kalibrasyon planı",
+            bom_badge3: "Modüler üretim",
+
+            maint_title: "Bakım Checklist (Okul)",
+            maint_desc: "Haftalık bakım 10-15 dakika hedeflenir. İşaretlediğiniz kutular kaydedilir.",
+            c1_t: "Su seviyesi",
+            c1_d: "Hazne %30 altına düşmesin; eksiltme varsa tamamla.",
+            c2_t: "Keçe kontrolü",
+            c2_d: "Aşırı yosun/koku var mı? Gerekirse durulama.",
+            c3_t: "Pompa & hortum",
+            c3_d: "Sızdırma, tıkanma, ses artışı var mı?",
+            c4_t: "Sensör okuma",
+            c4_d: "CO₂ / nem değerleri mantıklı mı? Aykırılık varsa not al.",
+            c5_t: "Bitki sağlığı",
+            c5_d: "Sararma/solma varsa besin oranını düzenle.",
+            btn_reset: "Tümünü Sıfırla",
+            btn_markall: "Tümünü İşaretle",
+            btn_export: "Kayıt Metni",
+
+            dash_kicker: "VERİ İZLEME",
+            dash_title: "Canlı Kontrol Paneli",
+            status_active: "SİSTEM AKTİF",
+            lbl_temp: "SICAKLIK",
+            lbl_hum: "NEM",
+            lbl_fan: "FAN DURUMU",
+            lbl_terminal: "SİSTEM TERMİNALİ",
             btn_crowd: "⚡ Sınıf Kalabalıklaşınca",
-            team_kicker: "PROJE EKİBİ", team_title: "BİLİM KAŞİFLERİ", lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
-            role_captain: "KAPTAN", role_design: "TASARIM", role_idea: "PROJE FİKRİ", role_pres: "SUNUM", role_prod: "TASARIM & ÜRETİM", role_advisor: "DANIŞMAN",
+
+            team_kicker: "PROJE EKİBİ",
+            team_title: "BİLİM KAŞİFLERİ",
+            lbl_supporters: "GELİŞTİRİCİ & DESTEKÇİLER",
+            role_captain: "KAPTAN",
+            role_design: "TASARIM",
+            role_idea: "PROJE FİKRİ",
+            role_pres: "SUNUM",
+            role_prod: "TASARIM & ÜRETİM",
+            role_advisor: "DANIŞMAN",
             lbl_click: "SİSTEMİ İNCELEMEK İÇİN (+) BUTONLARINA TIKLAYIN",
-            
+
             // Expanded Modal Data
-            modal_solar_title: "Güneş Paneli", modal_solar_desc: "Sistem, enerji verimliliği için panel desteklidir. Okul içi bulutlu günler için USB/Batarya yedeklemesi bulunur.",
-            modal_sensors_title: "Gerçekçi Sensör Ağı", modal_sensors_desc: "Kesin CO2 ppm değerini NDIR tabanlı MH-Z19B sensörü okur. MQ-135 ise genel sınıf havasını (VOC) kontrol eder.",
-            modal_cleanair_title: "Temiz Hava Çıkışı", modal_cleanair_desc: "Bitkilerin kök bölgesindeki mikroorganizmalar (Rizosfer) tarafından filtrelenen temiz hava, en üst kısımdan sınıfa geri verilir.",
-            modal_plants_title: "Yenilebilir Bitkiler", modal_plants_desc: "Dikey tarım modülünde Maydanoz, Roka gibi bitkiler yetiştirilir. Üretim bilinci aşılanır.",
-            modal_felt_title: "Topraksız Keçe", modal_felt_desc: "Su tutma kapasitesi yüksek özel keçeler bitki köklerine yataklık eder. Toprak olmadığı için okulda böcek ve koku yapmaz.",
-            modal_fan_title: "Aktif Emiş Fanı", modal_fan_desc: "Kirli hava dipten emilerek doğrudan köklere (fitoremediasyon alanına) zorlanır. Filtreleme hızı 3 kat artar.",
-            modal_water_title: "Sızdırmaz Pompa", modal_water_desc: "5V dalgıç pompa suyu üst rafa basar. Keçelerden süzülen su döngüyü tamamlar. Kapalı sistem zemine su sızmasını önler."
+            modal_solar_title: "Güneş Paneli",
+            modal_solar_desc: "Sistem, enerji verimliliği için panel desteklidir. Okul içi bulutlu günler için USB/Batarya yedeklemesi bulunur.",
+            modal_sensors_title: "Gerçekçi Sensör Ağı",
+            modal_sensors_desc: "Kesin CO2 ppm değerini NDIR tabanlı MH-Z19B sensörü okur. MQ-135 ise genel sınıf havasını (VOC) kontrol eder.",
+            modal_cleanair_title: "Temiz Hava Çıkışı",
+            modal_cleanair_desc: "Bitkilerin kök bölgesindeki mikroorganizmalar (Rizosfer) tarafından filtrelenen temiz hava, en üst kısımdan sınıfa geri verilir.",
+            modal_plants_title: "Yenilebilir Bitkiler",
+            modal_plants_desc: "Dikey tarım modülünde Maydanoz, Roka gibi bitkiler yetiştirilir. Üretim bilinci aşılanır.",
+            modal_felt_title: "Topraksız Keçe",
+            modal_felt_desc: "Su tutma kapasitesi yüksek özel keçeler bitki köklerine yataklık eder. Toprak olmadığı için okulda böcek ve koku yapmaz.",
+            modal_fan_title: "Aktif Emiş Fanı",
+            modal_fan_desc: "Kirli hava dipten emilerek doğrudan köklere (fitoremediasyon alanına) zorlanır. Filtreleme hızı 3 kat artar.",
+            modal_water_title: "Sızdırmaz Pompa",
+            modal_water_desc: "5V dalgıç pompa suyu üst rafa basar. Keçelerden süzülen su döngüyü tamamlar. Kapalı sistem zemine su sızmasını önler."
         },
         en: {
             brand_html: "BIO<span class='highlight'>WALL</span>",
-            nav_market: "Market & Analysis", nav_tech: "Technology", nav_demo: "Demo & Test", nav_team: "Team",
-            tag_school: "British Culture College", tag_project: "Teknofest 2026 Humanity Tech",
-            kicker_hero: "Technology for Humanity",
+            nav_market: "Market & Analysis",
+            nav_tech: "Architecture",
+            nav_exp: "Test Plan",
+            nav_pilot: "Pilot Data",
+            nav_compare: "Comparison",
+            nav_build: "Build",
+            nav_demo: "Demo & Test",
+
+            tag_school: "British Culture College",
+            tag_project: "Teknofest 2026 Humanity Tech",
             hero_title: "Walls Are Now<br><span style='color:var(--green)'>Breathing</span>",
             hero_desc: "BIOWALL is a sensor-controlled smart ecosystem that solves 'Sick Building Syndrome' in classrooms through active plant-based filtering.",
-            btn_explore: "Explore Project", btn_demo: "Live Simulation",
-            
-            safe_kicker: "WHY BIOWALL?", safe_title: "Safe Design for Classrooms",
-            safe_1_title: "Low Voltage (5V)", safe_1_desc: "All components run on USB voltage. Zero risk of electric shock for children.",
-            safe_2_title: "Soilless System", safe_2_desc: "Hydroponic felt eliminates soil-borne bugs, mold, and bad odors entirely.",
-            safe_3_title: "Leak-proof Loop", safe_3_desc: "Water circulates in a closed chamber, preventing classroom spills and mold.",
+            btn_explore: "Explore Project",
+            btn_demo: "Live Simulation",
+
+            safe_kicker: "WHY BIOWALL?",
+            safe_title: "Safe Design for Classrooms",
+            safe_1_title: "Low Voltage (5V)",
+            safe_1_desc: "All components run on USB voltage. Zero risk of electric shock for children.",
+            safe_2_title: "Soilless System",
+            safe_2_desc: "Hydroponic felt eliminates soil-borne bugs, mold, and bad odors entirely.",
+            safe_3_title: "Leak-proof Loop",
+            safe_3_desc: "Water circulates in a closed chamber, preventing classroom spills and mold.",
 
             tech_kicker: "TECHNICAL INFRASTRUCTURE",
-            tech_1_title: "Hybrid Sensor Net", tech_1_desc: "Uses <b>NDIR CO2 Sensor (MH-Z19B)</b> for precise carbon reading and <b>MQ-135</b> for general Air Quality (VOC).",
-            tech_3_title: "Automation & MCU", tech_3_desc: "Arduino Nano processes data and triggers exhaust fans automatically when thresholds are crossed.",
-            tech_5_title: "Multi-Power Source", tech_5_desc: "Designed for indoor use; operates on a hybrid of Solar Panel, Battery, and USB adapter.",
-            
-            calc_title: "Calculations & Efficiency", calc_desc: "1 m² leaf area absorbs 5-20g CO2 daily. Our ~0.5 m² active panel acts like 1.5 m² due to <b>Rhizosphere ventilation and active fans</b> (3x efficiency).",
-            calc_co2: "Annual CO2 Reduction Target:", calc_oxy: "Est. O2 Production:",
-            
-            market_kicker: "COMMERCIALIZATION", market_title: "Market Analysis & Revenue",
-            mkt_1_title: "Target Audience", mkt_1_desc: "Initially schools, kindergartens. Then plazas and offices experiencing 'Sick Building Syndrome'.",
-            mkt_2_title: "Competitive Edge", mkt_2_desc: "No filter waste like classic purifiers. Unlike purely decorative green walls, it does 'active' measured cleaning.",
-            mkt_3_title: "Cost & Revenue", mkt_3_desc: "Prototype ~3550 TL. Mass production cuts cost by 40%. Revenue from device sales + monthly maintenance kit subscriptions.",
+            tech_1_title: "Hybrid Sensor Net",
+            tech_1_desc: "Uses <b>NDIR CO2 Sensor (MH-Z19B)</b> for precise carbon reading and <b>MQ-135</b> for general Air Quality (VOC).",
+            tech_3_title: "Automation & MCU",
+            tech_3_desc: "Arduino Nano processes data and triggers exhaust fans automatically when thresholds are crossed.",
+            tech_5_title: "Multi-Power Source",
+            tech_5_desc: "Designed for indoor use; operates on a hybrid of Solar Panel, Battery, and USB adapter.",
 
-            exp_kicker: "SCIENTIFIC METHOD", exp_title: "Testing & Experiment Plan", exp_desc: "Control test procedure designed to verify our project's impact in schools.",
-            exp_s1_title: "Environment", exp_s1_desc: "An average classroom is selected. Class duration fixed at 40 mins.",
-            exp_s2_title: "Control Measure", exp_s2_desc: "Day 1: BIOWALL off (no fans), CO2 ppm recorded at 0 and 40 mins.",
-            exp_s3_title: "Active Measure", exp_s3_desc: "Day 2: Panel active, fan airflow engaged, measured at the same times.",
-            exp_s4_title: "Success KPI", exp_s4_desc: "Proving a 20% improvement in CO2 concentration at min 40 compared to the control group.",
+            calc_title: "Calculations & Efficiency",
+            calc_desc: "1 m² leaf area absorbs 5-20g CO2 daily. Our ~0.5 m² active panel acts like 1.5 m² due to <b>Rhizosphere ventilation and active fans</b> (3x efficiency).",
+            calc_co2: "Annual CO2 Reduction Target:",
+            calc_oxy: "Est. O2 Production:",
 
-            dash_kicker: "DATA MONITORING", dash_title: "Live Control Panel", status_active: "SYSTEM ACTIVE",
-            lbl_temp: "TEMP", lbl_hum: "HUM", lbl_fan: "FAN STATUS",
+            market_kicker: "COMMERCIALIZATION",
+            market_title: "Market Analysis & Revenue",
+            mkt_1_title: "Target Audience",
+            mkt_1_desc: "Initially schools, kindergartens. Then plazas and offices experiencing 'Sick Building Syndrome'.",
+            mkt_2_title: "Competitive Edge",
+            mkt_2_desc: "No filter waste like classic purifiers. Unlike purely decorative green walls, it does 'active' measured cleaning.",
+            mkt_3_title: "Cost & Revenue",
+            mkt_3_desc: "Prototype ~3550 TL. Mass production cuts cost by 40%. Revenue from device sales + monthly maintenance kit subscriptions.",
+
+            exp_kicker: "SCIENTIFIC METHOD",
+            exp_title: "Testing & Experiment Plan",
+            exp_desc: "Control test procedure designed to verify our project's impact in schools.",
+            exp_s1_title: "Environment",
+            exp_s1_desc: "An average classroom is selected. Class duration fixed at 40 mins.",
+            exp_s2_title: "Control Measure",
+            exp_s2_desc: "Day 1: BIOWALL off (no fans), CO2 ppm recorded at 0 and 40 mins.",
+            exp_s3_title: "Active Measure",
+            exp_s3_desc: "Day 2: Panel active, fan airflow engaged, measured at the same times.",
+            exp_s4_title: "Success KPI",
+            exp_s4_desc: "Proving a 20% improvement in CO2 concentration at min 40 compared to the control group.",
+
+            pilot_kicker: "EVIDENCE & DATA",
+            pilot_title: "Pilot Test Results (Template)",
+            pilot_desc: "Highest scoring part: prove impact with 'Control Day' vs 'Active Day' in the same classroom. Values below are placeholders—replace with real measurements.",
+            pilot_chart_title: "CO₂ Change (Control vs Active)",
+            pilot_tip: "*Tip: Add classroom area, number of students, and ventilation condition to increase judge trust.",
+            pilot_meta_title: "Test Conditions",
+            pilot_table_title: "Measurement Table",
+            meta_area_lbl: "Area:",
+            meta_volume_lbl: "Volume:",
+            meta_students_lbl: "Students:",
+            meta_duration_lbl: "Duration:",
+            meta_start_lbl: "Start CO₂:",
+            meta_threshold_lbl: "Threshold:",
+            tbl_time: "Time",
+            tbl_control: "Control Day (ppm)",
+            tbl_active: "Active Day (ppm)",
+            tbl_note: "Note",
+
+            compare_kicker: "NOVELTY & COMPARISON",
+            compare_title: "BIOWALL vs Alternatives",
+            compare_desc: "Judges want a clear answer to 'why you?'. This table boosts score.",
+            cmp_sol: "Solution",
+            cmp_meas: "Measurement",
+            cmp_act: "Active Improvement",
+            cmp_waste: "Waste/Consumables",
+            cmp_maint: "Maintenance",
+            cmp_edu: "Education/Awareness",
+            cmp_co2mon: "CO₂ Monitor",
+            cmp_pur: "Air Purifier (Filter)",
+            cmp_greenwall: "Decor Green Wall",
+            cmp_biyoduvar: "BIOWALL",
+            cmp_low: "Low",
+            cmp_mid: "Medium",
+            cmp_medhigh: "Med/High",
+            cmp_partial: "Partial",
+            cmp_filterwaste: "Filter waste",
+            cmp_passive: "Passive",
+            cmp_sensorfan: "Sensor + Fan",
+            cmp_nowaste: "No filter waste",
+            cmp_plannedlow: "Planned/Very low (kit)",
+            cmp_veryhigh: "Very high",
+            cmp_badge1: "Measure + Improve + Teach",
+            cmp_badge2: "School-safe design",
+            cmp_badge3: "Data-proven KPI",
+
+            build_kicker: "MANUFACTURABILITY",
+            build_title: "Build & Assembly Plan",
+            build_desc: "Prototypability is critical for judges. Here are assembly steps, BOM, and classroom maintenance plan.",
+
+            asm_title: "Assembly (7 Steps)",
+            asm_desc: "Modular design: Frame → hydro layer → water tank → sensors → fans → test → deploy.",
+            asm_s1: "Prepare frame and body.",
+            asm_s2: "Fix felt layers and shelves.",
+            asm_s3: "Install tank, pump and tubing; leak test.",
+            asm_s4: "Place MH-Z19B, MQ-135, DHT sensors.",
+            asm_s5: "Install fans and airflow path.",
+            asm_s6: "Upload thresholds; check isolation and shorts.",
+            asm_s7: "Run water + sensor tests, then place in class.",
+
+            bom_title: "BOM (Bill of Materials)",
+            bom_desc: "Prototype list. Unit cost drops in mass production; shows computed manufacturing to judges.",
+            bom_item: "Part",
+            bom_qty: "Qty",
+            bom_notes: "Notes",
+            bom_n1: "Controller",
+            bom_n2: "CO₂ ppm reading",
+            bom_n3: "IAQ/VOC indicator",
+            bom_n4: "Temp + humidity",
+            bom_n5: "Closed-loop pumping",
+            bom_n6: "Intake / exhaust",
+            bom_n7: "Soilless medium",
+            bom_n8: "Sealed flow",
+            bom_n9: "Bottom tank",
+            bom_n10: "Safe indoor supply",
+            bom_badge1: "Low-voltage / school-safe",
+            bom_badge2: "Calibration plan",
+            bom_badge3: "Modular build",
+
+            maint_title: "Maintenance Checklist (School)",
+            maint_desc: "Target weekly maintenance: 10–15 minutes. Checkboxes are saved.",
+            c1_t: "Water level",
+            c1_d: "Do not go below 30%; top up if needed.",
+            c2_t: "Felt check",
+            c2_d: "Any algae/odor? Rinse if required.",
+            c3_t: "Pump & tubing",
+            c3_d: "Leaks, clogs, unusual noise?",
+            c4_t: "Sensor readings",
+            c4_d: "CO₂/humidity reasonable? Note anomalies.",
+            c5_t: "Plant health",
+            c5_d: "Yellowing/wilting? Adjust nutrients.",
+            btn_reset: "Reset all",
+            btn_markall: "Mark all",
+            btn_export: "Log text",
+
+            dash_kicker: "DATA MONITORING",
+            dash_title: "Live Control Panel",
+            status_active: "SYSTEM ACTIVE",
+            lbl_temp: "TEMP",
+            lbl_hum: "HUM",
+            lbl_fan: "FAN STATUS",
+            lbl_terminal: "SYSTEM TERMINAL",
             btn_crowd: "⚡ Class Crowded",
-            team_kicker: "PROJECT TEAM", team_title: "SCIENCE EXPLORERS", lbl_supporters: "DEVELOPER & SUPPORTERS",
-            role_captain: "CAPTAIN", role_design: "DESIGN", role_idea: "PROJECT IDEA", role_pres: "PRESENTATION", role_prod: "DESIGN & PRODUCTION", role_advisor: "ADVISOR",
+
+            team_kicker: "PROJECT TEAM",
+            team_title: "SCIENCE EXPLORERS",
+            lbl_supporters: "DEVELOPER & SUPPORTERS",
+            role_captain: "CAPTAIN",
+            role_design: "DESIGN",
+            role_idea: "PROJECT IDEA",
+            role_pres: "PRESENTATION",
+            role_prod: "DESIGN & PRODUCTION",
+            role_advisor: "ADVISOR",
             lbl_click: "CLICK ON (+) ICONS TO EXPLORE THE SYSTEM",
-            
-            modal_solar_title: "Solar Panel", modal_solar_desc: "Panel supported for energy efficiency. Includes USB/Battery backup for cloudy days indoors.",
-            modal_sensors_title: "Realistic Sensor Net", modal_sensors_desc: "NDIR-based MH-Z19B reads precise CO2 ppm. MQ-135 monitors general classroom air (VOC).",
-            modal_cleanair_title: "Clean Air Output", modal_cleanair_desc: "Clean air, filtered by microorganisms in the root zone (Rhizosphere), is released back into the room from the top.",
-            modal_plants_title: "Edible Plants", modal_plants_desc: "Plants like Parsley and Arugula are grown. Instills production awareness.",
-            modal_felt_title: "Soilless Felt", modal_felt_desc: "Special felts bed the roots. No soil means no bugs or odors in the school.",
-            modal_fan_title: "Active Intake Fan", modal_fan_desc: "Dirty air is forced directly into the roots (phytoremediation area). Filtration speed increases 3x.",
-            modal_water_title: "Leak-proof Pump", modal_water_desc: "5V submersible pump pushes water up. Closed loop prevents floor spills."
+
+            modal_solar_title: "Solar Panel",
+            modal_solar_desc: "Panel supported for energy efficiency. Includes USB/Battery backup for cloudy days indoors.",
+            modal_sensors_title: "Realistic Sensor Net",
+            modal_sensors_desc: "NDIR-based MH-Z19B reads precise CO2 ppm. MQ-135 monitors general classroom air (VOC).",
+            modal_cleanair_title: "Clean Air Output",
+            modal_cleanair_desc: "Clean air, filtered by microorganisms in the root zone (Rhizosphere), is released back into the room from the top.",
+            modal_plants_title: "Edible Plants",
+            modal_plants_desc: "Plants like Parsley and Arugula are grown. Instills production awareness.",
+            modal_felt_title: "Soilless Felt",
+            modal_felt_desc: "Special felts bed the roots. No soil means no bugs or odors in the school.",
+            modal_fan_title: "Active Intake Fan",
+            modal_fan_desc: "Dirty air is forced directly into the roots (phytoremediation area). Filtration speed increases 3x.",
+            modal_water_title: "Leak-proof Pump",
+            modal_water_desc: "5V submersible pump pushes water up. Closed loop prevents floor spills."
         }
     };
 
@@ -604,6 +1217,10 @@
     langBtn.addEventListener('click', () => {
         currentLang = currentLang === 'tr' ? 'en' : 'tr';
         updateLanguage();
+        // pilot chart labels + badges redraw
+        drawPilotChart();
+        renderPilotTable();
+        updateChecklistTexts();
     });
 
     function updateLanguage() {
@@ -638,15 +1255,15 @@
     const mTitle = document.getElementById('mTitle');
     const mDesc = document.getElementById('mDesc');
     const mIcon = document.getElementById('mIcon');
-    
-    const icons = { 
-        solar: '☀️', 
-        sensors: '📡', 
+
+    const icons = {
+        solar: '☀️',
+        sensors: '📡',
         cleanair: '💨',
-        plants: '🥗', 
+        plants: '🥗',
         felt: '🧽',
         fan: '☢️',
-        water: '💧' 
+        water: '💧'
     };
 
     window.openInfo = function(type) {
@@ -668,7 +1285,7 @@
     const chartCanvas = document.getElementById('chartCanvas');
     const consoleLog = document.getElementById('consoleLog');
     const cctx = chartCanvas.getContext('2d');
-    
+
     function resizeCanvas(){
         chartCanvas.width = chartCanvas.parentElement.offsetWidth;
         chartCanvas.height = 180;
@@ -697,23 +1314,23 @@
         cctx.beginPath(); cctx.moveTo(0, h/2); cctx.lineTo(w, h/2); cctx.stroke();
 
         cctx.strokeStyle = co2 > 600 ? '#f56565' : '#48bb78';
-        cctx.lineWidth = 3; 
+        cctx.lineWidth = 3;
         cctx.beginPath();
         const step = w / (history.length - 1);
         history.forEach((val, i) => {
-            const y = h - ((val - 300) / 700) * h; 
+            const y = h - ((val - 300) / 700) * h;
             if(i===0) cctx.moveTo(0, y); else cctx.lineTo(i*step, y);
         });
         cctx.stroke();
     }
 
     function simulateLoop() {
-        if(isScenarioRunning) return; 
-        co2 += (Math.random() * 8 - 4); 
+        if(isScenarioRunning) return;
+        co2 += (Math.random() * 8 - 4);
         if(co2 < 400) co2 += 2;
 
         if(co2 > 550) {
-            co2 -= 5; 
+            co2 -= 5;
             fanIcon.style.animationPlayState = 'running'; fanIcon.style.color = 'var(--red)';
             if(fanText.innerText !== "AKTİF") { fanText.innerText = "AKTİF"; log(currentLang === 'tr' ? "CO2 arttı. Fanlar devrede." : "CO2 increased. Fans active."); }
         } else {
@@ -723,7 +1340,7 @@
         valAir.innerText = Math.floor(co2);
         history.push(co2); history.shift(); drawChart();
     }
-    
+
     setInterval(simulateLoop, 800);
 
     /* --- SCENARIO EXECUTION --- */
@@ -736,7 +1353,7 @@
         const originalBtnText = btn.innerText;
         btn.disabled = true;
         btn.innerText = currentLang === 'tr' ? "Simülasyon Sürüyor..." : "Simulation Running...";
-        
+
         const langMap = {
             tr: [
                 "⚠️ Sınıfta hareketlilik: CO2 yükseliyor...",
@@ -760,45 +1377,245 @@
         const msgs = langMap[currentLang];
 
         log(msgs[0]); await delay(3000);
-        log(msgs[1]); 
+        log(msgs[1]);
         for(let i=0; i<15; i++) {
-            co2 += 25 + Math.random()*15; 
+            co2 += 25 + Math.random()*15;
             valAir.innerText = Math.floor(co2);
             history.push(co2); history.shift(); drawChart();
             await delay(250);
         }
-        
+
         log(msgs[2]); await delay(2500);
 
-        fanIcon.style.animationPlayState = 'running'; 
+        fanIcon.style.animationPlayState = 'running';
         fanIcon.style.color = 'var(--red)';
-        fanIcon.style.animationDuration = '0.2s'; 
+        fanIcon.style.animationDuration = '0.2s';
         fanText.innerText = "TURBO";
         log(msgs[3]); await delay(4000);
         log(msgs[4]); await delay(4000);
-        log(msgs[5]); 
-        
+        log(msgs[5]);
+
         const steps = 30; const startCo2 = co2;
         for(let i=0; i<steps; i++) {
-            co2 -= (startCo2 - 410) / steps; 
+            co2 -= (startCo2 - 410) / steps;
             co2 += (Math.random() * 6 - 3);
             valAir.innerText = Math.floor(co2);
             history.push(co2); history.shift(); drawChart();
             await delay(300);
         }
-        
-        fanIcon.style.animationPlayState = 'paused'; 
+
+        fanIcon.style.animationPlayState = 'paused';
         fanIcon.style.color = 'var(--muted)';
         fanIcon.style.animationDuration = '1s';
         fanText.innerText = "BEKLEMEDE";
-        log(msgs[6]); 
-        
+        log(msgs[6]);
+
         await delay(2000);
         isScenarioRunning = false;
         btn.disabled = false;
         btn.innerText = originalBtnText;
     }
-    
+
+    /* --- PILOT EVIDENCE (Chart + Table) --- */
+    const pilotCanvas = document.getElementById('pilotChart');
+    let pilotCtx = null;
+
+    const pilotData = {
+      // Şablon değerler: KENDİ ÖLÇÜMÜNÜZLE DEĞİŞTİRİN
+      times: ["0 dk", "20 dk", "40 dk"],
+      control: [520, 980, 1400], // Kontrol Günü
+      active:  [520, 780, 980],  // Aktif Gün (BİYODUVAR açık)
+      note: ["Ders başlangıcı", "Sınıf dolu", "Ders sonu"]
+    };
+
+    function renderPilotTable(){
+      const tb = document.getElementById('pilotTableBody');
+      if(!tb) return;
+      tb.innerHTML = "";
+      for(let i=0;i<pilotData.times.length;i++){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="color:#fff; font-weight:600;">${pilotData.times[i]}</td>
+          <td>${pilotData.control[i]}</td>
+          <td style="color:var(--green); font-weight:700;">${pilotData.active[i]}</td>
+          <td>${pilotData.note[i] || ""}</td>
+        `;
+        tb.appendChild(tr);
+      }
+    }
+
+    function resizePilotCanvas(){
+      if(!pilotCanvas) return;
+      pilotCanvas.width = pilotCanvas.parentElement.offsetWidth;
+      pilotCanvas.height = 220;
+      pilotCtx = pilotCanvas.getContext('2d');
+    }
+
+    function drawPilotChart(){
+      if(!pilotCtx) return;
+
+      const w = pilotCanvas.width;
+      const h = pilotCanvas.height;
+      pilotCtx.clearRect(0,0,w,h);
+
+      // grid
+      pilotCtx.strokeStyle = "rgba(255,255,255,0.06)";
+      pilotCtx.lineWidth = 1;
+      for(let i=1;i<=3;i++){
+        pilotCtx.beginPath();
+        pilotCtx.moveTo(0, (h/4)*i);
+        pilotCtx.lineTo(w, (h/4)*i);
+        pilotCtx.stroke();
+      }
+
+      const all = [...pilotData.control, ...pilotData.active];
+      const minV = Math.min(...all, 400);
+      const maxV = Math.max(...all, 1600);
+      const pad = 24;
+
+      const xStep = (w - pad*2) / (pilotData.times.length - 1);
+      const y = (val)=> {
+        const t = (val - minV) / (maxV - minV || 1);
+        return (h - pad) - t*(h - pad*2);
+      };
+
+      function line(values, stroke){
+        pilotCtx.strokeStyle = stroke;
+        pilotCtx.lineWidth = 3;
+        pilotCtx.beginPath();
+        values.forEach((v,i)=>{
+          const xx = pad + i*xStep;
+          const yy = y(v);
+          if(i===0) pilotCtx.moveTo(xx,yy);
+          else pilotCtx.lineTo(xx,yy);
+        });
+        pilotCtx.stroke();
+
+        pilotCtx.fillStyle = stroke;
+        values.forEach((v,i)=>{
+          const xx = pad + i*xStep;
+          const yy = y(v);
+          pilotCtx.beginPath();
+          pilotCtx.arc(xx,yy,4,0,Math.PI*2);
+          pilotCtx.fill();
+        });
+      }
+
+      line(pilotData.control, "#f56565");
+      line(pilotData.active, "#48bb78");
+
+      pilotCtx.fillStyle = "rgba(255,255,255,0.7)";
+      pilotCtx.font = "12px Montserrat";
+      pilotData.times.forEach((t,i)=>{
+        const xx = pad + i*xStep;
+        pilotCtx.fillText(t, xx-10, h-8);
+      });
+
+      const cStart = pilotData.control[0], cEnd = pilotData.control[pilotData.control.length-1];
+      const aStart = pilotData.active[0],  aEnd = pilotData.active[pilotData.active.length-1];
+      const controlRise = cEnd - cStart;
+      const activeRise = aEnd - aStart;
+      const improvement = controlRise > 0 ? Math.max(0, (controlRise - activeRise) / controlRise) : 0;
+
+      const b1 = document.getElementById('pilotBadge1');
+      const b2 = document.getElementById('pilotBadge2');
+      const b3 = document.getElementById('pilotBadge3');
+      if(b1) b1.textContent = (currentLang==='tr' ? `Kontrol: +${Math.round(controlRise)} ppm` : `Control: +${Math.round(controlRise)} ppm`);
+      if(b2) b2.textContent = (currentLang==='tr' ? `Aktif: +${Math.round(activeRise)} ppm` : `Active: +${Math.round(activeRise)} ppm`);
+      if(b3) b3.textContent = (currentLang==='tr' ? `KPI: %${Math.round(improvement*100)} iyileşme` : `KPI: ${Math.round(improvement*100)}% improvement`);
+    }
+
+    function initPilot(){
+      if(!pilotCanvas) return;
+      resizePilotCanvas();
+      renderPilotTable();
+      drawPilotChart();
+    }
+
+    window.addEventListener('resize', ()=>{
+      resizePilotCanvas();
+      drawPilotChart();
+    });
+
+    initPilot();
+
+    /* --- CHECKLIST (save to localStorage) --- */
+    const CHECK_KEY = "biyoduvar_checklist_v1";
+
+    function loadChecklist(){
+      try{
+        const saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}");
+        document.querySelectorAll('[data-check]').forEach(cb=>{
+          cb.checked = !!saved[cb.getAttribute('data-check')];
+        });
+      }catch(e){}
+    }
+
+    function saveChecklist(){
+      const obj = {};
+      document.querySelectorAll('[data-check]').forEach(cb=>{
+        obj[cb.getAttribute('data-check')] = cb.checked;
+      });
+      localStorage.setItem(CHECK_KEY, JSON.stringify(obj));
+    }
+
+    function updateChecklistTexts(){
+      // metinler data-key ile zaten değişiyor; burada sadece export alanını temizleyelim
+      const exp = document.getElementById('checkExport');
+      if(exp) exp.textContent = "";
+    }
+
+    document.addEventListener('change', (e)=>{
+      if(e.target && e.target.matches('[data-check]')) saveChecklist();
+    });
+
+    window.resetChecklist = function(){
+      document.querySelectorAll('[data-check]').forEach(cb=> cb.checked = false);
+      saveChecklist();
+      exportChecklist();
+    }
+
+    window.markAllChecklist = function(){
+      document.querySelectorAll('[data-check]').forEach(cb=> cb.checked = true);
+      saveChecklist();
+      exportChecklist();
+    }
+
+    window.exportChecklist = function(){
+      const exp = document.getElementById('checkExport');
+      if(!exp) return;
+
+      const items = [
+        {k:'c1', t: translations[currentLang].c1_t},
+        {k:'c2', t: translations[currentLang].c2_t},
+        {k:'c3', t: translations[currentLang].c3_t},
+        {k:'c4', t: translations[currentLang].c4_t},
+        {k:'c5', t: translations[currentLang].c5_t},
+      ];
+
+      const states = {};
+      document.querySelectorAll('[data-check]').forEach(cb=>{
+        states[cb.getAttribute('data-check')] = cb.checked;
+      });
+
+      const done = items.filter(it => states[it.k]).map(it=>`✅ ${it.t}`);
+      const todo = items.filter(it => !states[it.k]).map(it=>`⬜ ${it.t}`);
+
+      const title = (currentLang==='tr') ? "Bakım Kaydı:" : "Maintenance Log:";
+      exp.textContent = `${title}  ${done.concat(todo).join("  |  ")}`;
+    }
+
+    loadChecklist();
+
+    /* --- PROGRESS BAR --- */
+    const prog = document.getElementById('prog');
+    window.addEventListener('scroll', ()=>{
+      const h = document.documentElement;
+      const sc = h.scrollTop || document.body.scrollTop;
+      const max = (h.scrollHeight - h.clientHeight) || 1;
+      prog.style.width = `${Math.min(100, (sc / max) * 100)}%`;
+    });
+
     /* --- AIR PARTICLES --- */
     const air = document.getElementById('air'); const ctx = air.getContext('2d');
     let W, H;
