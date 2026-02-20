@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#0b0f16" />
   <title>BİYODUVAR | Bilim Kaşifleri</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -59,7 +58,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Ambient canvas */
     #air{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.62; }
     .grain{
       position:fixed; inset:0; z-index:1; pointer-events:none;
@@ -68,7 +66,6 @@
       opacity:.14;
     }
 
-    /* Progress */
     .progress{ position:fixed; top:0; left:0; width:100%; height:4px; z-index:1000; }
     .progress span{
       display:block; height:100%; width:0%;
@@ -77,14 +74,8 @@
       transition: width .08s linear;
     }
 
-    /* Layout */
     .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; position:relative; z-index:2; }
-    section{
-      padding: 92px 0;
-      position:relative;
-      z-index:2;
-    }
-    /* SECTION BACKGROUND = tutarlı + okunur */
+    section{ padding: 92px 0; position:relative; z-index:2; }
     section::before{
       content:"";
       position:absolute; inset:0;
@@ -92,7 +83,6 @@
       pointer-events:none;
       z-index:-1;
     }
-    /* Accent vary very subtle, never breaks readability */
     section[data-accent="g"]::before{
       background:
         radial-gradient(900px 420px at 18% 0%, rgba(72,187,120,0.045), transparent 60%),
@@ -108,29 +98,18 @@
         radial-gradient(900px 420px at 18% 0%, rgba(255,91,122,0.035), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008));
     }
-
     @media (max-width: 900px){ section{ padding: 70px 0; } }
     @media (max-width: 520px){ section{ padding: 60px 0; } }
-    @media (max-width: 520px){
-      .container{ width: calc(100% - 26px); }
-    }
+    @media (max-width: 520px){ .container{ width: calc(100% - 26px); } }
 
-    /* Headings */
     .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 2.4px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.82);
+      display:inline-flex; align-items:center; gap:10px;
+      font-size: 12px; font-weight: 800; letter-spacing: 2.4px;
+      text-transform: uppercase; color: rgba(255,255,255,0.82);
       margin-bottom: 14px;
     }
     .kicker::before{
-      content:"";
-      width: 14px; height: 14px;
-      border-radius: 6px;
+      content:""; width: 14px; height: 14px; border-radius: 6px;
       background: linear-gradient(135deg, rgba(72,187,120,0.9), rgba(74,163,255,0.9));
       box-shadow: 0 0 20px rgba(74,163,255,0.20);
       opacity:.9;
@@ -169,15 +148,10 @@
       max-width: 72ch;
       margin: 0;
     }
-    @media (max-width: 520px){
-      .lead{ font-size: 15.5px; line-height: 1.8; }
-    }
+    @media (max-width: 520px){ .lead{ font-size: 15.5px; line-height: 1.8; } }
 
-    /* Nav */
     .nav{
-      position:fixed;
-      top:18px;
-      left:50%;
+      position:fixed; top:18px; left:50%;
       transform:translateX(-50%);
       width:min(var(--max), calc(100% - 26px));
       z-index: 900;
@@ -188,22 +162,11 @@
       -webkit-backdrop-filter: var(--blur);
       box-shadow: 0 18px 55px rgba(0,0,0,0.55);
       padding: 10px 14px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
+      display:flex; align-items:center; justify-content: space-between; gap: 10px;
     }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      cursor:pointer;
-      user-select:none;
-      white-space: nowrap;
-    }
+    .brand{ display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; white-space: nowrap; }
     .brand-badge{
-      width:34px; height:34px;
-      border-radius: 12px;
+      width:34px; height:34px; border-radius: 12px;
       background: radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,0.18), transparent 60%),
                   linear-gradient(135deg, rgba(72,187,120,0.75), rgba(74,163,255,0.75));
       box-shadow: 0 0 26px rgba(74,163,255,0.18);
@@ -219,23 +182,12 @@
     .brand-name span{ color: var(--g); }
 
     .nav-actions{ display:flex; align-items:center; gap:10px; }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap: 6px;
-      flex-wrap:wrap;
-    }
+    .nav-links{ display:flex; align-items:center; gap: 6px; flex-wrap:wrap; }
     .nav-links a{
-      text-decoration:none;
-      color: rgba(244,246,255,0.70);
-      font-size: 12.5px;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      transition: .2s ease;
-      border: 1px solid transparent;
-      white-space: nowrap;
+      text-decoration:none; color: rgba(244,246,255,0.70);
+      font-size: 12.5px; font-weight: 700;
+      padding: 8px 12px; border-radius: 999px;
+      transition: .2s ease; border: 1px solid transparent; white-space: nowrap;
     }
     .nav-links a:hover{
       color: #fff;
@@ -260,11 +212,7 @@
       gap:8px;
       white-space: nowrap;
     }
-    .chip-btn:hover{
-      border-color: rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-1px);
-    }
+    .chip-btn:hover{ border-color: rgba(255,255,255,0.20); background: rgba(255,255,255,0.06); transform: translateY(-1px); }
     .chip-btn:active{ transform: translateY(0); }
 
     .hamburger{
@@ -290,11 +238,7 @@
     .hamburger .bars span:nth-child(2){ top:5px; opacity:.9; }
     .hamburger .bars span:nth-child(3){ top:10px; opacity:.8; }
 
-    .drawer-overlay{
-      position:fixed; inset:0; z-index:950;
-      background: rgba(0,0,0,0.55);
-      display:none;
-    }
+    .drawer-overlay{ position:fixed; inset:0; z-index:950; background: rgba(0,0,0,0.55); display:none; }
     .drawer{
       position:fixed; top:0; right:0; height:100%; width:min(360px, 86vw);
       z-index: 960;
@@ -305,14 +249,11 @@
       backdrop-filter: var(--blur);
       -webkit-backdrop-filter: var(--blur);
       padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
+      display:flex; flex-direction:column; gap: 10px;
     }
     .drawer .row{
       display:flex; align-items:center; justify-content:space-between;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.10);
+      padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.10);
       margin-bottom: 6px;
     }
     .drawer a{
@@ -325,12 +266,8 @@
       background: rgba(255,255,255,0.03);
       transition:.2s ease;
     }
-    .drawer a:hover{
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.05);
-    }
+    .drawer a:hover{ border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.05); }
     .drawer small{ color: var(--muted2); }
-
     .drawer-open .drawer-overlay{ display:block; }
     .drawer-open .drawer{ transform: translateX(0); }
 
@@ -340,7 +277,6 @@
       .nav{ padding: 10px 12px; }
     }
 
-    /* Hero */
     .hero{ padding-top: 150px; padding-bottom: 40px; }
     .heroGrid{
       display:grid;
@@ -380,9 +316,7 @@
     @media (max-width: 980px){ .cta-row{ justify-content:center; } }
 
     .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
+      appearance:none; border:none; cursor:pointer;
       border-radius: 14px;
       padding: 12px 18px;
       font-weight: 900;
@@ -411,7 +345,6 @@
     .btn.secondary:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); }
     .btn:active{ transform: translateY(0); }
 
-    /* Cards / grids */
     .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
     @media (max-width: 1000px){ .grid{ grid-template-columns: 1fr; } }
 
@@ -447,7 +380,6 @@
     .muted{ color: var(--muted); font-size: 14px; line-height:1.78; margin:0; }
     .subtle{ color: var(--muted2); font-size: 12.5px; line-height:1.7; margin:0; }
 
-    /* Split */
     .split{
       display:grid;
       grid-template-columns: 1.12fr 0.88fr;
@@ -457,11 +389,7 @@
     }
     @media (max-width: 1000px){ .split{ grid-template-columns: 1fr; } }
 
-    .list{
-      display:flex; flex-direction:column; gap: 12px;
-      padding:0; margin:0;
-      list-style:none;
-    }
+    .list{ display:flex; flex-direction:column; gap: 12px; padding:0; margin:0; list-style:none; }
     .list li{
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.10);
@@ -480,7 +408,6 @@
     .sidecard{ position:sticky; top: 96px; }
     @media (max-width:1000px){ .sidecard{ position:relative; top:auto; } }
 
-    /* Badges */
     .badge-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
@@ -503,26 +430,18 @@
       box-shadow: 0 0 14px rgba(74,163,255,0.16);
     }
 
-    /* Hero panel visual */
-    .panel-wrap{
-      width: min(460px, 92%);
-      margin: 0 auto;
-      position:relative;
-      filter: drop-shadow(0 25px 65px rgba(0,0,0,0.65));
-    }
+    /* Hero panel (same) */
+    .panel-wrap{ width: min(460px, 92%); margin: 0 auto; position:relative; filter: drop-shadow(0 25px 65px rgba(0,0,0,0.65)); }
     .panel-sheen{
       position:absolute; inset:-20px -20px -20px -20px;
       background:
         radial-gradient(420px 220px at 25% 10%, rgba(74,163,255,0.085), transparent 60%),
         radial-gradient(380px 200px at 80% 30%, rgba(72,187,120,0.085), transparent 65%),
         radial-gradient(520px 260px at 50% 110%, rgba(255,91,122,0.065), transparent 60%);
-      z-index:0;
-      pointer-events:none;
-      opacity:.9;
+      z-index:0; pointer-events:none; opacity:.9;
     }
     .panel{
-      position:relative;
-      z-index:1;
+      position:relative; z-index:1;
       aspect-ratio: 3/4.5;
       border-radius: 16px 16px 10px 10px;
       border: 10px solid rgba(154,123,108,0.95);
@@ -542,19 +461,14 @@
       border-bottom: 44px solid rgba(154,123,108,0.95);
       filter: drop-shadow(0 10px 15px rgba(0,0,0,0.35));
     }
-
     .panel-top{
       height: 12%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       padding: 12px 16px;
       border-bottom: 3px solid rgba(107,79,69,0.85);
       background: linear-gradient(180deg, rgba(30,34,46,0.90), rgba(22,25,35,0.92));
       position:relative;
     }
-
-    /* LED-like LCD (hero) */
     .lcd{
       width: 88%;
       border-radius: 12px;
@@ -570,7 +484,6 @@
       letter-spacing:.3px;
     }
     .lcd b{ color: rgba(78,255,147,0.95); }
-
     .panel-mid{
       height: 68%;
       position:relative;
@@ -580,45 +493,27 @@
       justify-content:space-evenly;
     }
     .shelf{
-      position:relative;
-      height: 8px;
-      border-radius: 8px;
+      position:relative; height: 8px; border-radius: 8px;
       background: rgba(107,79,69,0.92);
       box-shadow: 0 10px 18px rgba(0,0,0,0.35);
       margin: 0 8px;
     }
     .felt{
-      position:absolute;
-      left: 7%;
-      width: 86%;
-      bottom: 8px;
-      height: 50px;
-      border-radius: 12px;
+      position:absolute; left: 7%; width: 86%;
+      bottom: 8px; height: 50px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.10);
       background:
         repeating-linear-gradient(45deg, rgba(62,39,35,0.95) 0, rgba(62,39,35,0.95) 3px, rgba(78,52,46,0.95) 3px, rgba(78,52,46,0.95) 6px);
       box-shadow: inset 0 0 18px rgba(0,0,0,0.55);
     }
     .plant-row{
-      position:absolute;
-      left: 7%;
-      width: 86%;
-      bottom: 10px;
-      display:flex;
-      justify-content: space-around;
-      align-items:flex-end;
-      z-index: 3;
+      position:absolute; left: 7%; width: 86%;
+      bottom: 10px; display:flex; justify-content: space-around; align-items:flex-end; z-index: 3;
     }
-    .plant{
-      width: 40px; height: 42px;
-      position:relative;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
-    }
+    .plant{ width: 40px; height: 42px; position:relative; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); }
     .leaf{
-      position:absolute; bottom:0;
-      width: 12px; height: 22px;
-      border-radius: 0 12px 0 12px;
-      background: rgba(72,187,120,0.95);
+      position:absolute; bottom:0; width: 12px; height: 22px;
+      border-radius: 0 12px 0 12px; background: rgba(72,187,120,0.95);
       transform-origin: bottom center;
     }
     .plant:nth-child(odd) .leaf{ background: rgba(88,210,126,0.95); }
@@ -627,10 +522,7 @@
     .leaf.l3{ right:4px; transform: rotate(18deg); height: 18px; opacity:.92; }
 
     .water-strip{
-      position:absolute;
-      right: 10px;
-      top: 0; bottom: 0;
-      width: 4px;
+      position:absolute; right: 10px; top: 0; bottom: 0; width: 4px;
       border-radius: 8px;
       background: linear-gradient(180deg, rgba(74,163,255,0.70), transparent);
       opacity: 0.42;
@@ -646,18 +538,15 @@
       overflow:hidden;
     }
     .water{
-      position:absolute;
-      left:0; right:0; bottom:0;
+      position:absolute; left:0; right:0; bottom:0;
       height: 76%;
       background: rgba(74,163,255,0.30);
       border-top: 1px solid rgba(255,255,255,0.18);
       animation: waterLevel 6.2s ease-in-out infinite;
     }
     @keyframes waterLevel{ 0%,100%{ height: 76%; } 50%{ height: 80%; } }
-
     .pump{
-      position:absolute;
-      left: 12px; bottom: 10px;
+      position:absolute; left: 12px; bottom: 10px;
       width: 64px; height: 42px;
       border-radius: 12px;
       background: rgba(0,0,0,0.55);
@@ -670,10 +559,8 @@
 
     .solar{
       position:absolute;
-      top: -18px;
-      right: -22px;
-      width: 118px;
-      height: 74px;
+      top: -18px; right: -22px;
+      width: 118px; height: 74px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.16);
       background:
@@ -703,6 +590,7 @@
       user-select:none;
       font-weight: 900;
       color:#fff;
+      -webkit-tap-highlight-color: transparent;
     }
     .hotspot:hover{ transform: scale(1.07); }
     @keyframes pulse{
@@ -790,11 +678,7 @@
       background: rgba(0,0,0,0.22);
       overflow:auto;
     }
-    table{
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 720px;
-    }
+    table{ border-collapse: collapse; width: 100%; min-width: 720px; }
     th, td{
       padding: 14px 14px;
       border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -812,11 +696,9 @@
       z-index: 2;
       font-weight: 900;
     }
-    @media (max-width: 520px){
-      th,td{ font-size: 12.5px; }
-    }
+    @media (max-width: 520px){ th,td{ font-size: 12.5px; } }
 
-    /* PILOT */
+    /* Pilot */
     .pilot-grid{
       display:grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -854,17 +736,10 @@
     .swatch.active{ background: rgba(72,187,120,0.85); }
     .swatch.threshold{ background: rgba(255,209,102,0.85); }
 
-    .form-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
+    .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
     @media (max-width: 540px){ .form-grid{ grid-template-columns: 1fr; } }
 
-    .field{
-      display:flex; flex-direction:column; gap:6px;
-    }
+    .field{ display:flex; flex-direction:column; gap:6px; }
     .field label{
       font-size: 11px;
       letter-spacing: 1.2px;
@@ -887,10 +762,8 @@
       border-color: rgba(74,163,255,0.35);
       box-shadow: 0 0 0 4px rgba(74,163,255,0.12);
     }
-    .pilot-actions{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 12px;
-    }
+    .pilot-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+
     .mini-btn{
       appearance:none;
       border: 1px solid rgba(255,255,255,0.14);
@@ -914,7 +787,11 @@
       background: rgba(72,187,120,0.12);
       color: rgba(72,187,120,0.95);
     }
-
+    .mini-btn.danger{
+      border-color: rgba(255,91,122,0.26);
+      background: rgba(255,91,122,0.10);
+      color: rgba(255,91,122,0.95);
+    }
     .helpbox{
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.10);
@@ -936,7 +813,7 @@
       font-size: 13.5px;
     }
 
-    /* Comparison */
+    /* Compare */
     .compare-card{ padding: 0; overflow:hidden; }
     .compare-head{
       padding: 22px 22px 16px;
@@ -986,12 +863,7 @@
     }
     @media (max-width: 980px){ .dash{ grid-template-columns:1fr; } }
 
-    .kpi-row{
-      display:grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 12px;
-      margin-bottom: 14px;
-    }
+    .kpi-row{ display:grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
     @media (max-width: 520px){ .kpi-row{ grid-template-columns:1fr; } }
     .kpi{
       border-radius: 16px;
@@ -1066,7 +938,7 @@
       white-space: pre-wrap;
     }
 
-    /* NEW: Control Deck (LED panel feel) */
+    /* Control Deck */
     .deck{
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.10);
@@ -1119,7 +991,84 @@
     .ledvalue.warn{ color: rgba(255,209,102,0.95); text-shadow: 0 0 12px rgba(255,209,102,0.16); }
     .ledvalue.bad{ color: rgba(255,91,122,0.95); text-shadow: 0 0 12px rgba(255,91,122,0.16); }
 
-    /* Footer */
+    /* NEW: Auto/Manual + slider UI */
+    .controlbar{
+      width:100%;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.24);
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .controlrow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+    .ctl-label{
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      font-weight: 900;
+    }
+    .switch{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      user-select:none;
+    }
+    .switch input{ display:none; }
+    .track{
+      width: 44px; height: 24px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.12);
+      position:relative;
+      cursor:pointer;
+    }
+    .thumb{
+      width: 18px; height: 18px; border-radius: 999px;
+      background: rgba(244,246,255,0.90);
+      position:absolute;
+      top: 50%;
+      left: 3px;
+      transform: translateY(-50%);
+      transition: .18s ease;
+    }
+    .switch input:checked + .track{
+      background: rgba(72,187,120,0.22);
+      border-color: rgba(72,187,120,0.28);
+    }
+    .switch input:checked + .track .thumb{ left: 23px; }
+
+    .slider{
+      width: min(360px, 100%);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .slider input[type="range"]{
+      width: 100%;
+      accent-color: var(--b);
+    }
+    .slider .val{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-weight: 900;
+      color: rgba(244,246,255,0.92);
+      min-width: 88px;
+      text-align:right;
+    }
+    .manual-buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+    .manual-buttons .mini-btn{ padding: 10px 12px; }
+
     footer{
       padding: 46px 0 70px;
       border-top: 1px solid rgba(255,255,255,0.08);
@@ -1130,7 +1079,6 @@
       z-index:2;
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     }
@@ -1142,7 +1090,6 @@
   <div class="grain"></div>
   <div class="progress"><span id="prog"></span></div>
 
-  <!-- Drawer -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
   <div class="drawer" id="drawer">
     <div class="row">
@@ -1169,7 +1116,6 @@
     </div>
   </div>
 
-  <!-- Top Nav -->
   <nav class="nav" aria-label="Üst Menü">
     <div class="brand" id="brandHome" title="Ana sayfa">
       <div class="brand-badge"></div>
@@ -1178,12 +1124,12 @@
 
     <div class="nav-actions">
       <div class="nav-links" aria-label="Sayfa linkleri">
-        <a href="#safety" data-key="nav_safety">Güvenlik</a>
-        <a href="#tech" data-key="nav_tech">Sistem</a>
-        <a href="#pilot" data-key="nav_pilot">Pilot Test</a>
-        <a href="#compare" data-key="nav_compare">Karşılaştırma</a>
-        <a href="#demo" data-key="nav_demo">Canlı Panel</a>
-        <a href="#team" data-key="nav_team">Ekip</a>
+        <a href="#safety">Güvenlik</a>
+        <a href="#tech">Sistem</a>
+        <a href="#pilot">Pilot Test</a>
+        <a href="#compare">Karşılaştırma</a>
+        <a href="#demo">Canlı Panel</a>
+        <a href="#team">Ekip</a>
       </div>
       <button class="chip-btn" id="langToggle" type="button">TR | EN</button>
       <button class="hamburger" id="hamburger" type="button" aria-label="Menüyü aç">
@@ -1194,7 +1140,6 @@
     </div>
   </nav>
 
-  <!-- Modal -->
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal" role="document">
       <button class="x" type="button" id="modalClose" aria-label="Kapat">×</button>
@@ -1210,30 +1155,28 @@
       <div class="heroGrid">
         <div>
           <div class="hero-tags">
-            <span class="tag green"><span class="dot"></span><span data-key="tag_school">Özel İngiliz Kültür Koleji</span></span>
-            <span class="tag blue"><span class="dot"></span><span data-key="tag_topic">İnsanlık Yararına Teknoloji • 2026</span></span>
+            <span class="tag green"><span class="dot"></span>Özel İngiliz Kültür Koleji</span></span>
+            <span class="tag blue"><span class="dot"></span>İnsanlık Yararına Teknoloji • 2026</span></span>
           </div>
 
-          <div class="kicker" data-key="hero_kicker">SENSOR • BITKI • AKTIF FILTRELEME</div>
+          <div class="kicker">SENSOR • BITKI • AKTIF FILTRELEME</div>
 
-          <h1 id="heroTitle" data-key="hero_title">
-            Duvarlar Artık<br><span style="color:var(--g)">Nefes Alıyor</span>
-          </h1>
+          <h1>Duvarlar Artık<br><span style="color:var(--g)">Nefes Alıyor</span></h1>
 
-          <p class="lead" data-key="hero_desc">
+          <p class="lead">
             BİYODUVAR; sınıf ve ofis gibi kapalı alanlarda CO₂ ve hava kalitesi takibini yapan, eşik aşıldığında hava akışını bitki kök bölgesine yönlendirerek
             “aktif” iyileştirme sağlayan akıllı bir duvar modülüdür.
           </p>
 
           <div class="cta-row">
-            <a class="btn primary" href="#pilot"><span>⚡</span><span data-key="cta_pilot">Pilot Testi Aç</span></a>
-            <a class="btn secondary" href="#demo"><span>📈</span><span data-key="cta_demo">Canlı Panel</span></a>
+            <a class="btn primary" href="#pilot"><span>⚡</span><span>Pilot Testi Aç</span></a>
+            <a class="btn secondary" href="#demo"><span>📈</span><span>Canlı Panel</span></a>
           </div>
 
           <div class="badge-row" style="margin-top:16px;">
-            <span class="badge"><span class="mini-dot"></span><span data-key="badge_1">Düşük voltaj • okul uyumlu</span></span>
-            <span class="badge"><span class="mini-dot"></span><span data-key="badge_2">Topraksız • düşük koku riski</span></span>
-            <span class="badge"><span class="mini-dot"></span><span data-key="badge_3">Veri odaklı KPI</span></span>
+            <span class="badge"><span class="mini-dot"></span>Düşük voltaj • okul uyumlu</span></span>
+            <span class="badge"><span class="mini-dot"></span>Topraksız • düşük koku riski</span></span>
+            <span class="badge"><span class="mini-dot"></span>Veri odaklı KPI</span></span>
           </div>
         </div>
 
@@ -1266,18 +1209,9 @@
                 <div class="hotspot" style="top:78%; left:-8px; transform:translateY(-50%); width:26px; height:26px;" data-open="fan">+</div>
                 <div class="water-strip" aria-hidden="true"></div>
 
-                <div class="shelf">
-                  <div class="felt"></div>
-                  <div class="plant-row" id="row1"></div>
-                </div>
-                <div class="shelf">
-                  <div class="felt"></div>
-                  <div class="plant-row" id="row2"></div>
-                </div>
-                <div class="shelf">
-                  <div class="felt"></div>
-                  <div class="plant-row" id="row3"></div>
-                </div>
+                <div class="shelf"><div class="felt"></div><div class="plant-row" id="row1"></div></div>
+                <div class="shelf"><div class="felt"></div><div class="plant-row" id="row2"></div></div>
+                <div class="shelf"><div class="felt"></div><div class="plant-row" id="row3"></div></div>
               </div>
 
               <div class="panel-bot">
@@ -1287,7 +1221,7 @@
               </div>
             </div>
 
-            <div class="hint" data-key="hint_click">Detaylar için (+) noktalarına tıklayın</div>
+            <div class="hint">Detaylar için (+) noktalarına tıklayın</div>
           </div>
         </div>
       </div>
@@ -1295,60 +1229,51 @@
 
     <!-- SAFETY -->
     <section class="container" id="safety" data-accent="g">
-      <div class="kicker" data-key="safe_kicker">GÜVENLİ TASARIM</div>
-      <h2 data-key="safe_title">Sınıf İçin Uygun Mimari</h2>
-      <p class="lead" data-key="safe_desc">Topraksız sistem, kapalı su döngüsü ve düşük voltaj yaklaşımı ile kullanım güvenliği hedeflenir.</p>
+      <div class="kicker">GÜVENLİ TASARIM</div>
+      <h2>Sınıf İçin Uygun Mimari</h2>
+      <p class="lead">Topraksız sistem, kapalı su döngüsü ve düşük voltaj yaklaşımı ile kullanım güvenliği hedeflenir.</p>
 
       <div class="grid">
         <div class="card">
           <div class="icon">🛡️</div>
-          <h3 data-key="safe_1_t">5V Düşük Voltaj</h3>
-          <p class="muted" data-key="safe_1_d">Tüm bileşenler USB seviyesinde çalışır. Elektriksel riskleri azaltmak için yalıtım ve kablo yönetimi uygulanır.</p>
+          <h3>5V Düşük Voltaj</h3>
+          <p class="muted">Tüm bileşenler USB seviyesinde çalışır. Elektriksel riskleri azaltmak için yalıtım ve kablo yönetimi uygulanır.</p>
         </div>
         <div class="card">
           <div class="icon">🚫</div>
-          <h3 data-key="safe_2_t">Topraksız (Keçe) Katman</h3>
-          <p class="muted" data-key="safe_2_d">Hidroponik keçe, toprak kaynaklı kir ve taşıma risklerini azaltır. Düzenli bakım ile koku ve birikim kontrol edilir.</p>
+          <h3>Topraksız (Keçe) Katman</h3>
+          <p class="muted">Hidroponik keçe, toprak kaynaklı kir ve taşıma risklerini azaltır. Düzenli bakım ile koku ve birikim kontrol edilir.</p>
         </div>
         <div class="card">
           <div class="icon">💧</div>
-          <h3 data-key="safe_3_t">Kapalı Su Döngüsü</h3>
-          <p class="muted" data-key="safe_3_d">Su haznesi kapalı sistemdir. Sızdırmaz bağlantılar ve taşma payı ile kontrollü kullanım hedeflenir.</p>
+          <h3>Kapalı Su Döngüsü</h3>
+          <p class="muted">Su haznesi kapalı sistemdir. Sızdırmaz bağlantılar ve taşma payı ile kontrollü kullanım hedeflenir.</p>
         </div>
       </div>
     </section>
 
     <!-- TECH -->
     <section class="container" id="tech" data-accent="b">
-      <div class="kicker" data-key="tech_kicker">SİSTEM MİMARİSİ</div>
-      <h2 data-key="tech_title">Sensör + Fan + Rizosfer</h2>
-      <p class="lead" data-key="tech_desc">CO₂ ve hava kalitesi verisi, eşik durumlarında hava akışını yönetmek için kullanılır. Hava, bitki kök bölgesine yönlendirilerek “aktif” etki hedeflenir.</p>
+      <div class="kicker">SİSTEM MİMARİSİ</div>
+      <h2>Sensör + Fan + Rizosfer</h2>
+      <p class="lead">CO₂ ve hava kalitesi verisi, eşik durumlarında hava akışını yönetmek için kullanılır. Hava, bitki kök bölgesine yönlendirilerek “aktif” etki hedeflenir.</p>
 
       <div class="split">
         <div>
           <ul class="list">
-            <li>
-              <strong data-key="tech_1_t">NDIR CO₂ + IAQ Sensörü</strong>
-              <div class="muted" data-key="tech_1_d">CO₂ ppm ölçümü için NDIR sensör; genel hava kalitesi için IAQ/VOC sensörüyle desteklenir.</div>
-            </li>
-            <li>
-              <strong data-key="tech_2_t">Otomasyon Mantığı</strong>
-              <div class="muted" data-key="tech_2_d">Eşik aşıldığında fanlar devreye girer; hava akışı kök bölgesine zorlanır. Log ve grafik ile süreç izlenir.</div>
-            </li>
-            <li>
-              <strong data-key="tech_3_t">Enerji Seçenekleri</strong>
-              <div class="muted" data-key="tech_3_d">USB/Adaptör + batarya senaryolarına uygun yapı. Güneş paneli destekli kullanım kurgulanabilir.</div>
-            </li>
+            <li><strong>NDIR CO₂ + IAQ Sensörü</strong><div class="muted">CO₂ ppm ölçümü için NDIR sensör; genel hava kalitesi için IAQ/VOC sensörüyle desteklenir.</div></li>
+            <li><strong>Otomasyon Mantığı</strong><div class="muted">Eşik aşıldığında fanlar devreye girer; hava akışı kök bölgesine zorlanır. Log ve grafik ile süreç izlenir.</div></li>
+            <li><strong>Enerji Seçenekleri</strong><div class="muted">USB/Adaptör + batarya senaryolarına uygun yapı. Güneş paneli destekli kullanım kurgulanabilir.</div></li>
           </ul>
         </div>
 
         <div class="card sidecard">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
-              <h3 style="margin-bottom:6px;" data-key="calc_t">Etki Mantığı</h3>
-              <p class="muted" data-key="calc_d">Aktif hava akışı ile kök bölgesindeki biyolojik filtreleme (rizosfer) alanının etkinliği artırılır.</p>
+              <h3 style="margin-bottom:6px;">Etki Mantığı</h3>
+              <p class="muted">Aktif hava akışı ile kök bölgesindeki biyolojik filtreleme (rizosfer) alanının etkinliği artırılır.</p>
             </div>
-            <span class="status" id="sysBadge"><span class="dot"></span><span data-key="badge_active">AKTİF</span></span>
+            <span class="status" id="sysBadge"><span class="dot"></span>AKTİF</span>
           </div>
 
           <div class="badge-row" style="margin-top:14px;">
@@ -1357,7 +1282,7 @@
             <span class="badge" id="modeLbl"><span class="mini-dot"></span>Auto</span>
           </div>
 
-          <div class="subtle" style="margin-top:14px;" data-key="calc_note">
+          <div class="subtle" style="margin-top:14px;">
             Not: Değerler ortama göre değişir. Pilot test ekranındaki girişlerle anlık sonuç görebilirsiniz.
           </div>
         </div>
@@ -1366,17 +1291,14 @@
 
     <!-- PILOT -->
     <section class="container" id="pilot" data-accent="g">
-      <div class="kicker" data-key="pilot_kicker">PİLOT TEST</div>
-      <h2 data-key="pilot_title">Değerleri Girin • Anlık KPI Görün</h2>
-      <p class="lead" data-key="pilot_desc">
-        Aşağıdaki alanlara kontrol günü ve BİYODUVAR aktifken ölçtüğünüz CO₂ değerlerini girin.
-        Grafik, tablo ve iyileşme yüzdesi otomatik hesaplanır.
-      </p>
+      <div class="kicker">PİLOT TEST</div>
+      <h2>Değerleri Girin • Anlık KPI Görün</h2>
+      <p class="lead">Aşağıdaki alanlara kontrol günü ve BİYODUVAR aktifken ölçtüğünüz CO₂ değerlerini girin. Grafik, tablo ve iyileşme yüzdesi otomatik hesaplanır.</p>
 
       <div class="pilot-grid">
         <div class="card">
           <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-            <h3 data-key="pilot_chart">CO₂ Zaman Grafiği</h3>
+            <h3>CO₂ Zaman Grafiği</h3>
             <div class="badge-row" style="margin-top:0;">
               <span class="badge bad" id="bControl">Kontrol: +0 ppm</span>
               <span class="badge good" id="bActive">Aktif: +0 ppm</span>
@@ -1405,49 +1327,19 @@
           </div>
 
           <div class="form-grid">
-            <div class="field">
-              <label>Zaman 0 (dk)</label>
-              <input id="t0" type="number" inputmode="numeric" min="0" value="0" />
-            </div>
-            <div class="field">
-              <label>Zaman 1 (dk)</label>
-              <input id="t1" type="number" inputmode="numeric" min="1" value="20" />
-            </div>
-            <div class="field">
-              <label>Zaman 2 (dk)</label>
-              <input id="t2" type="number" inputmode="numeric" min="1" value="40" />
-            </div>
-            <div class="field">
-              <label>CO₂ Eşik (ppm)</label>
-              <input id="thr" type="number" inputmode="numeric" min="400" value="800" />
-            </div>
+            <div class="field"><label>Zaman 0 (dk)</label><input id="t0" type="number" inputmode="numeric" min="0" value="0" /></div>
+            <div class="field"><label>Zaman 1 (dk)</label><input id="t1" type="number" inputmode="numeric" min="1" value="20" /></div>
+            <div class="field"><label>Zaman 2 (dk)</label><input id="t2" type="number" inputmode="numeric" min="1" value="40" /></div>
+            <div class="field"><label>CO₂ Eşik (ppm)</label><input id="thr" type="number" inputmode="numeric" min="400" value="800" /></div>
           </div>
 
           <div class="form-grid" style="margin-top:12px;">
-            <div class="field">
-              <label>Kontrol • t0 (ppm)</label>
-              <input id="c0" type="number" inputmode="numeric" min="350" value="520" />
-            </div>
-            <div class="field">
-              <label>Kontrol • t1 (ppm)</label>
-              <input id="c1" type="number" inputmode="numeric" min="350" value="980" />
-            </div>
-            <div class="field">
-              <label>Kontrol • t2 (ppm)</label>
-              <input id="c2" type="number" inputmode="numeric" min="350" value="1400" />
-            </div>
-            <div class="field">
-              <label>Aktif • t0 (ppm)</label>
-              <input id="a0" type="number" inputmode="numeric" min="350" value="520" />
-            </div>
-            <div class="field">
-              <label>Aktif • t1 (ppm)</label>
-              <input id="a1" type="number" inputmode="numeric" min="350" value="780" />
-            </div>
-            <div class="field">
-              <label>Aktif • t2 (ppm)</label>
-              <input id="a2" type="number" inputmode="numeric" min="350" value="980" />
-            </div>
+            <div class="field"><label>Kontrol • t0 (ppm)</label><input id="c0" type="number" inputmode="numeric" min="350" value="520" /></div>
+            <div class="field"><label>Kontrol • t1 (ppm)</label><input id="c1" type="number" inputmode="numeric" min="350" value="980" /></div>
+            <div class="field"><label>Kontrol • t2 (ppm)</label><input id="c2" type="number" inputmode="numeric" min="350" value="1400" /></div>
+            <div class="field"><label>Aktif • t0 (ppm)</label><input id="a0" type="number" inputmode="numeric" min="350" value="520" /></div>
+            <div class="field"><label>Aktif • t1 (ppm)</label><input id="a1" type="number" inputmode="numeric" min="350" value="780" /></div>
+            <div class="field"><label>Aktif • t2 (ppm)</label><input id="a2" type="number" inputmode="numeric" min="350" value="980" /></div>
           </div>
 
           <div class="pilot-actions">
@@ -1491,9 +1383,7 @@
     <section class="container" id="compare" data-accent="b">
       <div class="kicker">KARŞILAŞTIRMA</div>
       <h2>Alternatiflere Göre BİYODUVAR</h2>
-      <p class="lead">
-        Piyasadaki farklı yaklaşımlarla aynı kriterlerde kıyas: ölçüm, aktif iyileştirme, sarf/atık ve eğitim etkisi.
-      </p>
+      <p class="lead">Piyasadaki farklı yaklaşımlarla aynı kriterlerde kıyas: ölçüm, aktif iyileştirme, sarf/atık ve eğitim etkisi.</p>
 
       <div class="card compare-card" style="margin-top:20px;">
         <div class="compare-head">
@@ -1567,7 +1457,7 @@
     <section class="container" id="demo" data-accent="r">
       <div class="kicker">CANLI PANEL</div>
       <h2>Anlık Simülasyon</h2>
-      <p class="lead">Demo amaçlı: CO₂ yükseldiğinde sistem “temizleme” moduna geçer ve değerleri yumuşakça düşürür.</p>
+      <p class="lead">Demo amaçlı: CO₂ yükseldiğinde sistem “temizleme” moduna geçer ve değerleri yumuşakça düşürür. Auto/Manual ve eşik slider ile kontrol edebilirsiniz.</p>
 
       <div class="card" style="margin-top:18px;">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
@@ -1628,6 +1518,47 @@
                   <div class="ledvalue" id="ledPump">IDLE</div>
                 </div>
               </div>
+
+              <!-- NEW controls -->
+              <div class="controlbar" aria-label="Demo kontrol paneli">
+                <div class="controlrow">
+                  <div>
+                    <div class="ctl-label">Kontrol Modu</div>
+                    <div class="subtle" style="margin-top:4px;">Auto: eşik üstünde temizler • Manual: siz aç/kapat</div>
+                  </div>
+
+                  <label class="switch" title="Auto / Manual">
+                    <span class="ctl-label" id="modeText">AUTO</span>
+                    <input id="autoToggle" type="checkbox" checked />
+                    <span class="track"><span class="thumb"></span></span>
+                  </label>
+                </div>
+
+                <div class="controlrow">
+                  <div>
+                    <div class="ctl-label">CO₂ Eşik Ayarı</div>
+                    <div class="subtle" style="margin-top:4px;">Demo eşiği: sistemin devreye girdiği seviye</div>
+                  </div>
+
+                  <div class="slider">
+                    <input id="thrSlider" type="range" min="600" max="1400" step="10" value="800" />
+                    <div class="val" id="thrVal">800 ppm</div>
+                  </div>
+                </div>
+
+                <div class="controlrow">
+                  <div>
+                    <div class="ctl-label">Manual Kontroller</div>
+                    <div class="subtle" style="margin-top:4px;">Manual modda aktifleşir</div>
+                  </div>
+
+                  <div class="manual-buttons">
+                    <button class="mini-btn" id="fanToggleBtn" type="button">Fan: OFF</button>
+                    <button class="mini-btn" id="pumpToggleBtn" type="button">Pump: OFF</button>
+                    <button class="mini-btn danger" id="panicBtn" type="button">Reset</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="console" id="console">
@@ -1655,39 +1586,15 @@
       <p class="lead">Proje geliştirme, tasarım, üretim ve sunum süreçleri ekip içinde paylaşılmıştır.</p>
 
       <div class="grid" style="margin-top:20px;">
-        <div class="card">
-          <div class="icon">🧭</div>
-          <h3>Kaptan</h3>
-          <p class="muted">Rüzgar Özmen</p>
-        </div>
-        <div class="card">
-          <div class="icon">🎛️</div>
-          <h3>Tasarım</h3>
-          <p class="muted">Poyraz Bulut</p>
-        </div>
-        <div class="card">
-          <div class="icon">🧠</div>
-          <h3>Proje Fikri</h3>
-          <p class="muted">Archer Ege Webb</p>
-        </div>
+        <div class="card"><div class="icon">🧭</div><h3>Kaptan</h3><p class="muted">Rüzgar Özmen</p></div>
+        <div class="card"><div class="icon">🎛️</div><h3>Tasarım</h3><p class="muted">Poyraz Bulut</p></div>
+        <div class="card"><div class="icon">🧠</div><h3>Proje Fikri</h3><p class="muted">Archer Ege Webb</p></div>
       </div>
 
       <div class="grid">
-        <div class="card">
-          <div class="icon">🧪</div>
-          <h3>Sunum</h3>
-          <p class="muted">Toprak Tekin</p>
-        </div>
-        <div class="card">
-          <div class="icon">🧩</div>
-          <h3>Üretim</h3>
-          <p class="muted">Volkan Önsay</p>
-        </div>
-        <div class="card">
-          <div class="icon">🎓</div>
-          <h3>Danışman</h3>
-          <p class="muted">Gamze Yaylaönü</p>
-        </div>
+        <div class="card"><div class="icon">🧪</div><h3>Sunum</h3><p class="muted">Toprak Tekin</p></div>
+        <div class="card"><div class="icon">🧩</div><h3>Üretim</h3><p class="muted">Volkan Önsay</p></div>
+        <div class="card"><div class="icon">🎓</div><h3>Danışman</h3><p class="muted">Gamze Yaylaönü</p></div>
       </div>
     </section>
 
@@ -1702,7 +1609,6 @@
        Drawer
     ========================== */
     const overlay = document.getElementById("drawerOverlay");
-    const drawer = document.getElementById("drawer");
     const hamburger = document.getElementById("hamburger");
     const drawerClose = document.getElementById("drawerClose");
     const jumpTop = document.getElementById("jumpTop");
@@ -1723,7 +1629,6 @@
     document.querySelectorAll(".drawerLink").forEach(a=>{
       a.addEventListener("click", ()=> closeDrawer());
     });
-
     document.getElementById("brandHome").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
 
     /* =========================
@@ -1758,7 +1663,6 @@
       fan:{ icon:"🌀", t:"Aktif Fan", d:"Eşik aşıldığında fan devreye girer ve havayı kök bölgesine yönlendirir. Süreci hızlandırır." },
       water:{ icon:"💧", t:"Su Haznesi", d:"Kapalı döngü hazne ve pompa hattı. Sızdırmaz bağlantılar ile kontrollü kullanım hedeflenir." }
     };
-
     function openModal(key){
       const m = modalMap[key];
       if(!m) return;
@@ -1775,7 +1679,6 @@
     modalClose.addEventListener("click", closeModal);
     modalOverlay.addEventListener("click", (e)=>{ if(e.target === modalOverlay) closeModal(); });
     document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
-
     document.querySelectorAll("[data-open]").forEach(btn=>{
       btn.addEventListener("click", ()=> openModal(btn.getAttribute("data-open")));
     });
@@ -1792,14 +1695,15 @@
     });
 
     /* =========================
-       Ambient particles (softer)
+       Ambient particles
     ========================== */
     const air = document.getElementById("air");
     const actx = air.getContext("2d", { alpha:true });
     let W=0,H=0;
     function resizeAir(){
-      W = air.width = window.innerWidth * (window.devicePixelRatio || 1);
-      H = air.height = window.innerHeight * (window.devicePixelRatio || 1);
+      const pr = window.devicePixelRatio || 1;
+      W = air.width = window.innerWidth * pr;
+      H = air.height = window.innerHeight * pr;
       air.style.width = window.innerWidth + "px";
       air.style.height = window.innerHeight + "px";
       actx.setTransform(1,0,0,1,0,0);
@@ -1807,7 +1711,6 @@
     window.addEventListener("resize", resizeAir);
     resizeAir();
 
-    const pr = window.devicePixelRatio || 1;
     const parts = Array.from({length: 58}, ()=>({
       x: Math.random()*window.innerWidth,
       y: Math.random()*window.innerHeight,
@@ -1815,8 +1718,8 @@
       s: Math.random()*0.35 + 0.10,
       a: Math.random()*0.22 + 0.06
     }));
-
     function drawAir(){
+      const pr = window.devicePixelRatio || 1;
       actx.clearRect(0,0,W,H);
       actx.save();
       actx.scale(pr, pr);
@@ -1835,19 +1738,14 @@
     drawAir();
 
     /* =========================
-       PILOT (interactive) - clearer
+       PILOT (interactive)
     ========================== */
     const pilotInputs = ["t0","t1","t2","thr","c0","c1","c2","a0","a1","a2"].reduce((acc,id)=>{
       acc[id]=document.getElementById(id);
       return acc;
     },{});
-
     const PILOT_KEY = "biyoduvar_pilot_v2026";
-
-    function num(v){
-      const n = Number(v);
-      return Number.isFinite(n) ? n : 0;
-    }
+    function num(v){ const n = Number(v); return Number.isFinite(n) ? n : 0; }
 
     function getPilot(){
       const data = {
@@ -1858,9 +1756,9 @@
       };
       if(data.t[1] <= data.t[0]) data.t[1] = data.t[0] + 1;
       if(data.t[2] <= data.t[1]) data.t[2] = data.t[1] + 1;
+      data.thr = Math.max(400, data.thr || 800);
       return data;
     }
-
     function setPilot(data){
       pilotInputs.t0.value = data.t[0];
       pilotInputs.t1.value = data.t[1];
@@ -1873,16 +1771,13 @@
       pilotInputs.a1.value = data.a[1];
       pilotInputs.a2.value = data.a[2];
     }
-
     function savePilot(){
       const d = getPilot();
       localStorage.setItem(PILOT_KEY, JSON.stringify(d));
       renderPilot();
-      flashSummary("Kaydedildi.");
-      // sync threshold label for demo
-      updateDashThresholdLabel();
+      // demo threshold sync
+      setDemoThresholdFromPilot();
     }
-
     function loadPilot(){
       try{
         const raw = localStorage.getItem(PILOT_KEY);
@@ -1893,18 +1788,11 @@
         return true;
       }catch(e){ return false; }
     }
-
     function resetPilot(){
-      setPilot({
-        t:[0,20,40],
-        thr:800,
-        c:[520,980,1400],
-        a:[520,780,980]
-      });
+      setPilot({ t:[0,20,40], thr:800, c:[520,980,1400], a:[520,780,980] });
       localStorage.removeItem(PILOT_KEY);
       renderPilot();
-      flashSummary("Varsayılanlar yüklendi.");
-      updateDashThresholdLabel();
+      setDemoThresholdFromPilot();
     }
 
     const pilotCanvas = document.getElementById("pilotChart");
@@ -1921,7 +1809,6 @@
       canvas.style.height = h + "px";
       return { w, h, dpr };
     }
-
     function niceRange(minV, maxV){
       if(maxV <= minV) return {min:minV-1, max:maxV+1};
       const pad = (maxV - minV) * 0.18;
@@ -1933,8 +1820,7 @@
       const { w, h, dpr } = resizeCanvasToBox(pilotCanvas);
       pctx.setTransform(1,0,0,1,0,0);
       pctx.clearRect(0,0,pilotCanvas.width,pilotCanvas.height);
-      pctx.save();
-      pctx.scale(dpr, dpr);
+      pctx.save(); pctx.scale(dpr, dpr);
 
       const padL = 54, padR = 18, padT = 18, padB = 44;
       const innerW = w - padL - padR;
@@ -1957,19 +1843,13 @@
         return padT + (1 - p) * innerH;
       }
 
-      // background grid
       pctx.strokeStyle = "rgba(255,255,255,0.06)";
       pctx.lineWidth = 1;
-
       for(let i=0;i<=4;i++){
         const yy = padT + (innerH/4)*i;
-        pctx.beginPath();
-        pctx.moveTo(padL, yy);
-        pctx.lineTo(w - padR, yy);
-        pctx.stroke();
+        pctx.beginPath(); pctx.moveTo(padL, yy); pctx.lineTo(w - padR, yy); pctx.stroke();
       }
 
-      // y-axis labels (5 ticks)
       pctx.fillStyle = "rgba(244,246,255,0.55)";
       pctx.font = "11px Montserrat";
       for(let i=0;i<=4;i++){
@@ -1977,7 +1857,6 @@
         const yy = padT + (innerH/4)*i;
         pctx.fillText(`${Math.round(v)}`, 10, yy+4);
       }
-      // y-axis title
       pctx.save();
       pctx.translate(16, padT + innerH/2);
       pctx.rotate(-Math.PI/2);
@@ -1986,31 +1865,23 @@
       pctx.fillText("CO₂ (ppm)", 0, 0);
       pctx.restore();
 
-      // x-axis labels
       pctx.fillStyle = "rgba(244,246,255,0.62)";
       for(let i=0;i<3;i++){
         const xx = X(i);
-        const label = `${d.t[i]} dk`;
-        pctx.fillText(label, xx - 14, h - 16);
+        pctx.fillText(`${d.t[i]} dk`, xx - 14, h - 16);
       }
-      // x-axis title
       pctx.fillStyle = "rgba(244,246,255,0.45)";
       pctx.fillText("Zaman (dk)", padL + innerW/2 - 34, h - 4);
 
-      // threshold line
       const yThr = Y(d.thr);
       pctx.strokeStyle = "rgba(255,209,102,0.38)";
       pctx.setLineDash([6,6]);
-      pctx.beginPath();
-      pctx.moveTo(padL, yThr);
-      pctx.lineTo(w - padR, yThr);
-      pctx.stroke();
+      pctx.beginPath(); pctx.moveTo(padL, yThr); pctx.lineTo(w - padR, yThr); pctx.stroke();
       pctx.setLineDash([]);
       pctx.fillStyle = "rgba(255,209,102,0.85)";
       pctx.fillText(`Eşik: ${Math.round(d.thr)} ppm`, padL + 6, yThr - 8);
 
-      function drawArea(values, color){
-        // area under curve (soft)
+      function drawArea(values, base){
         pctx.beginPath();
         for(let i=0;i<3;i++){
           const xx = X(i), yy = Y(values[i]);
@@ -2019,51 +1890,31 @@
         pctx.lineTo(X(2), padT + innerH);
         pctx.lineTo(X(0), padT + innerH);
         pctx.closePath();
-        pctx.fillStyle = color.replace("0.95","0.10").replace("0.85","0.10");
+        pctx.fillStyle = base;
         pctx.fill();
       }
-
       function drawSeries(values, stroke, glow){
-        // glow
-        pctx.strokeStyle = glow;
-        pctx.lineWidth = 7;
-        pctx.globalAlpha = 0.22;
+        pctx.strokeStyle = glow; pctx.lineWidth = 7; pctx.globalAlpha = 0.22;
         pctx.beginPath();
-        for(let i=0;i<3;i++){
-          const xx = X(i), yy = Y(values[i]);
-          if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy);
-        }
+        for(let i=0;i<3;i++){ const xx=X(i), yy=Y(values[i]); if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy); }
         pctx.stroke();
         pctx.globalAlpha = 1;
 
-        // main
-        pctx.strokeStyle = stroke;
-        pctx.lineWidth = 3.2;
+        pctx.strokeStyle = stroke; pctx.lineWidth = 3.2;
         pctx.beginPath();
-        for(let i=0;i<3;i++){
-          const xx = X(i), yy = Y(values[i]);
-          if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy);
-        }
+        for(let i=0;i<3;i++){ const xx=X(i), yy=Y(values[i]); if(i===0) pctx.moveTo(xx,yy); else pctx.lineTo(xx,yy); }
         pctx.stroke();
 
-        // points + value labels
         for(let i=0;i<3;i++){
-          const xx = X(i), yy = Y(values[i]);
-          pctx.fillStyle = stroke;
-          pctx.beginPath();
-          pctx.arc(xx,yy,4.4,0,Math.PI*2);
-          pctx.fill();
-
+          const xx=X(i), yy=Y(values[i]);
+          pctx.fillStyle = stroke; pctx.beginPath(); pctx.arc(xx,yy,4.4,0,Math.PI*2); pctx.fill();
           pctx.fillStyle = "rgba(244,246,255,0.92)";
           pctx.font = "11px Montserrat";
           pctx.fillText(`${Math.round(values[i])} ppm`, xx + 10, yy - 10);
         }
       }
-
-      // areas
-      drawArea(d.c, "rgba(255,91,122,0.85)");
-      drawArea(d.a, "rgba(72,187,120,0.85)");
-      // lines
+      drawArea(d.c, "rgba(255,91,122,0.10)");
+      drawArea(d.a, "rgba(72,187,120,0.10)");
       drawSeries(d.c, "rgba(255,91,122,0.95)", "rgba(255,91,122,0.35)");
       drawSeries(d.a, "rgba(72,187,120,0.95)", "rgba(72,187,120,0.35)");
 
@@ -2079,11 +1930,7 @@
       const aAbove = d.a.filter(v => v >= d.thr).length;
       return { cRise, aRise, improve, endDiff, cAbove, aAbove };
     }
-
-    function fmtRise(x){
-      const v = Math.round(x);
-      return (v >= 0 ? "+" : "") + v;
-    }
+    function fmtRise(x){ const v = Math.round(x); return (v >= 0 ? "+" : "") + v; }
 
     function renderPilotTable(){
       const d = getPilot();
@@ -2102,68 +1949,39 @@
       }
     }
 
-    function updatePilotUI(){
+    function renderPilot(){
       const d = getPilot();
       const m = computePilotMetrics(d);
+      const pct = Math.round(m.improve * 100);
 
       document.getElementById("bControl").textContent = `Kontrol: ${fmtRise(m.cRise)} ppm`;
       document.getElementById("bActive").textContent = `Aktif: ${fmtRise(m.aRise)} ppm`;
-      const pct = Math.round(m.improve * 100);
       document.getElementById("bImprove").innerHTML = `<span class="mini-dot"></span>KPI: %${pct}`;
-
       document.getElementById("endDiff").innerHTML = `<span class="mini-dot"></span>t2 farkı: ${Math.round(m.endDiff)} ppm`;
       document.getElementById("overThreshold").textContent = `Eşik üstü nokta sayısı: Kontrol ${m.cAbove} • Aktif ${m.aAbove}`;
-
       document.getElementById("co2ThresholdLbl").textContent = `Eşik: ${Math.round(d.thr)} ppm`;
-      updateDashThresholdLabel();
-    }
 
-    function renderPilot(){
-      renderPilotTable();
-      drawPilotChart();
-      updatePilotUI();
-
-      const d = getPilot();
-      const m = computePilotMetrics(d);
-      const pct = Math.round(m.improve*100);
       const summary = `Özet: Kontrol ${fmtRise(m.cRise)} ppm, Aktif ${fmtRise(m.aRise)} ppm • İyileşme: %${pct} • t2 farkı: ${Math.round(m.endDiff)} ppm • Eşik: ${Math.round(d.thr)} ppm`;
       document.getElementById("pilotSummary").textContent = summary;
-    }
 
-    function flashSummary(text){
-      const el = document.getElementById("pilotSummary");
-      const prev = el.textContent;
-      el.textContent = text;
-      setTimeout(()=> { renderPilot(); }, 500);
-      setTimeout(()=> { el.textContent = prev; renderPilot(); }, 1250);
+      renderPilotTable();
+      drawPilotChart();
     }
 
     document.getElementById("savePilot").addEventListener("click", savePilot);
     document.getElementById("resetPilot").addEventListener("click", resetPilot);
     document.getElementById("copyPilot").addEventListener("click", async ()=>{
       const txt = document.getElementById("pilotSummary").textContent || "";
-      try{
-        await navigator.clipboard.writeText(txt);
-        flashSummary("Kopyalandı.");
-      }catch(e){
-        flashSummary("Kopyalama desteklenmiyor.");
-      }
+      try{ await navigator.clipboard.writeText(txt); }catch(e){}
     });
-
-    Object.values(pilotInputs).forEach(inp=>{
-      inp.addEventListener("input", ()=> renderPilot());
-    });
-
-    window.addEventListener("resize", ()=>{
-      drawPilotChart();
-      drawDashChart();
-    });
+    Object.values(pilotInputs).forEach(inp => inp.addEventListener("input", renderPilot));
+    window.addEventListener("resize", ()=>{ drawPilotChart(); drawDashChart(); });
 
     loadPilot();
     renderPilot();
 
     /* =========================
-       DASHBOARD SIM (SLOWER + BUTTON FIXED + CLEANING FEEL)
+       DEMO PANEL (FIXED + AUTO/MANUAL + SLIDER)
     ========================== */
     const dashCanvas = document.getElementById("dashChart");
     const dctx = dashCanvas.getContext("2d");
@@ -2182,24 +2000,43 @@
     const ledPump = document.getElementById("ledPump");
     const deckClock = document.getElementById("deckClock");
 
+    // Controls
+    const autoToggle = document.getElementById("autoToggle");
+    const modeText = document.getElementById("modeText");
+    const thrSlider = document.getElementById("thrSlider");
+    const thrVal = document.getElementById("thrVal");
+    const fanToggleBtn = document.getElementById("fanToggleBtn");
+    const pumpToggleBtn = document.getElementById("pumpToggleBtn");
+    const panicBtn = document.getElementById("panicBtn");
+
     // Simulation state
-    let co2 = 420;
+    let co2 = 430;
     let temp = 24;
     let hum = 55;
 
-    // smoother history
+    // History
     const histLen = 80;
     const hist = Array(histLen).fill(co2);
 
-    // "Target" dynamics (slow)
-    let co2Target = 420;
+    // Targets
+    let co2Target = 430;
 
-    // modes: NORMAL, CROWDING, CLEANING, RECOVERY
+    // Modes
+    // NORMAL -> CROWDING -> CLEANING -> RECOVERY -> NORMAL
     let mode = "NORMAL";
     let fanOn = false;
     let pumpOn = false;
 
-    // clock
+    // Demo threshold (independent from pilot after sync)
+    let demoThreshold = 800;
+
+    // Auto or Manual
+    let isAuto = true;
+
+    // Lock for scenario
+    let scenarioLock = false;
+
+    // Clock
     let simSeconds = 0;
 
     function logLine(msg){
@@ -2207,51 +2044,139 @@
       div.className = "logline";
       div.textContent = `> ${msg}`;
       consoleEl.appendChild(div);
-      if(consoleEl.children.length > 7) consoleEl.removeChild(consoleEl.firstChild);
+      while(consoleEl.children.length > 7) consoleEl.removeChild(consoleEl.firstChild);
     }
 
-    function updateDashThresholdLabel(){
-      const d = getPilot();
-      dashThr.textContent = `Eşik: ${Math.round(d.thr)} ppm`;
+    function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+    function setDemoThresholdFromPilot(){
+      const p = getPilot();
+      demoThreshold = clamp(Math.round(p.thr || 800), 600, 1400);
+      thrSlider.value = String(demoThreshold);
+      thrVal.textContent = `${demoThreshold} ppm`;
+      dashThr.textContent = `Eşik: ${demoThreshold} ppm`;
     }
 
-    function updateLcd(){
-      const lcdPpm = document.getElementById("lcdPpm");
-      const lcdStatus = document.getElementById("lcdStatus");
-      const thr = getPilot().thr;
-      lcdPpm.textContent = String(Math.round(co2));
-      lcdStatus.textContent = (co2 < thr) ? "İYİ" : "YÜKSEK";
+    // Initialize demo threshold from pilot once
+    setDemoThresholdFromPilot();
+
+    // Slider update
+    thrSlider.addEventListener("input", ()=>{
+      demoThreshold = Number(thrSlider.value);
+      thrVal.textContent = `${demoThreshold} ppm`;
+      dashThr.textContent = `Eşik: ${demoThreshold} ppm`;
+      logLine(`Eşik güncellendi: ${demoThreshold} ppm`);
+      // Auto moddaysa ve co2 üstündeyse temizlemeyi tetikle
+      if(isAuto && co2 >= demoThreshold && mode !== "CLEANING"){
+        setMode("CLEANING");
+        setActuators(true,true);
+        logLine("Auto: Eşik üstü → Temizleme başlatıldı.");
+      }
+    });
+
+    function setAuto(on){
+      isAuto = on;
+      modeText.textContent = isAuto ? "AUTO" : "MANUAL";
+      logLine(isAuto ? "Kontrol modu: AUTO" : "Kontrol modu: MANUAL");
+      // Manuala geçince otomatik mod değiştirmesin
+      updateManualButtons();
     }
+
+    autoToggle.addEventListener("change", ()=>{
+      setAuto(autoToggle.checked);
+      // Auto'ya geçince mevcut koşula göre toparla
+      if(isAuto){
+        if(co2 >= demoThreshold){
+          setMode("CLEANING");
+          setActuators(true,true);
+          logLine("Auto: Eşik üstü → Temizleme başlatıldı.");
+        } else {
+          setMode("NORMAL");
+          setActuators(false,false);
+          logLine("Auto: Normal moda alındı.");
+        }
+      }
+    });
+
+    function updateManualButtons(){
+      const disabled = isAuto;
+      fanToggleBtn.disabled = disabled;
+      pumpToggleBtn.disabled = disabled;
+      fanToggleBtn.style.opacity = disabled ? "0.55" : "1";
+      pumpToggleBtn.style.opacity = disabled ? "0.55" : "1";
+    }
+    updateManualButtons();
+
+    fanToggleBtn.addEventListener("click", ()=>{
+      if(isAuto) return;
+      fanOn = !fanOn;
+      fanToggleBtn.textContent = `Fan: ${fanOn ? "ON" : "OFF"}`;
+      applyActuatorUI();
+      logLine(`Manual: Fan ${fanOn ? "AÇIK" : "KAPALI"}`);
+    });
+    pumpToggleBtn.addEventListener("click", ()=>{
+      if(isAuto) return;
+      pumpOn = !pumpOn;
+      pumpToggleBtn.textContent = `Pump: ${pumpOn ? "ON" : "OFF"}`;
+      applyActuatorUI();
+      logLine(`Manual: Pump ${pumpOn ? "AÇIK" : "KAPALI"}`);
+    });
+
+    panicBtn.addEventListener("click", ()=>{
+      scenarioLock = false;
+      co2 = 430; co2Target = 430;
+      temp = 24; hum = 55;
+      hist.fill(co2);
+      mode = "NORMAL";
+      if(isAuto){
+        fanOn = false; pumpOn = false;
+      }
+      applyModeUI();
+      applyActuatorUI();
+      drawDashChart();
+      updateHeroLCD();
+      logLine("Reset: Simülasyon sıfırlandı.");
+    });
 
     function setMode(next){
       mode = next;
-      modeBadge.innerHTML = `<span class="mini-dot"></span>Mod: ${mode === "NORMAL" ? "Normal" : mode === "CROWDING" ? "Kalabalık" : mode === "CLEANING" ? "Temizleme" : "Toparlanma"}`;
-      // LED
-      ledMode.textContent = mode;
-      ledMode.classList.toggle("warn", mode !== "NORMAL");
+      applyModeUI();
     }
 
-    function setActuators({fan, pump}){
+    function setActuators(fan, pump){
       fanOn = fan;
       pumpOn = pump;
+      applyActuatorUI();
+    }
 
+    function applyModeUI(){
+      const label = mode === "NORMAL" ? "Normal"
+                  : mode === "CROWDING" ? "Kalabalık"
+                  : mode === "CLEANING" ? "Temizleme"
+                  : "Toparlanma";
+      modeBadge.innerHTML = `<span class="mini-dot"></span>Mod: ${label}`;
+      ledMode.textContent = mode;
+      ledMode.className = "ledvalue " + (mode === "NORMAL" ? "" : "warn");
+    }
+
+    function applyActuatorUI(){
       fanBadge.innerHTML = `<span class="mini-dot"></span>Fan: ${fanOn ? "aktif" : "beklemede"}`;
-
       ledFan.textContent = fanOn ? "ACTIVE" : "STANDBY";
       ledPump.textContent = pumpOn ? "RUN" : "IDLE";
-
       ledFan.className = "ledvalue " + (fanOn ? "warn" : "");
       ledPump.className = "ledvalue " + (pumpOn ? "warn" : "");
+      // manual button labels
+      fanToggleBtn.textContent = `Fan: ${fanOn ? "ON" : "OFF"}`;
+      pumpToggleBtn.textContent = `Pump: ${pumpOn ? "ON" : "OFF"}`;
     }
 
     function updateLED(){
-      const thr = getPilot().thr;
       let status = "GOOD";
       ledStatus.className = "ledvalue";
-      if(co2 >= thr){
+      if(co2 >= demoThreshold){
         status = "HIGH";
         ledStatus.className = "ledvalue bad";
-      } else if (co2 >= thr * 0.9){
+      } else if (co2 >= demoThreshold * 0.9){
         status = "ELEVATED";
         ledStatus.className = "ledvalue warn";
       }
@@ -2264,26 +2189,26 @@
       return `${m}:${s}`;
     }
 
-    function resizeCanvasToBox(canvas){
-      const box = canvas.parentElement;
+    function resizeDashCanvas(){
+      const box = dashCanvas.parentElement;
       const dpr = window.devicePixelRatio || 1;
       const w = box.clientWidth;
       const h = box.clientHeight;
-      canvas.width = Math.max(1, Math.floor(w * dpr));
-      canvas.height = Math.max(1, Math.floor(h * dpr));
-      canvas.style.width = w + "px";
-      canvas.style.height = h + "px";
+      dashCanvas.width = Math.max(1, Math.floor(w * dpr));
+      dashCanvas.height = Math.max(1, Math.floor(h * dpr));
+      dashCanvas.style.width = w + "px";
+      dashCanvas.style.height = h + "px";
       return { w, h, dpr };
     }
 
-    function niceRange(minV, maxV){
+    function niceRange2(minV, maxV){
       if(maxV <= minV) return {min:minV-1, max:maxV+1};
       const pad = (maxV - minV) * 0.12;
       return {min: Math.max(0, minV - pad), max: maxV + pad};
     }
 
     function drawDashChart(){
-      const { w, h, dpr } = resizeCanvasToBox(dashCanvas);
+      const { w, h, dpr } = resizeDashCanvas();
       dctx.setTransform(1,0,0,1,0,0);
       dctx.clearRect(0,0,dashCanvas.width,dashCanvas.height);
       dctx.save();
@@ -2295,32 +2220,22 @@
 
       const minV = Math.min(...hist, 360);
       const maxV = Math.max(...hist, 1000);
-      const rr = niceRange(minV, maxV);
+      const rr = niceRange2(minV, maxV);
 
-      // grid
       dctx.strokeStyle = "rgba(255,255,255,0.06)";
       dctx.lineWidth = 1;
       for(let i=1;i<=2;i++){
         const yy = padT + (ih/3)*i;
-        dctx.beginPath();
-        dctx.moveTo(padL, yy);
-        dctx.lineTo(w - padR, yy);
-        dctx.stroke();
+        dctx.beginPath(); dctx.moveTo(padL, yy); dctx.lineTo(w - padR, yy); dctx.stroke();
       }
 
-      const thr = getPilot().thr;
-
-      // threshold
+      const thr = demoThreshold;
       const yThr = padT + (1 - (thr - rr.min)/((rr.max - rr.min)||1)) * ih;
       dctx.strokeStyle = "rgba(255,209,102,0.28)";
       dctx.setLineDash([6,6]);
-      dctx.beginPath();
-      dctx.moveTo(padL, yThr);
-      dctx.lineTo(w - padR, yThr);
-      dctx.stroke();
+      dctx.beginPath(); dctx.moveTo(padL, yThr); dctx.lineTo(w - padR, yThr); dctx.stroke();
       dctx.setLineDash([]);
 
-      // line
       const isHigh = co2 >= thr;
       dctx.strokeStyle = isHigh ? "rgba(255,91,122,0.95)" : "rgba(72,187,120,0.95)";
       dctx.lineWidth = 3;
@@ -2335,165 +2250,188 @@
       dctx.restore();
     }
 
-    function tickDash(){
-      const thr = getPilot().thr;
+    function updateHeroLCD(){
+      const lcdPpm = document.getElementById("lcdPpm");
+      const lcdStatus = document.getElementById("lcdStatus");
+      lcdPpm.textContent = String(Math.round(co2));
+      lcdStatus.textContent = (co2 < demoThreshold) ? "İYİ" : "YÜKSEK";
+    }
 
-      // base environment drift is very slow
-      // create a soft approach to target (like inertia)
-      const approach = 0.14; // smaller = slower
+    // Auto control logic (only when isAuto)
+    function autoController(){
+      if(!isAuto) return;
 
-      // determine actuator logic by mode
       if(mode === "NORMAL"){
-        // keep target around 420-520 with slight drift
-        co2Target += (Math.random()*6 - 3);
-        co2Target = Math.max(390, Math.min(560, co2Target));
-        // if accidental climb above threshold, trigger cleaning
-        if(co2 > thr){
+        // if crosses threshold -> cleaning
+        if(co2 >= demoThreshold){
           setMode("CLEANING");
-          setActuators({fan:true, pump:true});
-          logLine("CO₂ eşiği aşıldı. Temizleme modu aktif.");
+          setActuators(true,true);
+          logLine("Auto: Eşik aşıldı → Temizleme modu.");
         }
       }
 
       if(mode === "CROWDING"){
-        // slowly increase target up to threshold+250 over time
-        co2Target += 18 + Math.random()*4; // slower rise
-        co2Target = Math.min(thr + 260, co2Target);
-        if(co2 >= thr){
+        if(co2 >= demoThreshold){
           setMode("CLEANING");
-          setActuators({fan:true, pump:true});
-          logLine("Eşik aşıldı → fan + pompa devrede.");
+          setActuators(true,true);
+          logLine("Auto: Kalabalıkta eşik aşıldı → Temizleme.");
         }
       }
 
       if(mode === "CLEANING"){
-        // cleaning tries to reduce target gradually
-        co2Target -= 22 + Math.random()*6;
-        co2Target = Math.max(440, co2Target);
-
-        // once we get comfortably below threshold, go recovery
-        if(co2 < thr * 0.85){
+        if(co2 < demoThreshold * 0.85){
           setMode("RECOVERY");
-          setActuators({fan:true, pump:false});
-          logLine("Temizleme tamamlanıyor. Toparlanma moduna geçildi.");
+          setActuators(true,false);
+          logLine("Auto: Temizleme tamamlanıyor → Toparlanma.");
         }
       }
 
       if(mode === "RECOVERY"){
-        // fan slowly ramps down and target stabilizes
-        co2Target += (Math.random()*5 - 2.5);
-        co2Target = Math.max(410, Math.min(560, co2Target));
-
-        if(co2 < thr * 0.80){
-          setActuators({fan:false, pump:false});
-        }
-
-        if(co2 < thr * 0.78){
+        if(co2 < demoThreshold * 0.78){
           setMode("NORMAL");
-          setActuators({fan:false, pump:false});
-          logLine("Sistem normale döndü.");
+          setActuators(false,false);
+          logLine("Auto: Normal moda döndü.");
         }
       }
+    }
 
-      // physics-like approach
+    function physicsTick(){
+      // Environment dynamics (slower)
+      const approach = 0.13; // smaller = smoother/slow
+
+      // Base drift
+      if(mode === "NORMAL"){
+        // stable around 420-560
+        co2Target += (Math.random()*6 - 3);
+        co2Target = clamp(co2Target, 390, 560);
+      }
+
+      if(mode === "CROWDING"){
+        // slowly increase target
+        co2Target += 18 + Math.random()*4;
+        co2Target = Math.min(demoThreshold + 260, co2Target);
+      }
+
+      if(mode === "CLEANING"){
+        // cleaning reduces target
+        const strength = (fanOn ? 1 : 0.5) + (pumpOn ? 0.5 : 0.0); // manual affects too
+        co2Target -= (16 + Math.random()*6) * strength;
+        co2Target = Math.max(430, co2Target);
+      }
+
+      if(mode === "RECOVERY"){
+        co2Target += (Math.random()*5 - 2.5);
+        co2Target = clamp(co2Target, 410, 560);
+      }
+
+      // Manual effect even in NORMAL/CROWDING: If fan/pump ON, gently reduces target
+      if(!isAuto && (fanOn || pumpOn) && mode !== "CLEANING"){
+        const strength = (fanOn ? 1 : 0) + (pumpOn ? 0.6 : 0);
+        co2Target -= (6 + Math.random()*3) * strength;
+        co2Target = Math.max(420, co2Target);
+      }
+
+      // Apply inertia
       co2 = co2 + (co2Target - co2) * approach;
 
-      // temp/hum drift very slow
+      // Temp/hum drift
       temp += (Math.random()*0.16 - 0.08);
       hum += (Math.random()*0.35 - 0.175);
-      temp = Math.max(18, Math.min(30, temp));
-      hum = Math.max(35, Math.min(70, hum));
+      temp = clamp(temp, 18, 30);
+      hum = clamp(hum, 35, 70);
 
-      // history update
+      // History
       hist.push(co2);
       if(hist.length > histLen) hist.shift();
 
-      // UI updates
+      // UI
       valCo2.textContent = String(Math.round(co2));
       valTemp.textContent = `${Math.round(temp)}°C`;
       valHum.textContent = `${Math.round(hum)}%`;
-
-      updateDashThresholdLabel();
       updateLED();
-      updateLcd();
+      updateHeroLCD();
       drawDashChart();
 
-      // clock
+      // Clock
       simSeconds += 1;
       deckClock.innerHTML = `<span class="mini-dot"></span>t: ${formatClock(simSeconds)}`;
+
+      // Auto logic
+      autoController();
     }
 
-    // start baseline
-    updateDashThresholdLabel();
+    // Start demo baseline
     setMode("NORMAL");
-    setActuators({fan:false, pump:false});
+    setActuators(false,false);
     updateLED();
-    updateLcd();
+    updateHeroLCD();
     drawDashChart();
 
-    // slower tick: 1 second
-    setInterval(tickDash, 1000);
+    // 1s tick
+    setInterval(physicsTick, 1000);
 
-    /* Scenario Button - FIXED */
+    // Scenario button: now always works and cannot break state
     const scenarioBtn = document.getElementById("scenarioBtn");
-    let scenarioLock = false;
 
     function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
     scenarioBtn.addEventListener("click", async ()=>{
-      if(scenarioLock) return;
+      if(scenarioLock) {
+        logLine("Senaryo zaten çalışıyor…");
+        return;
+      }
       scenarioLock = true;
 
       scenarioBtn.disabled = true;
       scenarioBtn.style.opacity = "0.75";
 
       try{
-        const thr = getPilot().thr;
         logLine("Senaryo başladı: sınıf kalabalıklaşıyor…");
         setMode("CROWDING");
-        setActuators({fan:false, pump:false});
+        // In auto, keep actuators off until threshold (more realistic)
+        if(isAuto) setActuators(false,false);
 
-        // ramp up gradually for ~12 seconds
-        for(let i=0;i<12;i++){
-          await sleep(1000);
-          if(mode !== "CROWDING") break;
-          if(i === 4) logLine(`CO₂ yükseliyor… (eşik: ${Math.round(thr)} ppm)`);
-          if(i === 8) logLine("Hava ağırlaşıyor. Sistem izliyor…");
+        // force a clear climb target to ensure it crosses threshold in reasonable time
+        co2Target = Math.max(co2Target, demoThreshold + 200);
+
+        await sleep(5000);
+        logLine(`CO₂ yükseliyor… (eşik: ${demoThreshold} ppm)`);
+        await sleep(5000);
+        logLine("Hava ağırlaşıyor. Sistem izliyor…");
+
+        // Ensure threshold gets crossed visually
+        if(co2 < demoThreshold) {
+          co2Target = demoThreshold + 260;
+          await sleep(3000);
         }
 
-        // ensure it crosses threshold if still not
-        if(co2 < thr){
-          co2Target = thr + 220;
-          await sleep(2000);
+        // Auto will switch to CLEANING itself; manual user can trigger actuators
+        logLine("Müdahale aşaması: sirkülasyon başlıyor (temizleme hissi).");
+        await sleep(9000);
+
+        // Let system recover
+        if(isAuto){
+          logLine("Senaryo bitti. Sistem normale dönüyor…");
+        } else {
+          logLine("Senaryo bitti. Manual modda fan/pump sizde.");
         }
-
-        // cleaning phase will be triggered by tickDash once co2 crosses thr
-        logLine("Sistem müdahalesi: kök bölgesine yönlendirme + sirkülasyon.");
-
-        // let cleaning feel for ~10 seconds
-        await sleep(10000);
-
-        logLine("Senaryo bitti. Sistem normalleşiyor…");
-      }catch(e){
+      } catch(e){
         console.error(e);
         logLine("Hata: Senaryo çalıştırılamadı.");
       } finally {
-        // allow system to settle back to normal
-        await sleep(3000);
+        await sleep(1500);
         scenarioLock = false;
         scenarioBtn.disabled = false;
         scenarioBtn.style.opacity = "1";
       }
     });
 
-    // keep hero lcd synced even if not in view
-    setInterval(updateLcd, 1200);
+    /* keep pilot changes reflected in demo threshold label when typing */
+    pilotInputs.thr.addEventListener("input", ()=>{
+      // only sync slider if user hasn't moved slider manually? (simple sync: always)
+      setDemoThresholdFromPilot();
+    });
 
-    /* =========================
-       Pilot save buttons
-    ========================== */
-    document.getElementById("savePilot").addEventListener("click", savePilot);
-    document.getElementById("resetPilot").addEventListener("click", resetPilot);
   </script>
 </body>
 </html>
